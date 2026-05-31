@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { MasterDataRepositoryImpl } from "../../infrastructure/master-data/masterdata.repository";
+import { MasterDataRepositoryImpl } from "../../infrastructure/masterdata.repository";
 import { MasterDataService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 

@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { RatingRepositoryImpl } from "../../infrastructure/ratings/rating.repository";
+import { RatingRepositoryImpl } from "../../infrastructure/rating.repository";
 import { RatingService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {

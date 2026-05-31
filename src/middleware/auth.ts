@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { AuthRepositoryImpl } from "../infrastructure/auth/auth.repository";
+import { AuthRepositoryImpl } from "../infrastructure/auth.repository";
 import { AuthService } from "../modules/auth/service";
 import { UnauthorizedError, ForbiddenError } from "../core/error";
 import { User } from "../modules/auth/domain/auth";
@@ -9,10 +9,7 @@ const service = new AuthService(repo);
 
 type Role = "admin" | "user";
 
-const hasRole = (
-  userRole: Role,
-  requiredRoles?: Role | Role[]
-) => {
+const hasRole = (userRole: Role, requiredRoles?: Role | Role[]) => {
   if (!requiredRoles) return true;
 
   if (Array.isArray(requiredRoles)) {

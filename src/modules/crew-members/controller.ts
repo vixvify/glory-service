@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-members/crew-member.repository";
+import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
 import { CrewMemberService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -9,7 +9,7 @@ import {
   updateCrewMemberBodySchema,
   getCrewMemberByIdParamsSchema,
   deleteCrewMemberParamsSchema,
-  searchCrewMembersQuerySchema,
+  getCrewMembersQuerySchema,
 } from "./domain/crew-member";
 
 const repo = new CrewMemberRepositoryImpl();
@@ -17,19 +17,14 @@ const service = new CrewMemberService(repo);
 
 export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   .use(authMiddleware)
-  .get("/all", async () => {
-    const crewMembers = await service.getAllCrewMembers();
-    return formatSuccess(crewMembers);
-  })
   .get(
-    "/search",
+    "/",
     async ({ query }) => {
-      const q = query.q || "";
-      const crewMembers = await service.searchCrewMembers(q);
+      const crewMembers = await service.getCrewMembers(query);
       return formatSuccess(crewMembers);
     },
     {
-      query: searchCrewMembersQuerySchema,
+      query: getCrewMembersQuerySchema,
     },
   )
   .get(

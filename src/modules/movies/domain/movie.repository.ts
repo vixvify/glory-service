@@ -1,9 +1,8 @@
-import { CreateMovieBodyInput, UpdateMovieBodyInput } from "./movie";
+import { CreateMovieBodyInput, UpdateMovieBodyInput, MovieFilterParams } from "./movie";
 import { Movie as PrismaMovie } from "@prisma/client";
 
 export interface MovieRepository {
-  findAll(): Promise<PrismaMovie[]>;
-  search(q: string): Promise<PrismaMovie[]>;
+  find(params?: MovieFilterParams): Promise<PrismaMovie[]>;
   findByCategory(category: string): Promise<PrismaMovie[]>;
   findByUniversity(university: string): Promise<PrismaMovie[]>;
   findById(id: string): Promise<PrismaMovie | null>;

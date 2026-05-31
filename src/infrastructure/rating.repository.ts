@@ -1,11 +1,11 @@
-import { prisma } from "../../lib/prisma";
-import { RatingRepository } from "../../modules/ratings/domain/rating.repository";
+import { prisma } from "../lib/prisma";
+import { RatingRepository } from "../modules/ratings/domain/rating.repository";
 import {
   Rating,
   AddRatingBodyInput,
   GetRatingsQueryInput,
   UpdateRatingBodyInput,
-} from "../../modules/ratings/domain/rating";
+} from "../modules/ratings/domain/rating";
 
 export class RatingRepositoryImpl implements RatingRepository {
   async addRating(data: AddRatingBodyInput): Promise<void> {

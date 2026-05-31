@@ -4,33 +4,51 @@ import {
   BadRequestError,
   ConflictError,
 } from "../../core/error";
-import { CrewMember } from "./domain/crew-member";
+import { CrewMember, GetCrewMembersQueryInput } from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { uploadToSupabase } from "../../lib/supabase";
 
 export class CrewMemberService {
   constructor(private repo: CrewMemberRepository) {}
 
-  async getAllCrewMembers(): Promise<CrewMember[]> {
+  async getCrewMembers(
+    params?: GetCrewMembersQueryInput,
+  ): Promise<CrewMember[]> {
     try {
-      return await this.repo.findAll();
+      const search = params?.search?.trim() || "";
+      const searchby = params?.searchby?.trim() || "";
+      const page = params?.page?.trim() || "1";
+      const pagenumber = params?.pagenumber?.trim() || "";
+      const sort = params?.sort?.trim() || "desc";
+      const sortby = params?.sortby?.trim() || "";
+
+      const isDefault =
+        search === "" &&
+        searchby === "" &&
+        page === "1" &&
+        pagenumber === "" &&
+        sort === "desc" &&
+        sortby === "";
+
+      if (isDefault) {
+        return await this.repo.find();
+      }
+
+      const pageNum = parseInt(page, 10) || 1;
+      const limitNum = pagenumber ? parseInt(pagenumber, 10) : undefined;
+
+      return await this.repo.find({
+        search: search || undefined,
+        searchby: searchby || undefined,
+        page: pageNum,
+        pagenumber: limitNum,
+        sort: sort || undefined,
+        sortby: sortby || undefined,
+      });
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
         error instanceof Error ? error.message : "Failed to get crew members";
-      throw new BadRequestError(message, error);
-    }
-  }
-
-  async searchCrewMembers(q: string): Promise<CrewMember[]> {
-    try {
-      return await this.repo.search(q);
-    } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to search crew members";
       throw new BadRequestError(message, error);
     }
   }

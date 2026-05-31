@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { MovieRepositoryImpl } from "../../infrastructure/movies/movie.repository";
+import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
 import { MovieService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -11,7 +11,7 @@ import {
   getMoviesByCategoryParamsSchema,
   getMoviesByUniversityParamsSchema,
   deleteMovieParamsSchema,
-  searchMoviesQuerySchema,
+  getMoviesQuerySchema,
 } from "./domain/movie";
 
 const repo = new MovieRepositoryImpl();
@@ -19,22 +19,17 @@ const service = new MovieService(repo);
 
 export const movieRouter = new Elysia({ prefix: "/movie" })
   .use(authMiddleware)
-  .get("/all", async () => {
-    const movies = await service.getAllMovies();
-    return formatSuccess(movies);
-  })
-
   .get(
-    "/search",
+    "/",
     async ({ query }) => {
-      const q = query.q || "";
-      const movies = await service.searchMovies(q);
+      const movies = await service.getMovies(query);
       return formatSuccess(movies);
     },
     {
-      query: searchMoviesQuerySchema,
+      query: getMoviesQuerySchema,
     },
   )
+
   .get(
     "/category/:category",
     async ({ params }) => {

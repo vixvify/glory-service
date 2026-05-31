@@ -1,6 +1,6 @@
-import { prisma } from "../../lib/prisma";
-import { User, RegisterUserBodyInput } from "../../modules/auth/domain/auth";
-import { AuthRepository } from "../../modules/auth/domain/auth.repository";
+import { prisma } from "../lib/prisma";
+import { User, RegisterUserBodyInput } from "../modules/auth/domain/auth";
+import { AuthRepository } from "../modules/auth/domain/auth.repository";
 
 export class AuthRepositoryImpl implements AuthRepository {
   async findByEmail(email: string): Promise<User | null> {

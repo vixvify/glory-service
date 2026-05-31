@@ -49,3 +49,24 @@ export const searchCrewMembersQuerySchema = t.Object({
 export type SearchCrewMembersQueryInput = Static<
   typeof searchCrewMembersQuerySchema
 >;
+
+export const getCrewMembersQuerySchema = t.Object({
+  search: t.Optional(t.String()),
+  searchby: t.Optional(t.String()),
+  page: t.Optional(t.String()),
+  pagenumber: t.Optional(t.String()),
+  sort: t.Optional(t.String()),
+  sortby: t.Optional(t.String()),
+});
+export type GetCrewMembersQueryInput = Static<typeof getCrewMembersQuerySchema>;
+
+export interface CrewFilterParams {
+  search?: string;
+  searchby?: string;
+  page?: number;
+  pagenumber?: number;
+  sort?: string;
+  sortby?: string;
+}
+
+

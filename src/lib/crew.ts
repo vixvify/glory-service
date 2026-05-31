@@ -1,6 +1,10 @@
-import { prisma } from "./prisma";
 import { NotFoundError } from "../core/error";
 import { isUuid } from "../core/utils/validator";
+import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
+import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
+
+const crewMemberRepo = new CrewMemberRepositoryImpl();
+const movieCrewRepo = new MovieCrewRepositoryImpl();
 
 export async function associateCrewBulk(
   movieId: string,
@@ -26,20 +30,18 @@ export async function associateCrewBulk(
 
   if (items.length === 0) return;
 
-  const uuidItems = items.filter(item => isUuid(item.value));
-  const nameItems = items.filter(item => !isUuid(item.value));
+  const uuidItems = items.filter((item) => isUuid(item.value));
+  const nameItems = items.filter((item) => !isUuid(item.value));
 
   const crewIdMap = new Map<string, string>();
 
   if (uuidItems.length > 0) {
-    const uuids = Array.from(new Set(uuidItems.map(item => item.value)));
-    const existingMembers = await prisma.crewMember.findMany({
-      where: { id: { in: uuids } },
-    });
+    const uuids = Array.from(new Set(uuidItems.map((item) => item.value)));
+    const existingMembers = await crewMemberRepo.findManyByIds(uuids);
 
     if (existingMembers.length !== uuids.length) {
-      const foundUuids = new Set(existingMembers.map(m => m.id));
-      const missing = uuids.find(id => !foundUuids.has(id));
+      const foundUuids = new Set(existingMembers.map((m) => m.id));
+      const missing = uuids.find((id) => !foundUuids.has(id));
       throw new NotFoundError(`Crew member with ID ${missing} not found`);
     }
 
@@ -49,26 +51,19 @@ export async function associateCrewBulk(
   }
 
   if (nameItems.length > 0) {
-    const names = Array.from(new Set(nameItems.map(item => item.value)));
-    const existingMembers = await prisma.crewMember.findMany({
-      where: { name: { in: names } },
-    });
+    const names = Array.from(new Set(nameItems.map((item) => item.value)));
+    const existingMembers = await crewMemberRepo.findManyByNames(names);
 
-    const existingNames = new Set(existingMembers.map(m => m.name));
+    const existingNames = new Set(existingMembers.map((m) => m.name));
     for (const m of existingMembers) {
       crewIdMap.set(m.name, m.id);
     }
 
-    const missingNames = names.filter(name => !existingNames.has(name));
+    const missingNames = names.filter((name) => !existingNames.has(name));
     if (missingNames.length > 0) {
-      await prisma.crewMember.createMany({
-        data: missingNames.map(name => ({ name })),
-        skipDuplicates: true,
-      });
+      await crewMemberRepo.createMany(missingNames);
 
-      const newMembers = await prisma.crewMember.findMany({
-        where: { name: { in: missingNames } },
-      });
+      const newMembers = await crewMemberRepo.findManyByNames(missingNames);
 
       for (const m of newMembers) {
         crewIdMap.set(m.name, m.id);
@@ -76,7 +71,7 @@ export async function associateCrewBulk(
     }
   }
 
-  const movieCrewsData = items.map(item => {
+  const movieCrewsData = items.map((item) => {
     const crewMemberId = crewIdMap.get(item.value);
     if (!crewMemberId) {
       throw new Error(`Failed to map crew member for value: ${item.value}`);
@@ -88,8 +83,5 @@ export async function associateCrewBulk(
     };
   });
 
-  await prisma.movieCrew.createMany({
-    data: movieCrewsData,
-    skipDuplicates: true,
-  });
+  await movieCrewRepo.createMany(movieCrewsData);
 }

@@ -1,5 +1,5 @@
-import { prisma } from "../../lib/prisma";
-import { FavoriteRepository } from "../../modules/favorites/domain/favorite.repository";
+import { prisma } from "../lib/prisma";
+import { FavoriteRepository } from "../modules/favorites/domain/favorite.repository";
 import { Movie as PrismaMovie } from "@prisma/client";
 
 export class FavoriteRepositoryImpl implements FavoriteRepository {

@@ -126,3 +126,24 @@ export const searchMoviesQuerySchema = t.Object({
   q: t.Optional(t.String()),
 });
 export type SearchMoviesQueryInput = Static<typeof searchMoviesQuerySchema>;
+
+export const getMoviesQuerySchema = t.Object({
+  search: t.Optional(t.String()),
+  searchby: t.Optional(t.String()),
+  page: t.Optional(t.String()),
+  pagenumber: t.Optional(t.String()),
+  sort: t.Optional(t.String()),
+  sortby: t.Optional(t.String()),
+});
+export type GetMoviesQueryInput = Static<typeof getMoviesQuerySchema>;
+
+export interface MovieFilterParams {
+  search?: string;
+  searchby?: string;
+  page?: number;
+  pagenumber?: number;
+  sort?: string;
+  sortby?: string;
+}
+
+

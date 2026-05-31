@@ -1,17 +1,63 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../lib/prisma";
 import {
   CreateMovieBodyInput,
   UpdateMovieBodyInput,
-} from "../../modules/movies/domain/movie";
-import { MovieRepository } from "../../modules/movies/domain/movie.repository";
-import { Movie as PrismaMovie } from "@prisma/client";
-import { NotFoundError } from "../../core/error";
-import { isUuid } from "../../core/utils/validator";
-import { associateCrewBulk } from "../../lib/crew";
+} from "../modules/movies/domain/movie";
+import { MovieRepository } from "../modules/movies/domain/movie.repository";
+import { Movie as PrismaMovie, Prisma } from "@prisma/client";
+import { associateCrewBulk } from "../lib/crew";
+import { MovieFilterParams } from "../modules/movies/domain/movie";
+import calculatePagination from "../core/utils/pagination";
 
 export class MovieRepositoryImpl implements MovieRepository {
-  async findAll(): Promise<PrismaMovie[]> {
+  async find(params?: MovieFilterParams): Promise<PrismaMovie[]> {
+    if (!params) {
+      return prisma.movie.findMany({
+        include: {
+          crew: {
+            include: {
+              crewMember: true,
+            },
+          },
+          bts: true,
+          ratings: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  email: true,
+                  name: true,
+                  role: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    }
+    const {
+      search,
+      searchby,
+      page,
+      pagenumber,
+      sort = "desc",
+      sortby = "createdAt",
+    } = params;
+
+    const where: Prisma.MovieWhereInput = {
+      ...(search && searchby === "year" && { year: parseInt(search, 10) }),
+      ...(search &&
+        searchby !== "year" && {
+          [searchby || "title"]: {
+            contains: search,
+            mode: "insensitive",
+          },
+        }),
+    };
+
     return prisma.movie.findMany({
+      where,
       include: {
         crew: {
           include: {
@@ -32,41 +78,10 @@ export class MovieRepositoryImpl implements MovieRepository {
           },
         },
       },
-      orderBy: { createdAt: "desc" },
-    });
-  }
-
-  async search(q: string): Promise<PrismaMovie[]> {
-    const terms = q.trim().split(/\s+/).filter(Boolean);
-    if (terms.length === 0) {
-      return prisma.movie.findMany({
-        include: {
-          crew: {
-            include: {
-              crewMember: true,
-            },
-          },
-          bts: true,
-        },
-        orderBy: { createdAt: "desc" },
-      });
-    }
-
-    return prisma.movie.findMany({
-      where: {
-        title: {
-          contains: q,
-          mode: "insensitive",
-        },
+      orderBy: {
+        [sortby]: sort,
       },
-      include: {
-        crew: {
-          include: {
-            crewMember: true,
-          },
-        },
-        bts: true,
-      },
+      ...calculatePagination(page || 1, pagenumber || 10),
     });
   }
 

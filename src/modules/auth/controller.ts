@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { AuthRepositoryImpl } from "../../infrastructure/auth/auth.repository";
+import { AuthRepositoryImpl } from "../../infrastructure/auth.repository";
 import { AuthService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {

@@ -3,6 +3,7 @@ import {
   Movie,
   CreateMovieBodyInput,
   UpdateMovieBodyInput,
+  GetMoviesQueryInput,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
 import { MovieFactory } from "./factory";
@@ -11,26 +12,43 @@ import { uploadToSupabase, resolveUploadedFiles } from "../../lib/supabase";
 export class MovieService {
   constructor(private repo: MovieRepository) {}
 
-  async getAllMovies(): Promise<Movie[]> {
+  async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
-      const movies = await this.repo.findAll();
+      const search = params?.search?.trim() || "";
+      const searchby = params?.searchby?.trim() || "";
+      const page = params?.page?.trim() || "1";
+      const pagenumber = params?.pagenumber?.trim() || "";
+      const sort = params?.sort?.trim() || "desc";
+      const sortby = params?.sortby?.trim() || "";
+
+      const isDefault =
+        search === "" &&
+        searchby === "" &&
+        page === "1" &&
+        pagenumber === "" &&
+        sort === "desc" &&
+        sortby === "";
+
+      if (isDefault) {
+        const movies = await this.repo.find();
+        return MovieFactory.toDomainList(movies);
+      }
+
+      const pageNum = Number(page) || 1;
+      const limitNum = pagenumber ? Number(pagenumber) : undefined;
+      const movies = await this.repo.find({
+        search: search || undefined,
+        searchby: searchby || undefined,
+        page: pageNum,
+        pagenumber: limitNum,
+        sort: sort || undefined,
+        sortby: sortby || undefined,
+      });
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
         error instanceof Error ? error.message : "Failed to get movies";
-      throw new BadRequestError(message, error);
-    }
-  }
-
-  async searchMovies(q: string): Promise<Movie[]> {
-    try {
-      const movies = await this.repo.search(q);
-      return MovieFactory.toDomainList(movies);
-    } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to search movies";
       throw new BadRequestError(message, error);
     }
   }

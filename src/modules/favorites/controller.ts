@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { FavoriteRepositoryImpl } from "../../infrastructure/favorites/favorite.repository";
+import { FavoriteRepositoryImpl } from "../../infrastructure/favorite.repository";
 import { FavoriteService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
