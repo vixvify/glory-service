@@ -81,7 +81,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       orderBy: {
         [sortby]: sort,
       },
-      ...calculatePagination(page || 1, pagenumber || 10),
+      ...calculatePagination(page, pagenumber),
     });
   }
 
