@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { RatingRepositoryImpl } from "../../infrastructure/rating.repository";
 import { RatingService } from "./service";
-import { formatSuccess } from "../../core/interceptor";
+import { formatSuccess, formatError } from "../../core/interceptor";
 import {
   addRatingBodySchema,
   getRatingsQuerySchema,
@@ -30,8 +30,8 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .get(
     "/",
     async ({ query }) => {
-      const ratings = await service.getRatingsByUserIdAndMovieId(query);
-      return formatSuccess(ratings);
+      const rating = await service.getRatingsByUserIdAndMovieId(query);
+      return formatSuccess(rating);
     },
     {
       query: getRatingsQuerySchema,

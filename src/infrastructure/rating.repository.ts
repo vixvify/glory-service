@@ -20,9 +20,9 @@ export class RatingRepositoryImpl implements RatingRepository {
 
   async getRatingsByUserIdAndMovieId(
     data: GetRatingsQueryInput,
-  ): Promise<Rating[]> {
-    const ratings = await prisma.rating.findMany({
-      where: { userId: data.userId, movieId: data.movieId },
+  ): Promise<Rating | null> {
+    const rating = await prisma.rating.findUnique({
+      where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
       include: {
         movie: true,
         user: {
@@ -36,7 +36,11 @@ export class RatingRepositoryImpl implements RatingRepository {
       },
     });
 
-    return ratings.map((rating) => ({
+    if (!rating) {
+      return null;
+    }
+
+    return {
       ...rating,
       user: {
         ...rating.user,
@@ -48,7 +52,7 @@ export class RatingRepositoryImpl implements RatingRepository {
         crew: [],
         bts: null,
       },
-    }));
+    };
   }
 
   async deleteRating(userId: string, movieId: string): Promise<void> {

@@ -45,7 +45,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       orderBy: {
         [sortby]: sort,
       },
-      ...calculatePagination(page || 1, pagenumber || 10),
+      ...calculatePagination(page, pagenumber),
     });
   }
 

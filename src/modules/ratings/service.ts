@@ -23,7 +23,7 @@ export class RatingService {
 
   async getRatingsByUserIdAndMovieId(
     data: GetRatingsQueryInput,
-  ): Promise<Rating[]> {
+  ): Promise<Rating | null> {
     try {
       return await this.repo.getRatingsByUserIdAndMovieId(data);
     } catch (error: unknown) {
