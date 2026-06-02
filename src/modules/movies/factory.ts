@@ -17,6 +17,7 @@ export interface PrismaMovieWithRelations extends PrismaMovie {
       role: string;
     } | null;
   }> | null;
+
   crew?: Array<{
     id: string;
     movieId: string;
@@ -28,10 +29,13 @@ export interface PrismaMovieWithRelations extends PrismaMovie {
       id: string;
       name: string;
       photoUrl?: string | null;
+      email?: string | null;
+      userId?: string | null;
       createdAt: Date;
       updatedAt: Date;
     } | null;
   }> | null;
+
   bts?: {
     id: string;
     movieId: string;
@@ -93,6 +97,7 @@ export class MovieFactory {
       ageRating: movie.ageRating,
       duration: movie.duration,
       university: movie.university,
+
       crew: movie.crew
         ? movie.crew.map((c) => ({
             id: c.id,
@@ -104,6 +109,8 @@ export class MovieFactory {
                   id: c.crewMember.id,
                   name: c.crewMember.name,
                   photoUrl: c.crewMember.photoUrl,
+                  email: c.crewMember.email,
+                  userId: c.crewMember.userId,
                   createdAt: c.crewMember.createdAt,
                   updatedAt: c.crewMember.updatedAt,
                 }
@@ -112,6 +119,7 @@ export class MovieFactory {
             updatedAt: c.updatedAt,
           }))
         : [],
+
       bts: movie.bts
         ? {
             id: movie.bts.id,

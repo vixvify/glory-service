@@ -6,10 +6,14 @@ import {
 } from "../../core/error";
 import { CrewMember, GetCrewMembersQueryInput } from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
+import { AuthRepository } from "../auth/domain/auth.repository";
 import { uploadToSupabase } from "../../lib/supabase";
 
 export class CrewMemberService {
-  constructor(private repo: CrewMemberRepository) {}
+  constructor(
+    private repo: CrewMemberRepository,
+    private authRepo?: AuthRepository,
+  ) {}
 
   async getCrewMembers(
     params?: GetCrewMembersQueryInput,
@@ -68,9 +72,15 @@ export class CrewMemberService {
     }
   }
 
-  async createCrewMember(name: string, photo?: File): Promise<CrewMember> {
+  async createCrewMember(
+    name: string,
+    email?: string,
+    photo?: File,
+  ): Promise<CrewMember> {
     try {
       const trimmedName = name.trim();
+      const trimmedEmail = email?.trim() || undefined;
+
       const existing = await this.repo.findByName(trimmedName);
       if (existing) {
         throw new ConflictError(
@@ -78,12 +88,20 @@ export class CrewMemberService {
         );
       }
 
+      let userId: string | undefined = undefined;
+      if (trimmedEmail && this.authRepo) {
+        const user = await this.authRepo.findByEmail(trimmedEmail);
+        if (user) {
+          userId = user.id;
+        }
+      }
+
       let photoUrl: string | undefined = undefined;
       if (photo) {
         photoUrl = await uploadToSupabase(photo, "crews");
       }
 
-      return await this.repo.create(trimmedName, photoUrl);
+      return await this.repo.create(trimmedName, photoUrl, trimmedEmail, userId);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -95,6 +113,7 @@ export class CrewMemberService {
   async updateCrewMember(
     id: string,
     name: string,
+    email?: string | null,
     photo?: File | string,
   ): Promise<CrewMember> {
     try {
@@ -113,6 +132,18 @@ export class CrewMemberService {
         }
       }
 
+      const trimmedEmail = email !== undefined ? (email?.trim() || null) : undefined;
+      let userId: string | null | undefined = undefined;
+
+      if (trimmedEmail !== undefined && this.authRepo) {
+        if (trimmedEmail === null) {
+          userId = null;
+        } else {
+          const user = await this.authRepo.findByEmail(trimmedEmail);
+          userId = user ? user.id : null;
+        }
+      }
+
       let photoUrl: string | undefined = undefined;
       if (photo instanceof File) {
         photoUrl = await uploadToSupabase(photo, "crews");
@@ -120,7 +151,13 @@ export class CrewMemberService {
         photoUrl = photo;
       }
 
-      return await this.repo.update(id, trimmedName, photoUrl);
+      return await this.repo.update(
+        id,
+        trimmedName,
+        photoUrl,
+        trimmedEmail ?? undefined,
+        userId ?? undefined,
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

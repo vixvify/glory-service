@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
+import { AuthRepositoryImpl } from "../../infrastructure/auth.repository";
 import { CrewMemberService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -13,7 +14,8 @@ import {
 } from "./domain/crew-member";
 
 const repo = new CrewMemberRepositoryImpl();
-const service = new CrewMemberService(repo);
+const authRepo = new AuthRepositoryImpl();
+const service = new CrewMemberService(repo, authRepo);
 
 export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   .use(authMiddleware)
@@ -41,7 +43,11 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   .post(
     "/",
     async ({ body }) => {
-      const crewMember = await service.createCrewMember(body.name, body.photo);
+      const crewMember = await service.createCrewMember(
+        body.name,
+        body.email,
+        body.photo,
+      );
       return formatSuccess(crewMember, "Crew member created successfully");
     },
     {
@@ -57,6 +63,7 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
       const crewMember = await service.updateCrewMember(
         id,
         body.name,
+        body.email,
         body.photo,
       );
       return formatSuccess(crewMember, "Crew member updated successfully");

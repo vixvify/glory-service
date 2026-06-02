@@ -50,7 +50,6 @@ export class AuthRepositoryImpl implements AuthRepository {
       role: user.role as "admin" | "user",
     };
   }
-
   async create(
     data: Omit<RegisterUserBodyInput, "password"> & { passwordHash: string },
   ): Promise<User> {
@@ -63,11 +62,16 @@ export class AuthRepositoryImpl implements AuthRepository {
       },
     });
 
+    // Automatically link to crew member if there's one with the same email
+    await prisma.crewMember.updateMany({
+      where: { email: data.email },
+      data: { userId: user.id },
+    });
+
     return {
       id: user.id,
       name: user.name || "",
       email: user.email,
       role: user.role as "admin" | "user",
     };
-  }
-}
+  }}

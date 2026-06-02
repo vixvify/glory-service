@@ -60,10 +60,14 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { name },
     });
   }
-
-  async create(name: string, photoUrl?: string): Promise<CrewMember> {
+  async create(
+    name: string,
+    photoUrl?: string,
+    email?: string,
+    userId?: string,
+  ): Promise<CrewMember> {
     return prisma.crewMember.create({
-      data: { name, photoUrl },
+      data: { name, photoUrl, email, userId },
     });
   }
 
@@ -71,16 +75,19 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     id: string,
     name: string,
     photoUrl?: string,
+    email?: string,
+    userId?: string | null,
   ): Promise<CrewMember> {
     return prisma.crewMember.update({
       where: { id },
       data: {
         name,
         ...(photoUrl !== undefined ? { photoUrl } : {}),
+        ...(email !== undefined ? { email } : {}),
+        ...(userId !== undefined ? { userId } : {}),
       },
     });
   }
-
   async delete(id: string): Promise<CrewMember> {
     return prisma.crewMember.delete({
       where: { id },

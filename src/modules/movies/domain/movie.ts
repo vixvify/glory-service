@@ -1,15 +1,15 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
 import { User } from "../../auth/domain/auth";
-
 export interface CrewMember {
   id: string;
   name: string;
+  email?: string | null;
   photoUrl?: string | null;
+  userId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
-
 export interface MovieCrew {
   id: string;
   movieId: string;

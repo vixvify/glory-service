@@ -1,15 +1,19 @@
 import { t, Static } from "elysia";
 
+
 export interface CrewMember {
   id: string;
   name: string;
+  email?: string | null;
   photoUrl?: string | null;
+  userId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export const createCrewMemberSchema = t.Object({
   name: t.String({ minLength: 1 }),
+  email: t.Optional(t.String()),
   photo: t.Optional(t.File()),
 });
 export type CreateCrewMemberInput = Static<typeof createCrewMemberSchema>;
@@ -23,8 +27,10 @@ export type UpdateCrewMemberParamsInput = Static<
 
 export const updateCrewMemberBodySchema = t.Object({
   name: t.String({ minLength: 1 }),
+  email: t.Optional(t.String()),
   photo: t.Optional(t.Union([t.File(), t.String()])),
 });
+
 export type UpdateCrewMemberBodyInput = Static<
   typeof updateCrewMemberBodySchema
 >;
