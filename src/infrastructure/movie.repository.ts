@@ -8,6 +8,7 @@ import { Movie as PrismaMovie, Prisma } from "@prisma/client";
 import { associateCrewBulk } from "../lib/crew";
 import { MovieFilterParams } from "../modules/movies/domain/movie";
 import calculatePagination from "../core/utils/pagination";
+import { parseStringOrArray } from "../core/utils/parser";
 
 export class MovieRepositoryImpl implements MovieRepository {
   async find(params?: MovieFilterParams): Promise<PrismaMovie[]> {
@@ -151,37 +152,12 @@ export class MovieRepositoryImpl implements MovieRepository {
       btsPhotos?: string;
     },
   ): Promise<PrismaMovie> {
-    const directors = data.director
-      ? Array.isArray(data.director)
-        ? data.director
-        : [data.director]
-      : [];
-    const producers = data.producer
-      ? Array.isArray(data.producer)
-        ? data.producer
-        : [data.producer]
-      : [];
-    const writers = data.writer
-      ? Array.isArray(data.writer)
-        ? data.writer
-        : [data.writer]
-      : [];
-    const cast = data.cast
-      ? Array.isArray(data.cast)
-        ? data.cast
-        : [data.cast]
-      : [];
-    const btsVideo = data.btsVideo
-      ? Array.isArray(data.btsVideo)
-        ? data.btsVideo
-        : [data.btsVideo]
-      : [];
-    const btsPhotos = data.btsPhotos
-      ? data.btsPhotos
-          .split(",")
-          .map((p) => p.trim())
-          .filter(Boolean)
-      : [];
+    const directors = parseStringOrArray(data.director);
+    const producers = parseStringOrArray(data.producer);
+    const writers = parseStringOrArray(data.writer);
+    const cast = parseStringOrArray(data.cast);
+    const btsVideo = parseStringOrArray(data.btsVideo);
+    const btsPhotos = parseStringOrArray(data.btsPhotos);
 
     const movie = await prisma.movie.create({
       data: {
@@ -227,37 +203,12 @@ export class MovieRepositoryImpl implements MovieRepository {
       btsPhotos?: string;
     },
   ): Promise<PrismaMovie> {
-    const directors = data.director
-      ? Array.isArray(data.director)
-        ? data.director
-        : [data.director]
-      : [];
-    const producers = data.producer
-      ? Array.isArray(data.producer)
-        ? data.producer
-        : [data.producer]
-      : [];
-    const writers = data.writer
-      ? Array.isArray(data.writer)
-        ? data.writer
-        : [data.writer]
-      : [];
-    const cast = data.cast
-      ? Array.isArray(data.cast)
-        ? data.cast
-        : [data.cast]
-      : [];
-    const btsVideo = data.btsVideo
-      ? Array.isArray(data.btsVideo)
-        ? data.btsVideo
-        : [data.btsVideo]
-      : [];
-    const btsPhotos = data.btsPhotos
-      ? data.btsPhotos
-          .split(",")
-          .map((p) => p.trim())
-          .filter(Boolean)
-      : [];
+    const directors = parseStringOrArray(data.director);
+    const producers = parseStringOrArray(data.producer);
+    const writers = parseStringOrArray(data.writer);
+    const cast = parseStringOrArray(data.cast);
+    const btsVideo = parseStringOrArray(data.btsVideo);
+    const btsPhotos = parseStringOrArray(data.btsPhotos);
 
     await prisma.movie.update({
       where: { id },
