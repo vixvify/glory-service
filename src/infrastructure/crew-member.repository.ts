@@ -14,6 +14,13 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     if (!params) {
       return prisma.crewMember.findMany({
         orderBy: { name: "asc" },
+        include: {
+          movieCrews: {
+            include: {
+              movie: true,
+            },
+          },
+        },
       });
     }
 
@@ -49,6 +56,13 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       orderBy: {
         [sortby]: sort,
       },
+      include: {
+        movieCrews: {
+          include: {
+            movie: true,
+          },
+        },
+      },
       ...calculatePagination(page, pagenumber),
     });
   }
@@ -56,12 +70,26 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
   async findById(id: string): Promise<CrewMember | null> {
     return prisma.crewMember.findUnique({
       where: { id },
+      include: {
+        movieCrews: {
+          include: {
+            movie: true,
+          },
+        },
+      },
     });
   }
 
   async findByName(name: string): Promise<CrewMember | null> {
     return prisma.crewMember.findUnique({
       where: { name },
+      include: {
+        movieCrews: {
+          include: {
+            movie: true,
+          },
+        },
+      },
     });
   }
   async create(data: CreateCrewMemberRepositoryInput): Promise<CrewMember> {
@@ -95,12 +123,26 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
   async findManyByIds(ids: string[]): Promise<CrewMember[]> {
     return prisma.crewMember.findMany({
       where: { id: { in: ids } },
+      include: {
+        movieCrews: {
+          include: {
+            movie: true,
+          },
+        },
+      },
     });
   }
 
   async findManyByNames(names: string[]): Promise<CrewMember[]> {
     return prisma.crewMember.findMany({
       where: { name: { in: names } },
+      include: {
+        movieCrews: {
+          include: {
+            movie: true,
+          },
+        },
+      },
     });
   }
 

@@ -1,6 +1,5 @@
 import { t, Static } from "elysia";
 
-
 export interface CrewMember {
   id: string;
   name: string;
@@ -88,6 +87,3 @@ export interface UpdateCrewMemberRepositoryInput {
   email?: string | null;
   userId?: string | null;
 }
-
-
-
