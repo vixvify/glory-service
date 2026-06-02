@@ -88,12 +88,7 @@ export class AuthService {
       if (!payload || !payload.id) {
         return null;
       }
-      return {
-        id: payload.id as string,
-        name: (payload.name as string) || "",
-        email: (payload.email as string) || "",
-        role: (payload.role as "admin" | "user") || "user",
-      };
+      return await this.repo.findById(payload.id);
     } catch {
       return null;
     }

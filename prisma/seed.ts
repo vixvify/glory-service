@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { seedMovies, categories, ageRatings, universities } from "./movies.data";
+import { seedMovies, categories, ageRatings, universities, languages, targetGroups } from "./movies.data";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +13,8 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.university.deleteMany();
   await prisma.ageRating.deleteMany();
+  await prisma.language.deleteMany();
+  await prisma.targetGroup.deleteMany();
 
   console.log("Seeding master data...");
   await prisma.category.createMany({
@@ -25,6 +27,14 @@ async function main() {
 
   await prisma.university.createMany({
     data: universities.map(name => ({ name })),
+  });
+
+  await prisma.language.createMany({
+    data: languages.map(name => ({ name })),
+  });
+
+  await prisma.targetGroup.createMany({
+    data: targetGroups.map(name => ({ name })),
   });
 
   console.log("Gathering unique crew members...");
@@ -101,6 +111,11 @@ async function main() {
       matchRate: movie.matchRate || 100,
       ageRating: movie.ageRating || "PG-13",
       university: movie.university || null,
+      facebook: movie.facebook,
+      instagram: movie.instagram,
+      email: movie.email,
+      language: movie.language,
+      targetGroup: movie.targetGroup,
     });
 
     const oldCrew = movie.crew?.create;

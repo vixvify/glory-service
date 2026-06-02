@@ -195,6 +195,11 @@ export class MovieRepositoryImpl implements MovieRepository {
         matchRate: Number(data.matchRate),
         ageRating: data.ageRating,
         university: data.university,
+        facebook: data.facebook,
+        instagram: data.instagram,
+        email: data.email,
+        language: data.language,
+        targetGroup: data.targetGroup,
       },
     });
 
@@ -267,6 +272,11 @@ export class MovieRepositoryImpl implements MovieRepository {
         matchRate: Number(data.matchRate),
         ageRating: data.ageRating,
         university: data.university,
+        facebook: data.facebook,
+        instagram: data.instagram,
+        email: data.email,
+        language: data.language,
+        targetGroup: data.targetGroup,
       },
     });
 

@@ -43,11 +43,7 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   .post(
     "/",
     async ({ body }) => {
-      const crewMember = await service.createCrewMember(
-        body.name,
-        body.email,
-        body.photo,
-      );
+      const crewMember = await service.createCrewMember(body);
       return formatSuccess(crewMember, "Crew member created successfully");
     },
     {
@@ -60,12 +56,7 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
     "/:id",
     async ({ params, body }) => {
       const { id } = params;
-      const crewMember = await service.updateCrewMember(
-        id,
-        body.name,
-        body.email,
-        body.photo,
-      );
+      const crewMember = await service.updateCrewMember(id, body);
       return formatSuccess(crewMember, "Crew member updated successfully");
     },
     {

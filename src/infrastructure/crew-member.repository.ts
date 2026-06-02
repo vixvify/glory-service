@@ -1,8 +1,12 @@
 import { prisma } from "../lib/prisma";
 import { CrewMemberRepository } from "../modules/crew-members/domain/crew-member.repository";
-import { CrewMember } from "../modules/crew-members/domain/crew-member";
 import { Prisma } from "@prisma/client";
-import { CrewFilterParams } from "../modules/crew-members/domain/crew-member";
+import {
+  CrewMember,
+  CreateCrewMemberRepositoryInput,
+  UpdateCrewMemberRepositoryInput,
+  CrewFilterParams,
+} from "../modules/crew-members/domain/crew-member";
 import calculatePagination from "../core/utils/pagination";
 
 export class CrewMemberRepositoryImpl implements CrewMemberRepository {
@@ -60,12 +64,8 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { name },
     });
   }
-  async create(
-    name: string,
-    photoUrl?: string,
-    email?: string,
-    userId?: string,
-  ): Promise<CrewMember> {
+  async create(data: CreateCrewMemberRepositoryInput): Promise<CrewMember> {
+    const { name, photoUrl, email, userId } = data;
     return prisma.crewMember.create({
       data: { name, photoUrl, email, userId },
     });
@@ -73,11 +73,9 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
 
   async update(
     id: string,
-    name: string,
-    photoUrl?: string,
-    email?: string,
-    userId?: string | null,
+    data: UpdateCrewMemberRepositoryInput,
   ): Promise<CrewMember> {
+    const { name, photoUrl, email, userId } = data;
     return prisma.crewMember.update({
       where: { id },
       data: {

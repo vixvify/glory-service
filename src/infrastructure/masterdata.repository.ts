@@ -4,6 +4,8 @@ import {
   Category,
   University,
   AgeRating,
+  Language,
+  TargetGroup,
 } from "../modules/master-data/domain/masterdata";
 
 export class MasterDataRepositoryImpl implements MasterDataRepository {
@@ -21,6 +23,18 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getAgeRatings(): Promise<AgeRating[]> {
     return prisma.ageRating.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getLanguages(): Promise<Language[]> {
+    return prisma.language.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getTargetGroups(): Promise<TargetGroup[]> {
+    return prisma.targetGroup.findMany({
       orderBy: { name: "asc" },
     });
   }

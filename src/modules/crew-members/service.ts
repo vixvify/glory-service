@@ -4,7 +4,12 @@ import {
   BadRequestError,
   ConflictError,
 } from "../../core/error";
-import { CrewMember, GetCrewMembersQueryInput } from "./domain/crew-member";
+import {
+  CrewMember,
+  GetCrewMembersQueryInput,
+  CreateCrewMemberInput,
+  UpdateCrewMemberBodyInput,
+} from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { uploadToSupabase } from "../../lib/supabase";
@@ -72,12 +77,9 @@ export class CrewMemberService {
     }
   }
 
-  async createCrewMember(
-    name: string,
-    email?: string,
-    photo?: File,
-  ): Promise<CrewMember> {
+  async createCrewMember(data: CreateCrewMemberInput): Promise<CrewMember> {
     try {
+      const { name, email, photo } = data;
       const trimmedName = name.trim();
       const trimmedEmail = email?.trim() || undefined;
 
@@ -101,7 +103,12 @@ export class CrewMemberService {
         photoUrl = await uploadToSupabase(photo, "crews");
       }
 
-      return await this.repo.create(trimmedName, photoUrl, trimmedEmail, userId);
+      return await this.repo.create({
+        name: trimmedName,
+        photoUrl,
+        email: trimmedEmail,
+        userId,
+      });
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -112,11 +119,10 @@ export class CrewMemberService {
 
   async updateCrewMember(
     id: string,
-    name: string,
-    email?: string | null,
-    photo?: File | string,
+    data: UpdateCrewMemberBodyInput,
   ): Promise<CrewMember> {
     try {
+      const { name, email, photo } = data;
       const existingById = await this.repo.findById(id);
       if (!existingById) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
@@ -151,13 +157,12 @@ export class CrewMemberService {
         photoUrl = photo;
       }
 
-      return await this.repo.update(
-        id,
-        trimmedName,
+      return await this.repo.update(id, {
+        name: trimmedName,
         photoUrl,
-        trimmedEmail ?? undefined,
-        userId ?? undefined,
-      );
+        email: trimmedEmail,
+        userId,
+      });
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

@@ -43,6 +43,11 @@ export interface Movie {
   ageRating: string;
   duration: number;
   university?: string | null;
+  facebook?: string | null;
+  instagram?: string | null;
+  email?: string | null;
+  language?: string | null;
+  targetGroup?: string | null;
   crew: MovieCrew[];
   bts?: MovieBts | null;
   createdAt: Date;
@@ -60,6 +65,11 @@ export const createMovieBodySchema = t.Object({
   matchRate: t.Numeric(),
   ageRating: t.String(),
   university: t.Optional(t.String()),
+  facebook: t.Optional(t.String()),
+  instagram: t.Optional(t.String()),
+  email: t.Optional(t.String()),
+  language: t.Optional(t.String()),
+  targetGroup: t.Optional(t.String()),
   director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
@@ -87,6 +97,11 @@ export const updateMovieBodySchema = t.Object({
   matchRate: t.Numeric(),
   ageRating: t.String(),
   university: t.Optional(t.String()),
+  facebook: t.Optional(t.String()),
+  instagram: t.Optional(t.String()),
+  email: t.Optional(t.String()),
+  language: t.Optional(t.String()),
+  targetGroup: t.Optional(t.String()),
   director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),

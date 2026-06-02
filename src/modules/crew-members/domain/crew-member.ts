@@ -75,4 +75,19 @@ export interface CrewFilterParams {
   sortby?: string;
 }
 
+export interface CreateCrewMemberRepositoryInput {
+  name: string;
+  photoUrl?: string;
+  email?: string;
+  userId?: string;
+}
+
+export interface UpdateCrewMemberRepositoryInput {
+  name: string;
+  photoUrl?: string;
+  email?: string | null;
+  userId?: string | null;
+}
+
+
 

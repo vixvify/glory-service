@@ -20,4 +20,12 @@ export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
   .get("/ratings", async () => {
     const ratings = await service.getAgeRatings();
     return formatSuccess(ratings);
+  })
+  .get("/languages", async () => {
+    const languages = await service.getLanguages();
+    return formatSuccess(languages);
+  })
+  .get("/target-groups", async () => {
+    const targetGroups = await service.getTargetGroups();
+    return formatSuccess(targetGroups);
   });

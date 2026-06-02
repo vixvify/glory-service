@@ -84,6 +84,11 @@ export class MovieFactory {
                 ageRating: movie.ageRating,
                 duration: movie.duration,
                 university: movie.university,
+                facebook: movie.facebook,
+                instagram: movie.instagram,
+                email: movie.email,
+                language: movie.language,
+                targetGroup: movie.targetGroup,
                 crew: [],
                 bts: null,
                 createdAt: movie.createdAt,
@@ -97,6 +102,11 @@ export class MovieFactory {
       ageRating: movie.ageRating,
       duration: movie.duration,
       university: movie.university,
+      facebook: movie.facebook,
+      instagram: movie.instagram,
+      email: movie.email,
+      language: movie.language,
+      targetGroup: movie.targetGroup,
 
       crew: movie.crew
         ? movie.crew.map((c) => ({

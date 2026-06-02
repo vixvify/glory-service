@@ -35,6 +35,11 @@ model Movie {
   matchRate   Int        @default(100)
   ageRating   String     @default("PG-13")
   university  String?
+  facebook    String?
+  instagram   String?
+  email       String?
+  language    String?
+  targetGroup String?
 
   favorites Favorite[]
   ratings   Rating[]
@@ -143,4 +148,21 @@ model AgeRating {
 
   @@map("age_ratings")
 }
+
+model Language {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("languages")
+}
+
+model TargetGroup {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("target_groups")
+}
+
 

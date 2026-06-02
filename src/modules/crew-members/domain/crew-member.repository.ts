@@ -1,22 +1,16 @@
-import { CrewMember, CrewFilterParams } from "./crew-member";
+import {
+  CrewMember,
+  CrewFilterParams,
+  CreateCrewMemberRepositoryInput,
+  UpdateCrewMemberRepositoryInput,
+} from "./crew-member";
 
 export interface CrewMemberRepository {
   find(params?: CrewFilterParams): Promise<CrewMember[]>;
   findById(id: string): Promise<CrewMember | null>;
   findByName(name: string): Promise<CrewMember | null>;
-  create(
-    name: string,
-    photoUrl?: string,
-    email?: string,
-    userId?: string,
-  ): Promise<CrewMember>;
-  update(
-    id: string,
-    name: string,
-    photoUrl?: string,
-    email?: string,
-    userId?: string,
-  ): Promise<CrewMember>;
+  create(data: CreateCrewMemberRepositoryInput): Promise<CrewMember>;
+  update(id: string, data: UpdateCrewMemberRepositoryInput): Promise<CrewMember>;
 
   delete(id: string): Promise<CrewMember>;
   findManyByIds(ids: string[]): Promise<CrewMember[]>;
