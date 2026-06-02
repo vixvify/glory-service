@@ -62,7 +62,6 @@ export class AuthRepositoryImpl implements AuthRepository {
       },
     });
 
-    // Automatically link to crew member if there's one with the same email
     await prisma.crewMember.updateMany({
       where: { email: data.email },
       data: { userId: user.id },
@@ -74,4 +73,5 @@ export class AuthRepositoryImpl implements AuthRepository {
       email: user.email,
       role: user.role as "admin" | "user",
     };
-  }}
+  }
+}
