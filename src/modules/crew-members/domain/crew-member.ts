@@ -12,8 +12,7 @@ export interface CrewMember {
 
 export const createCrewMemberSchema = t.Object({
   name: t.String({ minLength: 1 }),
-  email: t.Optional(t.String()),
-  photo: t.Optional(t.File()),
+  email: t.Optional(t.Union([t.String(), t.Null()])),
 });
 export type CreateCrewMemberInput = Static<typeof createCrewMemberSchema>;
 
@@ -26,8 +25,7 @@ export type UpdateCrewMemberParamsInput = Static<
 
 export const updateCrewMemberBodySchema = t.Object({
   name: t.String({ minLength: 1 }),
-  email: t.Optional(t.String()),
-  photo: t.Optional(t.Union([t.File(), t.String()])),
+  email: t.Optional(t.Union([t.String(), t.Null()])),
 });
 
 export type UpdateCrewMemberBodyInput = Static<
@@ -76,14 +74,14 @@ export interface CrewFilterParams {
 
 export interface CreateCrewMemberRepositoryInput {
   name: string;
-  photoUrl?: string;
-  email?: string;
-  userId?: string;
+  photoUrl?: string | null;
+  email?: string | null;
+  userId?: string | null;
 }
 
 export interface UpdateCrewMemberRepositoryInput {
   name: string;
-  photoUrl?: string;
+  photoUrl?: string | null;
   email?: string | null;
   userId?: string | null;
 }
