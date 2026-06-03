@@ -49,7 +49,6 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
     {
       body: createCrewMemberSchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   )
   .put(
@@ -63,7 +62,6 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
       params: updateCrewMemberParamsSchema,
       body: updateCrewMemberBodySchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   )
   .delete(
@@ -76,6 +74,5 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
     {
       params: deleteCrewMemberParamsSchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   );

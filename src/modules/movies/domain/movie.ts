@@ -24,7 +24,6 @@ export interface MovieBts {
   id: string;
   movieId: string;
   btsVideo: string[];
-  btsPhotos: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,11 +42,12 @@ export interface Movie {
   ageRating: string;
   duration: number;
   university?: string | null;
-  facebook?: string | null;
-  instagram?: string | null;
-  email?: string | null;
   language?: string | null;
   targetGroup?: string | null;
+  hasProfanity: boolean;
+  hasDrugs: boolean;
+  colorType: string;
+  studio?: string | null;
   crew: MovieCrew[];
   bts?: MovieBts | null;
   createdAt: Date;
@@ -65,19 +65,19 @@ export const createMovieBodySchema = t.Object({
   matchRate: t.Numeric(),
   ageRating: t.String(),
   university: t.Optional(t.String()),
-  facebook: t.Optional(t.String()),
-  instagram: t.Optional(t.String()),
-  email: t.Optional(t.String()),
   language: t.Optional(t.String()),
   targetGroup: t.Optional(t.String()),
+  hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
+  hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
+  colorType: t.String(),
+  studio: t.Optional(t.String()),
   director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   cast: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  dop: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  editor: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   btsVideo: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  btsPhotos: t.Optional(
-    t.Union([t.File(), t.Array(t.File()), t.String(), t.Array(t.String())]),
-  ),
 });
 export type CreateMovieBodyInput = Static<typeof createMovieBodySchema>;
 
@@ -97,19 +97,19 @@ export const updateMovieBodySchema = t.Object({
   matchRate: t.Numeric(),
   ageRating: t.String(),
   university: t.Optional(t.String()),
-  facebook: t.Optional(t.String()),
-  instagram: t.Optional(t.String()),
-  email: t.Optional(t.String()),
   language: t.Optional(t.String()),
   targetGroup: t.Optional(t.String()),
+  hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
+  hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
+  colorType: t.String(),
+  studio: t.Optional(t.String()),
   director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   cast: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  dop: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  editor: t.Optional(t.Union([t.String(), t.Array(t.String())])),
   btsVideo: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  btsPhotos: t.Optional(
-    t.Union([t.File(), t.Array(t.File()), t.String(), t.Array(t.String())]),
-  ),
 });
 export type UpdateMovieBodyInput = Static<typeof updateMovieBodySchema>;
 
@@ -146,7 +146,7 @@ export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),
   searchby: t.Optional(t.String()),
   page: t.Optional(t.String()),
-  pagenumber: t.Optional(t.String()),
+  pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
 });
@@ -156,7 +156,7 @@ export interface MovieFilterParams {
   search?: string;
   searchby?: string;
   page?: number;
-  pagenumber?: number;
+  pagesize?: number;
   sort?: string;
   sortby?: string;
 }

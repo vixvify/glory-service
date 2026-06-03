@@ -1,5 +1,13 @@
 import { PrismaClient, Prisma } from "@prisma/client";
-import { seedMovies, categories, ageRatings, universities, languages, targetGroups, SeedCrewMember } from "./movies.data";
+import {
+  seedMovies,
+  categories,
+  ageRatings,
+  universities,
+  languages,
+  targetGroups,
+  SeedCrewMember,
+} from "./movies.data";
 
 const prisma = new PrismaClient();
 
@@ -18,29 +26,37 @@ async function main() {
 
   console.log("Seeding master data...");
   await prisma.category.createMany({
-    data: categories.map(name => ({ name })),
+    data: categories.map((name) => ({ name })),
   });
 
   await prisma.ageRating.createMany({
-    data: ageRatings.map(name => ({ name })),
+    data: ageRatings.map((name) => ({ name })),
   });
 
   await prisma.university.createMany({
-    data: universities.map(name => ({ name })),
+    data: universities.map((name) => ({ name })),
   });
 
   await prisma.language.createMany({
-    data: languages.map(name => ({ name })),
+    data: languages.map((name) => ({ name })),
   });
 
   await prisma.targetGroup.createMany({
-    data: targetGroups.map(name => ({ name })),
+    data: targetGroups.map((name) => ({ name })),
   });
 
   console.log("Gathering unique crew members...");
   const uniqueCrew = new Map<string, string | undefined>();
 
-  const processCrew = (input: SeedCrewMember | SeedCrewMember[] | string[] | string | undefined | null) => {
+  const processCrew = (
+    input:
+      | SeedCrewMember
+      | SeedCrewMember[]
+      | string[]
+      | string
+      | undefined
+      | null,
+  ) => {
     if (!input) return;
     if (Array.isArray(input)) {
       for (const item of input) {
@@ -63,7 +79,9 @@ async function main() {
     }
   }
 
-  console.log(`Found ${uniqueCrew.size} unique crew members. Syncing with database in bulk...`);
+  console.log(
+    `Found ${uniqueCrew.size} unique crew members. Syncing with database in bulk...`,
+  );
   const crewData = Array.from(uniqueCrew.entries()).map(([name, photoUrl]) => ({
     name,
     photoUrl,
@@ -80,13 +98,23 @@ async function main() {
     crewMap.set(c.name, c.id);
   }
 
-  const getNames = (input: SeedCrewMember | SeedCrewMember[] | string[] | string | undefined | null): string[] => {
+  const getNames = (
+    input:
+      | SeedCrewMember
+      | SeedCrewMember[]
+      | string[]
+      | string
+      | undefined
+      | null,
+  ): string[] => {
     if (!input) return [];
     if (Array.isArray(input)) {
-      return input.map(item => {
-        if (typeof item === "string") return item.trim();
-        return item?.name?.trim();
-      }).filter(Boolean) as string[];
+      return input
+        .map((item) => {
+          if (typeof item === "string") return item.trim();
+          return item?.name?.trim();
+        })
+        .filter(Boolean) as string[];
     }
     if (typeof input === "object" && "name" in input && input.name) {
       return [input.name.trim()];
@@ -102,8 +130,25 @@ async function main() {
   const movieCrewsToInsert: Prisma.MovieCrewCreateManyInput[] = [];
   const movieBtsToInsert: Prisma.MovieBtsCreateManyInput[] = [];
 
+  let idx = 0;
   for (const movie of seedMovies) {
     const movieId = crypto.randomUUID();
+
+    const hasProfanity = idx % 3 === 1;
+    const hasDrugs = idx % 3 === 2;
+
+    const colorTypes = ["COLOR", "BLACK_AND_WHITE", "COLOR_AND_BW"];
+    const colorType = colorTypes[idx % colorTypes.length];
+
+    const studios = [
+      "Glory Original",
+      "Thaifflix Productions",
+      "Studio Ghibli",
+      "Independent Creators",
+      "Bangkok Film Co.",
+    ];
+    const studio = studios[idx % studios.length];
+
     moviesToInsert.push({
       id: movieId,
       title: movie.title,
@@ -117,11 +162,12 @@ async function main() {
       matchRate: movie.matchRate || 100,
       ageRating: movie.ageRating || "PG-13",
       university: movie.university || null,
-      facebook: movie.facebook || null,
-      instagram: movie.instagram || null,
-      email: movie.email || null,
       language: movie.language || null,
       targetGroup: movie.targetGroup || null,
+      hasProfanity,
+      hasDrugs,
+      colorType,
+      studio,
     });
 
     const oldCrew = movie.crew?.create;
@@ -149,18 +195,33 @@ async function main() {
       addCrewRelations(producers, "PRODUCER");
       addCrewRelations(writers, "WRITER");
       addCrewRelations(cast, "CAST");
-      
+
+      // Add DOP and Editor from existing crew list
+      if (allCrewMembers.length > 0) {
+        const dopMember = allCrewMembers[(idx * 2) % allCrewMembers.length];
+        const editorMember =
+          allCrewMembers[(idx * 2 + 1) % allCrewMembers.length];
+
+        movieCrewsToInsert.push({
+          movieId,
+          crewMemberId: dopMember.id,
+          role: "DOP",
+        });
+        movieCrewsToInsert.push({
+          movieId,
+          crewMemberId: editorMember.id,
+          role: "EDITOR",
+        });
+      }
+
       const btsVideo = oldCrew.btsVideo ? [oldCrew.btsVideo] : [];
-      const btsPhotos = Array.isArray(oldCrew.btsPhotos)
-        ? oldCrew.btsPhotos
-        : (oldCrew.btsPhotos ? oldCrew.btsPhotos.split(",").map((s: string) => s.trim()).filter(Boolean) : []);
 
       movieBtsToInsert.push({
         movieId,
         btsVideo,
-        btsPhotos,
       });
     }
+    idx++;
   }
 
   console.log(`Inserting ${moviesToInsert.length} movies in bulk...`);
@@ -179,13 +240,17 @@ async function main() {
     }
   }
 
-  console.log(`Inserting ${finalMovieCrews.length} movie crew mappings in bulk...`);
+  console.log(
+    `Inserting ${finalMovieCrews.length} movie crew mappings in bulk...`,
+  );
   await prisma.movieCrew.createMany({
     data: finalMovieCrews,
     skipDuplicates: true,
   });
 
-  console.log(`Inserting ${movieBtsToInsert.length} movie BTS records in bulk...`);
+  console.log(
+    `Inserting ${movieBtsToInsert.length} movie BTS records in bulk...`,
+  );
   await prisma.movieBts.createMany({
     data: movieBtsToInsert,
     skipDuplicates: true,

@@ -34,23 +34,24 @@ model User {
 }
 
 model Movie {
-  id          String     @id @default(uuid()) @db.Uuid
-  title       String
-  description String     @db.Text
-  thumbnail   String
-  youtubeUrl  String
-  category    String
-  year        Int
-  duration    Int
-  views       Int        @default(0)
-  matchRate   Int        @default(100)
-  ageRating   String     @default("PG-13")
-  university  String?
-  facebook    String?
-  instagram   String?
-  email       String?
-  language    String?
-  targetGroup String?
+  id           String      @id @default(uuid()) @db.Uuid
+  title        String
+  description  String      @db.Text
+  thumbnail    String
+  youtubeUrl   String
+  category     String
+  year         Int
+  duration     Int
+  views        Int         @default(0)
+  matchRate    Int         @default(100)
+  ageRating    String      @default("PG-13")
+  university   String?
+  language     String?
+  targetGroup  String?
+  hasProfanity Boolean     @default(false)
+  hasDrugs     Boolean     @default(false)
+  colorType    String      @default("COLOR")
+  studio       String?
 
   favorites Favorite[]
   ratings   Rating[]
@@ -100,7 +101,6 @@ model MovieBts {
   id        String   @id @default(uuid()) @db.Uuid
   movieId   String   @unique @db.Uuid
   btsVideo  String[] @default([])
-  btsPhotos String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

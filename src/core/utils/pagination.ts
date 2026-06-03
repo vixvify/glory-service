@@ -1,11 +1,12 @@
 export default function calculatePagination(
   page: number | undefined,
-  pageNumber: number | undefined,
+  pageSize: number | undefined,
 ): { skip?: number; take?: number } {
-  if (!page || !pageNumber) {
+  if (!page || !pageSize) {
     return {};
   }
-  const skip = (page - 1) * pageNumber;
+  const skip = (page - 1) * pageSize;
 
-  return { skip, take: pageNumber };
+  return { skip, take: pageSize };
 }
+

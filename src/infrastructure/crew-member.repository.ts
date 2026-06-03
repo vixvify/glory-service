@@ -28,7 +28,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       search,
       searchby,
       page,
-      pagenumber,
+      pagesize,
       sort = "asc",
       sortby = "name",
     } = params;
@@ -63,7 +63,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
           },
         },
       },
-      ...calculatePagination(page, pagenumber),
+      ...calculatePagination(page, pagesize),
     });
   }
 

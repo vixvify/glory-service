@@ -17,7 +17,7 @@ export class MovieService {
       const search = params?.search?.trim() || "";
       const searchby = params?.searchby?.trim() || "";
       const page = params?.page?.trim() || "1";
-      const pagenumber = params?.pagenumber?.trim() || "";
+      const pagesize = params?.pagesize?.trim() || "";
       const sort = params?.sort?.trim() || "desc";
       const sortby = params?.sortby?.trim() || "";
 
@@ -25,7 +25,7 @@ export class MovieService {
         search === "" &&
         searchby === "" &&
         page === "1" &&
-        pagenumber === "" &&
+        pagesize === "" &&
         sort === "desc" &&
         sortby === "";
 
@@ -35,12 +35,12 @@ export class MovieService {
       }
 
       const pageNum = Number(page) || 1;
-      const limitNum = pagenumber ? Number(pagenumber) : undefined;
+      const limitNum = pagesize ? Number(pagesize) : undefined;
       const movies = await this.repo.find({
         search: search || undefined,
         searchby: searchby || undefined,
         page: pageNum,
-        pagenumber: limitNum,
+        pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
       });
@@ -104,11 +104,9 @@ export class MovieService {
       } else {
         thumbnailUrl = data.thumbnail;
       }
-      const resolvedBts = await resolveUploadedFiles(data.btsPhotos);
       const movie = await this.repo.create({
         ...data,
         thumbnail: thumbnailUrl,
-        btsPhotos: resolvedBts,
       });
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
@@ -133,12 +131,9 @@ export class MovieService {
         thumbnailUrl = data.thumbnail;
       }
 
-      const resolvedBts = await resolveUploadedFiles(data.btsPhotos);
-
       const movie = await this.repo.update(id, {
         ...data,
         thumbnail: thumbnailUrl,
-        btsPhotos: resolvedBts,
       });
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {

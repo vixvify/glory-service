@@ -12,6 +12,8 @@ export async function associateCrewBulk(
   producers: string[],
   writers: string[],
   cast: string[],
+  dops: string[],
+  editors: string[],
 ): Promise<void> {
   const items: Array<{ value: string; role: string }> = [];
 
@@ -27,6 +29,8 @@ export async function associateCrewBulk(
   addItems(producers, "PRODUCER");
   addItems(writers, "WRITER");
   addItems(cast, "CAST");
+  addItems(dops, "DOP");
+  addItems(editors, "EDITOR");
 
   if (items.length === 0) return;
 

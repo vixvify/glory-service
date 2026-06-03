@@ -7,16 +7,14 @@ export interface MovieRepository {
   findByUniversity(university: string): Promise<PrismaMovie[]>;
   findById(id: string): Promise<PrismaMovie | null>;
   create(
-    data: Omit<CreateMovieBodyInput, "thumbnail" | "btsPhotos"> & {
+    data: Omit<CreateMovieBodyInput, "thumbnail"> & {
       thumbnail: string;
-      btsPhotos?: string;
     },
   ): Promise<PrismaMovie>;
   update(
     id: string,
-    data: Omit<UpdateMovieBodyInput, "thumbnail" | "btsPhotos"> & {
+    data: Omit<UpdateMovieBodyInput, "thumbnail"> & {
       thumbnail: string;
-      btsPhotos?: string;
     },
   ): Promise<PrismaMovie>;
   delete(id: string): Promise<PrismaMovie>;

@@ -27,7 +27,7 @@ export class CrewMemberService {
       const search = params?.search?.trim() || "";
       const searchby = params?.searchby?.trim() || "";
       const page = params?.page?.trim() || "1";
-      const pagenumber = params?.pagenumber?.trim() || "";
+      const pagesize = params?.pagesize?.trim() || "";
       const sort = params?.sort?.trim() || "desc";
       const sortby = params?.sortby?.trim() || "";
 
@@ -35,7 +35,7 @@ export class CrewMemberService {
         search === "" &&
         searchby === "" &&
         page === "1" &&
-        pagenumber === "" &&
+        pagesize === "" &&
         sort === "desc" &&
         sortby === "";
 
@@ -44,13 +44,13 @@ export class CrewMemberService {
       }
 
       const pageNum = parseInt(page, 10) || 1;
-      const limitNum = pagenumber ? parseInt(pagenumber, 10) : undefined;
+      const limitNum = pagesize ? parseInt(pagesize, 10) : undefined;
 
       return await this.repo.find({
         search: search || undefined,
         searchby: searchby || undefined,
         page: pageNum,
-        pagenumber: limitNum,
+        pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
       });

@@ -41,7 +41,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       search,
       searchby,
       page,
-      pagenumber,
+      pagesize,
       sort = "desc",
       sortby = "createdAt",
     } = params;
@@ -82,7 +82,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       orderBy: {
         [sortby]: sort,
       },
-      ...calculatePagination(page, pagenumber),
+      ...calculatePagination(page, pagesize),
     });
   }
 
@@ -147,17 +147,17 @@ export class MovieRepositoryImpl implements MovieRepository {
   }
 
   async create(
-    data: Omit<CreateMovieBodyInput, "thumbnail" | "btsPhotos"> & {
+    data: Omit<CreateMovieBodyInput, "thumbnail"> & {
       thumbnail: string;
-      btsPhotos?: string;
     },
   ): Promise<PrismaMovie> {
     const directors = parseStringOrArray(data.director);
     const producers = parseStringOrArray(data.producer);
     const writers = parseStringOrArray(data.writer);
     const cast = parseStringOrArray(data.cast);
+    const dops = parseStringOrArray(data.dop);
+    const editors = parseStringOrArray(data.editor);
     const btsVideo = parseStringOrArray(data.btsVideo);
-    const btsPhotos = parseStringOrArray(data.btsPhotos);
 
     const movie = await prisma.movie.create({
       data: {
@@ -171,21 +171,21 @@ export class MovieRepositoryImpl implements MovieRepository {
         matchRate: Number(data.matchRate),
         ageRating: data.ageRating,
         university: data.university,
-        facebook: data.facebook,
-        instagram: data.instagram,
-        email: data.email,
         language: data.language,
         targetGroup: data.targetGroup,
+        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
+        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
+        colorType: data.colorType || "COLOR",
+        studio: data.studio || null,
       },
     });
 
-    await associateCrewBulk(movie.id, directors, producers, writers, cast);
+    await associateCrewBulk(movie.id, directors, producers, writers, cast, dops, editors);
 
     await prisma.movieBts.create({
       data: {
         movieId: movie.id,
         btsVideo,
-        btsPhotos,
       },
     });
 
@@ -198,17 +198,17 @@ export class MovieRepositoryImpl implements MovieRepository {
 
   async update(
     id: string,
-    data: Omit<UpdateMovieBodyInput, "thumbnail" | "btsPhotos"> & {
+    data: Omit<UpdateMovieBodyInput, "thumbnail"> & {
       thumbnail: string;
-      btsPhotos?: string;
     },
   ): Promise<PrismaMovie> {
     const directors = parseStringOrArray(data.director);
     const producers = parseStringOrArray(data.producer);
     const writers = parseStringOrArray(data.writer);
     const cast = parseStringOrArray(data.cast);
+    const dops = parseStringOrArray(data.dop);
+    const editors = parseStringOrArray(data.editor);
     const btsVideo = parseStringOrArray(data.btsVideo);
-    const btsPhotos = parseStringOrArray(data.btsPhotos);
 
     await prisma.movie.update({
       where: { id },
@@ -223,11 +223,12 @@ export class MovieRepositoryImpl implements MovieRepository {
         matchRate: Number(data.matchRate),
         ageRating: data.ageRating,
         university: data.university,
-        facebook: data.facebook,
-        instagram: data.instagram,
-        email: data.email,
         language: data.language,
         targetGroup: data.targetGroup,
+        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
+        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
+        colorType: data.colorType || "COLOR",
+        studio: data.studio || null,
       },
     });
 
@@ -235,18 +236,16 @@ export class MovieRepositoryImpl implements MovieRepository {
       where: { movieId: id },
     });
 
-    await associateCrewBulk(id, directors, producers, writers, cast);
+    await associateCrewBulk(id, directors, producers, writers, cast, dops, editors);
 
     await prisma.movieBts.upsert({
       where: { movieId: id },
       create: {
         movieId: id,
         btsVideo,
-        btsPhotos,
       },
       update: {
         btsVideo,
-        btsPhotos,
       },
     });
 

@@ -59,7 +59,7 @@ export const getCrewMembersQuerySchema = t.Object({
   search: t.Optional(t.String()),
   searchby: t.Optional(t.String()),
   page: t.Optional(t.String()),
-  pagenumber: t.Optional(t.String()),
+  pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
 });
@@ -69,7 +69,7 @@ export interface CrewFilterParams {
   search?: string;
   searchby?: string;
   page?: number;
-  pagenumber?: number;
+  pagesize?: number;
   sort?: string;
   sortby?: string;
 }

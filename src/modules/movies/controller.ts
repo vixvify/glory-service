@@ -72,7 +72,6 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     {
       body: createMovieBodySchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   )
   .put(
@@ -92,7 +91,6 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
       params: updateMovieParamsSchema,
       body: updateMovieBodySchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   )
   .delete(
@@ -105,6 +103,5 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     {
       params: deleteMovieParamsSchema,
       requireAuth: true,
-      requireRole: "admin",
     },
   );
