@@ -1,11 +1,15 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { AdminRepositoryImpl } from "../../infrastructure/admin.repository";
+import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
+import { MasterDataRepositoryImpl } from "../../infrastructure/masterdata.repository";
+import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
 import { AdminService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 
-const repo = new AdminRepositoryImpl();
-const service = new AdminService(repo);
+const movieRepo = new MovieRepositoryImpl();
+const masterDataRepo = new MasterDataRepositoryImpl();
+const crewMemberRepo = new CrewMemberRepositoryImpl();
+const service = new AdminService(movieRepo, masterDataRepo, crewMemberRepo);
 
 export const adminRouter = new Elysia({ prefix: "/admin" })
   .use(authMiddleware)

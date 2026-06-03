@@ -6,4 +6,5 @@ export interface MasterDataRepository {
   getAgeRatings(): Promise<AgeRating[]>;
   getLanguages(): Promise<Language[]>;
   getTargetGroups(): Promise<TargetGroup[]>;
+  countCategories(): Promise<number>;
 }

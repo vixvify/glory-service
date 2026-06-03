@@ -22,9 +22,55 @@ export const ageRatings = ["G", "PG", "PG-13", "NC-17", "R"];
 
 export const universities = [
   "จุฬาลงกรณ์มหาวิทยาลัย",
+  "มหาวิทยาลัยธรรมศาสตร์",
+  "มหาวิทยาลัยมหิดล",
+  "มหาวิทยาลัยเกษตรศาสตร์",
+  "มหาวิทยาลัยเชียงใหม่",
+  "มหาวิทยาลัยขอนแก่น",
+  "มหาวิทยาลัยสงขลานครินทร์",
+  "มหาวิทยาลัยบูรพา",
+  "มหาวิทยาลัยศรีนครินทรวิโรฒ",
+  "มหาวิทยาลัยศิลปากร",
+  "มหาวิทยาลัยนเรศวร",
+  "มหาวิทยาลัยแม่ฟ้าหลวง",
+  "มหาวิทยาลัยแม่โจ้",
+  "มหาวิทยาลัยอุบลราชธานี",
+  "มหาวิทยาลัยวลัยลักษณ์",
+  "มหาวิทยาลัยสุโขทัยธรรมาธิราช",
+  "มหาวิทยาลัยรามคำแหง",
+  "มหาวิทยาลัยสุรนารี",
   "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
+  "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
   "สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
+  "มหาวิทยาลัยเทคโนโลยีราชมงคลธัญบุรี",
+  "มหาวิทยาลัยเทคโนโลยีราชมงคลกรุงเทพ",
+  "มหาวิทยาลัยเทคโนโลยีราชมงคลพระนคร",
   "มหาวิทยาลัยกรุงเทพ",
+  "มหาวิทยาลัยหอการค้าไทย",
+  "มหาวิทยาลัยอัสสัมชัญ",
+  "มหาวิทยาลัยธุรกิจบัณฑิตย์",
+  "มหาวิทยาลัยรังสิต",
+  "มหาวิทยาลัยศรีปทุม",
+  "มหาวิทยาลัยหัวเฉียวเฉลิมพระเกียรติ",
+  "มหาวิทยาลัยสยาม",
+  "มหาวิทยาลัยกรุงเทพธนบุรี",
+  "มหาวิทยาลัยนอร์ทกรุงเทพ",
+  "มหาวิทยาลัยพายัพ",
+  "มหาวิทยาลัยวงษ์ชวลิตกุล",
+  "มหาวิทยาลัยอีสเทิร์นเอเชีย",
+  "มหาวิทยาลัยเวสเทิร์น",
+  "มหาวิทยาลัยฟาร์อีสเทอร์น",
+  "มหาวิทยาลัยราชภัฏสวนสุนันทา",
+  "มหาวิทยาลัยราชภัฏสวนดุสิต",
+  "มหาวิทยาลัยราชภัฏเชียงใหม่",
+  "มหาวิทยาลัยราชภัฏนครราชสีมา",
+  "มหาวิทยาลัยราชภัฏอุบลราชธานี",
+  "มหาวิทยาลัยราชภัฏสงขลา",
+  "มหาวิทยาลัยราชภัฏบุรีรัมย์",
+  "มหาวิทยาลัยราชภัฏพระนคร",
+  "มหาวิทยาลัยราชภัฏธนบุรี",
+  "มหาวิทยาลัยราชภัฏจันทรเกษม",
+  "มหาวิทยาลัยราชภัฏบ้านสมเด็จเจ้าพระยา",
 ];
 
 export const languages = ["ไทย", "อังกฤษ", "เกาหลี", "ญี่ปุ่น", "จีน"];
@@ -41,6 +87,7 @@ export interface SeedMovie {
   description: string;
   thumbnail: string;
   youtubeUrl: string;
+  trailerUrl?: string;
   category: string;
   matchRate?: number;
   year: number;
@@ -1062,8 +1109,10 @@ export const seedMovies: SeedMovie[] = [
     ageRating: "PG",
     university: "สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
 
-    facebook: "https://facebook.com/star-wars-episode-v-the-empire-strikes-back",
-    instagram: "https://instagram.com/star-wars-episode-v-the-empire-strikes-back",
+    facebook:
+      "https://facebook.com/star-wars-episode-v-the-empire-strikes-back",
+    instagram:
+      "https://instagram.com/star-wars-episode-v-the-empire-strikes-back",
     email: "star-wars-episode-v-the-empire-strikes-back@movies.com",
     language: "ไทย",
     targetGroup: "ทั่วไป",
@@ -4138,8 +4187,10 @@ export const seedMovies: SeedMovie[] = [
     ageRating: "PG",
     university: "จุฬาลงกรณ์มหาวิทยาลัย",
 
-    facebook: "https://facebook.com/indiana-jones-and-the-raiders-of-the-lost-ark",
-    instagram: "https://instagram.com/indiana-jones-and-the-raiders-of-the-lost-ark",
+    facebook:
+      "https://facebook.com/indiana-jones-and-the-raiders-of-the-lost-ark",
+    instagram:
+      "https://instagram.com/indiana-jones-and-the-raiders-of-the-lost-ark",
     email: "indiana-jones-and-the-raiders-of-the-lost-ark@movies.com",
     language: "ไทย",
     targetGroup: "ทั่วไป",
@@ -4206,8 +4257,10 @@ export const seedMovies: SeedMovie[] = [
     ageRating: "PG-13",
     university: "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
 
-    facebook: "https://facebook.com/pirates-of-the-caribbean-the-curse-of-the-black-pearl",
-    instagram: "https://instagram.com/pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+    facebook:
+      "https://facebook.com/pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+    instagram:
+      "https://instagram.com/pirates-of-the-caribbean-the-curse-of-the-black-pearl",
     email: "pirates-of-the-caribbean-the-curse-of-the-black-pearl@movies.com",
     language: "ไทย",
     targetGroup: "ทั่วไป",
@@ -4466,9 +4519,12 @@ export const seedMovies: SeedMovie[] = [
     ageRating: "PG",
     university: "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
 
-    facebook: "https://facebook.com/the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe",
-    instagram: "https://instagram.com/the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe",
-    email: "the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe@movies.com",
+    facebook:
+      "https://facebook.com/the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe",
+    instagram:
+      "https://instagram.com/the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe",
+    email:
+      "the-chronicles-of-narnia-the-lion-the-witch-and-the-wardrobe@movies.com",
     language: "ไทย",
     targetGroup: "ทั่วไป",
     crew: {
@@ -4663,8 +4719,10 @@ export const seedMovies: SeedMovie[] = [
     ageRating: "PG",
     university: "จุฬาลงกรณ์มหาวิทยาลัย",
 
-    facebook: "https://facebook.com/percy-jackson-the-olympians-the-lightning-thief",
-    instagram: "https://instagram.com/percy-jackson-the-olympians-the-lightning-thief",
+    facebook:
+      "https://facebook.com/percy-jackson-the-olympians-the-lightning-thief",
+    instagram:
+      "https://instagram.com/percy-jackson-the-olympians-the-lightning-thief",
     email: "percy-jackson-the-olympians-the-lightning-thief@movies.com",
     language: "ไทย",
     targetGroup: "ทั่วไป",
@@ -5392,3 +5450,8 @@ export const seedMovies: SeedMovie[] = [
     },
   },
 ];
+
+// Populate trailerUrl for all seed movies using their youtubeUrl as a fallback
+seedMovies.forEach((movie) => {
+  movie.trailerUrl = movie.youtubeUrl;
+});

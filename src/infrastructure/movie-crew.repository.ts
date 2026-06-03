@@ -14,4 +14,28 @@ export class MovieCrewRepositoryImpl implements MovieCrewRepository {
       skipDuplicates: true,
     });
   }
+
+  async findByMovieId(
+    movieId: string,
+  ): Promise<
+    Array<{ id: string; movieId: string; crewMemberId: string; role: string }>
+  > {
+    return prisma.movieCrew.findMany({
+      where: { movieId },
+      select: {
+        id: true,
+        movieId: true,
+        crewMemberId: true,
+        role: true,
+      },
+    });
+  }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await prisma.movieCrew.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+  }
 }

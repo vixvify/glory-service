@@ -1,11 +1,13 @@
 import { Elysia } from "elysia";
 import { AuthRepositoryImpl } from "../infrastructure/auth.repository";
+import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
 import { AuthService } from "../modules/auth/service";
 import { UnauthorizedError, ForbiddenError } from "../core/error";
 import { User } from "../modules/auth/domain/auth";
 
 const repo = new AuthRepositoryImpl();
-const service = new AuthService(repo);
+const crewMemberRepo = new CrewMemberRepositoryImpl();
+const service = new AuthService(repo, crewMemberRepo);
 
 type Role = "admin" | "user";
 

@@ -6,4 +6,10 @@ export interface MovieCrewRepository {
       role: string;
     }>,
   ): Promise<void>;
+  findByMovieId(
+    movieId: string,
+  ): Promise<
+    Array<{ id: string; movieId: string; crewMemberId: string; role: string }>
+  >;
+  deleteMany(ids: string[]): Promise<void>;
 }

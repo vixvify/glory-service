@@ -155,6 +155,7 @@ async function main() {
       description: movie.description,
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl,
+      trailerUrl: movie.trailerUrl || movie.youtubeUrl,
       category: movie.category,
       year: movie.year,
       duration: movie.duration,

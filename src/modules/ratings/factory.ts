@@ -22,6 +22,7 @@ export class RatingFactory {
         description: rating.movie.description,
         thumbnail: rating.movie.thumbnail,
         youtubeUrl: rating.movie.youtubeUrl,
+        trailerUrl: rating.movie.trailerUrl || "",
         category: rating.movie.category,
         year: rating.movie.year,
         duration: rating.movie.duration,

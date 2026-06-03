@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { FavoriteRepositoryImpl } from "../../infrastructure/favorite.repository";
+import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
 import { FavoriteService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -9,7 +10,8 @@ import {
 } from "./domain/favorite";
 
 const repo = new FavoriteRepositoryImpl();
-const service = new FavoriteService(repo);
+const movieRepo = new MovieRepositoryImpl();
+const service = new FavoriteService(repo, movieRepo);
 
 export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
   .use(authMiddleware)

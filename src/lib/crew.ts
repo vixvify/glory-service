@@ -87,5 +87,35 @@ export async function associateCrewBulk(
     };
   });
 
-  await movieCrewRepo.createMany(movieCrewsData);
+  const existing = await movieCrewRepo.findByMovieId(movieId);
+
+  const existingMap = new Map<string, string>();
+  for (const ext of existing) {
+    existingMap.set(`${ext.crewMemberId}-${ext.role}`, ext.id);
+  }
+
+  const targetKeys = new Set<string>();
+  for (const target of movieCrewsData) {
+    targetKeys.add(`${target.crewMemberId}-${target.role}`);
+  }
+
+  const toDelete: string[] = [];
+  for (const ext of existing) {
+    const key = `${ext.crewMemberId}-${ext.role}`;
+    if (!targetKeys.has(key)) {
+      toDelete.push(ext.id);
+    }
+  }
+
+  const toInsert = movieCrewsData.filter((target) => {
+    const key = `${target.crewMemberId}-${target.role}`;
+    return !existingMap.has(key);
+  });
+
+  if (toDelete.length > 0) {
+    await movieCrewRepo.deleteMany(toDelete);
+  }
+  if (toInsert.length > 0) {
+    await movieCrewRepo.createMany(toInsert);
+  }
 }

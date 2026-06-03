@@ -152,4 +152,15 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       skipDuplicates: true,
     });
   }
+
+  async count(): Promise<number> {
+    return prisma.crewMember.count();
+  }
+
+  async updateUserIdByEmail(email: string, userId: string): Promise<void> {
+    await prisma.crewMember.updateMany({
+      where: { email },
+      data: { userId },
+    });
+  }
 }

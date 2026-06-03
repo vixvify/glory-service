@@ -38,4 +38,8 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
       orderBy: { name: "asc" },
     });
   }
+
+  async countCategories(): Promise<number> {
+    return prisma.category.count();
+  }
 }

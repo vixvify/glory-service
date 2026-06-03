@@ -1,6 +1,5 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
-import { User } from "../../auth/domain/auth";
 export interface CrewMember {
   id: string;
   name: string;
@@ -35,6 +34,7 @@ export interface Movie {
   category: string;
   thumbnail: string;
   youtubeUrl: string;
+  trailerUrl?: string | null;
   views: number;
   ratings: Rating[];
   year: number;
@@ -54,12 +54,53 @@ export interface Movie {
   updatedAt: Date;
 }
 
+export interface MovieRepositoryCreateInput {
+  title: string;
+  description: string;
+  thumbnail: string;
+  youtubeUrl: string;
+  trailerUrl?: string | null;
+  category: string;
+  year: number;
+  duration: number;
+  matchRate: number;
+  ageRating: string;
+  university?: string | null;
+  language?: string | null;
+  targetGroup?: string | null;
+  hasProfanity?: boolean;
+  hasDrugs?: boolean;
+  colorType?: string;
+  studio?: string | null;
+}
+
+export interface MovieRepositoryUpdateInput {
+  title: string;
+  description: string;
+  thumbnail: string;
+  youtubeUrl: string;
+  trailerUrl?: string | null;
+  category: string;
+  year: number;
+  duration: number;
+  matchRate: number;
+  ageRating: string;
+  university?: string | null;
+  language?: string | null;
+  targetGroup?: string | null;
+  hasProfanity?: boolean;
+  hasDrugs?: boolean;
+  colorType?: string;
+  studio?: string | null;
+}
+
 export const createMovieBodySchema = t.Object({
   title: t.String(),
   description: t.String(),
   category: t.String(),
   thumbnail: t.File(),
   youtubeUrl: t.String(),
+  trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
   matchRate: t.Numeric(),
@@ -92,6 +133,7 @@ export const updateMovieBodySchema = t.Object({
   category: t.String(),
   thumbnail: t.Union([t.File(), t.String()]),
   youtubeUrl: t.String(),
+  trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
   matchRate: t.Numeric(),
@@ -160,5 +202,3 @@ export interface MovieFilterParams {
   sort?: string;
   sortby?: string;
 }
-
-

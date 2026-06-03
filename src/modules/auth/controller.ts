@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { AuthRepositoryImpl } from "../../infrastructure/auth.repository";
+import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
 import { AuthService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -11,7 +12,8 @@ import {
 import { config } from "../../core/config";
 
 const repo = new AuthRepositoryImpl();
-const service = new AuthService(repo);
+const crewMemberRepo = new CrewMemberRepositoryImpl();
+const service = new AuthService(repo, crewMemberRepo);
 
 export const authRouter = new Elysia({ prefix: "/auth" })
   .use(authMiddleware)

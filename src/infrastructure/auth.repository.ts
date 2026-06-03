@@ -25,19 +25,12 @@ export class AuthRepositoryImpl implements AuthRepository {
   async create(data: CreateUserRepositoryInput): Promise<PrismaUser> {
     const { passwordHash, ...dbData } = data;
 
-    const user = await prisma.user.create({
+    return prisma.user.create({
       data: {
         ...dbData,
         password: passwordHash,
         role: "user",
       },
     });
-
-    await prisma.crewMember.updateMany({
-      where: { email: data.email },
-      data: { userId: user.id },
-    });
-
-    return user;
   }
 }

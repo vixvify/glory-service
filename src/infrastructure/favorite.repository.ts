@@ -63,11 +63,4 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
       },
     });
   }
-
-  async movieExists(movieId: string): Promise<boolean> {
-    const existing = await prisma.movie.findUnique({
-      where: { id: movieId },
-    });
-    return !!existing;
-  }
 }

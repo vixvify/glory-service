@@ -1,4 +1,8 @@
-import { CreateMovieBodyInput, UpdateMovieBodyInput, MovieFilterParams } from "./movie";
+import {
+  MovieFilterParams,
+  MovieRepositoryCreateInput,
+  MovieRepositoryUpdateInput,
+} from "./movie";
 import { Movie as PrismaMovie } from "@prisma/client";
 
 export interface MovieRepository {
@@ -6,16 +10,9 @@ export interface MovieRepository {
   findByCategory(category: string): Promise<PrismaMovie[]>;
   findByUniversity(university: string): Promise<PrismaMovie[]>;
   findById(id: string): Promise<PrismaMovie | null>;
-  create(
-    data: Omit<CreateMovieBodyInput, "thumbnail"> & {
-      thumbnail: string;
-    },
-  ): Promise<PrismaMovie>;
-  update(
-    id: string,
-    data: Omit<UpdateMovieBodyInput, "thumbnail"> & {
-      thumbnail: string;
-    },
-  ): Promise<PrismaMovie>;
+  create(data: MovieRepositoryCreateInput): Promise<PrismaMovie>;
+  update(id: string, data: MovieRepositoryUpdateInput): Promise<PrismaMovie>;
   delete(id: string): Promise<PrismaMovie>;
+  count(): Promise<number>;
+  sumViews(): Promise<number>;
 }

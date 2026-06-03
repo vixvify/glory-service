@@ -1,10 +1,14 @@
 import { AppError, NotFoundError, BadRequestError } from "../../core/error";
 import { FavoriteRepository } from "./domain/favorite.repository";
+import { MovieRepository } from "../movies/domain/movie.repository";
 import { MovieFactory } from "../movies/factory";
 import { Movie } from "../movies/domain/movie";
 
 export class FavoriteService {
-  constructor(private repo: FavoriteRepository) {}
+  constructor(
+    private repo: FavoriteRepository,
+    private movieRepo: MovieRepository,
+  ) {}
 
   async getUserFavorites(userId: string): Promise<Movie[]> {
     try {
@@ -20,8 +24,8 @@ export class FavoriteService {
 
   async addMovieToFavorites(userId: string, movieId: string): Promise<void> {
     try {
-      const exists = await this.repo.movieExists(movieId);
-      if (!exists) {
+      const movie = await this.movieRepo.findById(movieId);
+      if (!movie) {
         throw new NotFoundError("Movie not found");
       }
 

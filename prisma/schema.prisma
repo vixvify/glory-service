@@ -39,6 +39,7 @@ model Movie {
   description  String      @db.Text
   thumbnail    String
   youtubeUrl   String
+  trailerUrl   String?
   category     String
   year         Int
   duration     Int

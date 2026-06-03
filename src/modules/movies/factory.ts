@@ -54,6 +54,7 @@ export class MovieFactory {
       category: movie.category,
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl || "",
+      trailerUrl: movie.trailerUrl || "",
       views: movie.views,
       ratings: movie.ratings
         ? movie.ratings.map(
@@ -77,6 +78,7 @@ export class MovieFactory {
                 category: movie.category,
                 thumbnail: movie.thumbnail,
                 youtubeUrl: movie.youtubeUrl || "",
+                trailerUrl: movie.trailerUrl || "",
                 views: movie.views,
                 year: movie.year,
                 matchRate: movie.matchRate,

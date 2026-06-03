@@ -16,4 +16,6 @@ export interface CrewMemberRepository {
   findManyByIds(ids: string[]): Promise<CrewMember[]>;
   findManyByNames(names: string[]): Promise<CrewMember[]>;
   createMany(names: string[]): Promise<void>;
+  count(): Promise<number>;
+  updateUserIdByEmail(email: string, userId: string): Promise<void>;
 }

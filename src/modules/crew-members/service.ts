@@ -13,6 +13,7 @@ import {
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { uploadToSupabase } from "../../lib/supabase";
+import { isDefaultQuery } from "../../core/utils/query";
 
 export class CrewMemberService {
   constructor(
@@ -24,27 +25,14 @@ export class CrewMemberService {
     params?: GetCrewMembersQueryInput,
   ): Promise<CrewMember[]> {
     try {
-      const search = params?.search?.trim() || "";
-      const searchby = params?.searchby?.trim() || "";
-      const page = params?.page?.trim() || "1";
-      const pagesize = params?.pagesize?.trim() || "";
-      const sort = params?.sort?.trim() || "desc";
-      const sortby = params?.sortby?.trim() || "";
-
-      const isDefault =
-        search === "" &&
-        searchby === "" &&
-        page === "1" &&
-        pagesize === "" &&
-        sort === "desc" &&
-        sortby === "";
-
-      if (isDefault) {
+      if (isDefaultQuery(params)) {
         return await this.repo.find();
       }
 
-      const pageNum = parseInt(page, 10) || 1;
-      const limitNum = pagesize ? parseInt(pagesize, 10) : undefined;
+      const { search, searchby, page, pagesize, sort, sortby } = params || {};
+
+      const pageNum = Number(page) || 1;
+      const limitNum = pagesize ? Number(pagesize) : undefined;
 
       return await this.repo.find({
         search: search || undefined,
@@ -138,7 +126,8 @@ export class CrewMemberService {
         }
       }
 
-      const trimmedEmail = email !== undefined ? (email?.trim() || null) : undefined;
+      const trimmedEmail =
+        email !== undefined ? email?.trim() || null : undefined;
       let userId: string | null | undefined = undefined;
 
       if (trimmedEmail !== undefined && this.authRepo) {

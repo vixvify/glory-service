@@ -6,33 +6,26 @@ import {
   GetMoviesQueryInput,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
+import { MovieBtsRepository } from "./domain/movie-bts.repository";
 import { MovieFactory } from "./factory";
-import { uploadToSupabase, resolveUploadedFiles } from "../../lib/supabase";
+import { uploadToSupabase } from "../../lib/supabase";
+import { isDefaultQuery } from "../../core/utils/query";
+import { parseStringOrArray } from "../../core/utils/parser";
+import { associateCrewBulk } from "../../lib/crew";
 
 export class MovieService {
-  constructor(private repo: MovieRepository) {}
+  constructor(
+    private repo: MovieRepository,
+    private btsRepo: MovieBtsRepository,
+  ) {}
 
   async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
-      const search = params?.search?.trim() || "";
-      const searchby = params?.searchby?.trim() || "";
-      const page = params?.page?.trim() || "1";
-      const pagesize = params?.pagesize?.trim() || "";
-      const sort = params?.sort?.trim() || "desc";
-      const sortby = params?.sortby?.trim() || "";
-
-      const isDefault =
-        search === "" &&
-        searchby === "" &&
-        page === "1" &&
-        pagesize === "" &&
-        sort === "desc" &&
-        sortby === "";
-
-      if (isDefault) {
+      if (isDefaultQuery(params)) {
         const movies = await this.repo.find();
         return MovieFactory.toDomainList(movies);
       }
+      const { search, searchby, page, pagesize, sort, sortby } = params || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
@@ -104,10 +97,43 @@ export class MovieService {
       } else {
         thumbnailUrl = data.thumbnail;
       }
-      const movie = await this.repo.create({
-        ...data,
+
+      const directors = parseStringOrArray(data.director);
+      const producers = parseStringOrArray(data.producer);
+      const writers = parseStringOrArray(data.writer);
+      const cast = parseStringOrArray(data.cast);
+      const dops = parseStringOrArray(data.dop);
+      const editors = parseStringOrArray(data.editor);
+      const btsVideo = parseStringOrArray(data.btsVideo);
+
+      const movieRecord = await this.repo.create({
+        title: data.title,
+        description: data.description,
         thumbnail: thumbnailUrl,
+        youtubeUrl: data.youtubeUrl,
+        trailerUrl: data.trailerUrl || null,
+        category: data.category,
+        year: Number(data.year),
+        duration: Number(data.duration),
+        matchRate: Number(data.matchRate),
+        ageRating: data.ageRating,
+        university: data.university || null,
+        language: data.language || null,
+        targetGroup: data.targetGroup || null,
+        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
+        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
+        colorType: data.colorType || "COLOR",
+        studio: data.studio || null,
       });
+
+      await associateCrewBulk(movieRecord.id, directors, producers, writers, cast, dops, editors);
+
+      await this.btsRepo.create(movieRecord.id, btsVideo);
+
+      const movie = await this.repo.findById(movieRecord.id);
+      if (!movie) {
+        throw new Error("Failed to retrieve created movie");
+      }
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -131,10 +157,42 @@ export class MovieService {
         thumbnailUrl = data.thumbnail;
       }
 
-      const movie = await this.repo.update(id, {
-        ...data,
+      const directors = parseStringOrArray(data.director);
+      const producers = parseStringOrArray(data.producer);
+      const writers = parseStringOrArray(data.writer);
+      const cast = parseStringOrArray(data.cast);
+      const dops = parseStringOrArray(data.dop);
+      const editors = parseStringOrArray(data.editor);
+      const btsVideo = parseStringOrArray(data.btsVideo);
+
+      await this.repo.update(id, {
+        title: data.title,
+        description: data.description,
         thumbnail: thumbnailUrl,
+        youtubeUrl: data.youtubeUrl,
+        trailerUrl: data.trailerUrl || null,
+        category: data.category,
+        year: Number(data.year),
+        duration: Number(data.duration),
+        matchRate: Number(data.matchRate),
+        ageRating: data.ageRating,
+        university: data.university || null,
+        language: data.language || null,
+        targetGroup: data.targetGroup || null,
+        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
+        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
+        colorType: data.colorType || "COLOR",
+        studio: data.studio || null,
       });
+
+      await associateCrewBulk(id, directors, producers, writers, cast, dops, editors);
+
+      await this.btsRepo.upsert(id, btsVideo);
+
+      const movie = await this.repo.findById(id);
+      if (!movie) {
+        throw new Error("Failed to retrieve updated movie");
+      }
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;

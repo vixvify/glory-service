@@ -1,13 +1,31 @@
 import { AppError, BadRequestError } from "../../core/error";
-import { AdminRepository } from "./domain/admin.repository";
+import { MovieRepository } from "../movies/domain/movie.repository";
+import { MasterDataRepository } from "../master-data/domain/masterdata.repository";
+import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AdminStats } from "./domain/admin";
 
 export class AdminService {
-  constructor(private repo: AdminRepository) {}
+  constructor(
+    private movieRepo: MovieRepository,
+    private masterDataRepo: MasterDataRepository,
+    private crewMemberRepo: CrewMemberRepository,
+  ) {}
 
   async getStats(): Promise<AdminStats> {
     try {
-      return await this.repo.getStats();
+      const [totalMovies, totalCategories, totalCrew, totalViews] = await Promise.all([
+        this.movieRepo.count(),
+        this.masterDataRepo.countCategories(),
+        this.crewMemberRepo.count(),
+        this.movieRepo.sumViews(),
+      ]);
+
+      return {
+        totalMovies,
+        totalCategories,
+        totalViews,
+        totalCrew,
+      };
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

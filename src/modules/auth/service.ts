@@ -12,12 +12,16 @@ import {
 } from "../../core/error";
 import { User, RegisterUserBodyInput, LoginUserBodyInput } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
+import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
 import { uploadToSupabase } from "../../lib/supabase";
 import { parseStringOrArray } from "../../core/utils/parser";
 
 export class AuthService {
-  constructor(private repo: AuthRepository) {}
+  constructor(
+    private repo: AuthRepository,
+    private crewMemberRepo: CrewMemberRepository,
+  ) {}
 
   async register(data: RegisterUserBodyInput): Promise<User> {
     try {
@@ -65,6 +69,8 @@ export class AuthService {
         birthday,
         awards,
       });
+
+      await this.crewMemberRepo.updateUserIdByEmail(data.email, user.id);
 
       return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
