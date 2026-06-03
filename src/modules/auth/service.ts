@@ -13,6 +13,8 @@ import {
 import { User, RegisterUserBodyInput, LoginUserBodyInput } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { AuthFactory } from "./factory";
+import { uploadToSupabase } from "../../lib/supabase";
+import { parseStringOrArray } from "../../core/utils/parser";
 
 export class AuthService {
   constructor(private repo: AuthRepository) {}
@@ -24,12 +26,47 @@ export class AuthService {
         throw new ConflictError("Email already exists");
       }
 
+      let photoUrl: string | undefined = undefined;
+      if (data.photo) {
+        photoUrl = await uploadToSupabase(data.photo, "users");
+      }
+
+      const positions = parseStringOrArray(data.positions);
+      const awards = parseStringOrArray(data.awards);
+
+      let birthday: Date | undefined = undefined;
+      if (data.birthday) {
+        const parsedDate = new Date(data.birthday);
+        if (!isNaN(parsedDate.getTime())) {
+          birthday = parsedDate;
+        }
+      }
+
       const passwordHash = await hashPassword(data.password);
-      return await this.repo.create({
-        name: data.name,
+
+      const {
+        password,
+        photo,
+        positions: _p,
+        awards: _a,
+        birthday: _b,
+        ...rest
+      } = data;
+
+      const profileFields = Object.fromEntries(Object.entries(rest));
+
+      const user = await this.repo.create({
+        ...profileFields,
         email: data.email,
+        name: data.name,
         passwordHash,
+        photoUrl,
+        positions,
+        birthday,
+        awards,
       });
+
+      return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -55,7 +92,7 @@ export class AuthService {
 
       const token = await signJWT({
         id: user.id,
-        name: user.name,
+        name: user.name || "",
         email: user.email,
         role: user.role,
       });
@@ -71,7 +108,9 @@ export class AuthService {
 
   async me(userId: string): Promise<User | null> {
     try {
-      return await this.repo.findById(userId);
+      const user = await this.repo.findById(userId);
+      if (!user) return null;
+      return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -88,7 +127,9 @@ export class AuthService {
       if (!payload || !payload.id) {
         return null;
       }
-      return await this.repo.findById(payload.id);
+      const user = await this.repo.findById(payload.id);
+      if (!user) return null;
+      return AuthFactory.toDomainUser(user);
     } catch {
       return null;
     }

@@ -1,12 +1,9 @@
-import { User, RegisterUserBodyInput } from "./auth";
+import { User as PrismaUser } from "@prisma/client";
+import { CreateUserRepositoryInput } from "./auth";
 
 export interface AuthRepository {
-  findByEmail(email: string): Promise<User | null>;
-  findByEmailWithPassword(
-    email: string,
-  ): Promise<(User & { password?: string }) | null>;
-  findById(id: string): Promise<User | null>;
-  create(
-    data: Omit<RegisterUserBodyInput, "password"> & { passwordHash: string },
-  ): Promise<User>;
+  findByEmail(email: string): Promise<PrismaUser | null>;
+  findByEmailWithPassword(email: string): Promise<PrismaUser | null>;
+  findById(id: string): Promise<PrismaUser | null>;
+  create(data: CreateUserRepositoryInput): Promise<PrismaUser>;
 }

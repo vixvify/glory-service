@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import { seedMovies, categories, ageRatings, universities, languages, targetGroups } from "./movies.data";
+import { PrismaClient, Prisma } from "@prisma/client";
+import { seedMovies, categories, ageRatings, universities, languages, targetGroups, SeedCrewMember } from "./movies.data";
 
 const prisma = new PrismaClient();
 
@@ -40,15 +40,15 @@ async function main() {
   console.log("Gathering unique crew members...");
   const uniqueCrew = new Map<string, string | undefined>();
 
-  const processCrew = (input: any) => {
+  const processCrew = (input: SeedCrewMember | SeedCrewMember[] | string[] | string | undefined | null) => {
     if (!input) return;
     if (Array.isArray(input)) {
       for (const item of input) {
-        if (item && typeof item === "object" && item.name) {
+        if (item && typeof item === "object" && "name" in item && item.name) {
           uniqueCrew.set(item.name.trim(), item.photoUrl);
         }
       }
-    } else if (typeof input === "object" && input.name) {
+    } else if (typeof input === "object" && "name" in input && input.name) {
       uniqueCrew.set(input.name.trim(), input.photoUrl);
     }
   };
@@ -80,21 +80,27 @@ async function main() {
     crewMap.set(c.name, c.id);
   }
 
-  const getNames = (input: any): string[] => {
+  const getNames = (input: SeedCrewMember | SeedCrewMember[] | string[] | string | undefined | null): string[] => {
     if (!input) return [];
     if (Array.isArray(input)) {
-      return input.map(item => item?.name?.trim()).filter(Boolean);
+      return input.map(item => {
+        if (typeof item === "string") return item.trim();
+        return item?.name?.trim();
+      }).filter(Boolean) as string[];
     }
-    if (typeof input === "object" && input.name) {
+    if (typeof input === "object" && "name" in input && input.name) {
       return [input.name.trim()];
+    }
+    if (typeof input === "string") {
+      return [input.trim()];
     }
     return [];
   };
 
   console.log("Preparing movies and relations in memory...");
-  const moviesToInsert: any[] = [];
-  const movieCrewsToInsert: any[] = [];
-  const movieBtsToInsert: any[] = [];
+  const moviesToInsert: Prisma.MovieCreateManyInput[] = [];
+  const movieCrewsToInsert: Prisma.MovieCrewCreateManyInput[] = [];
+  const movieBtsToInsert: Prisma.MovieBtsCreateManyInput[] = [];
 
   for (const movie of seedMovies) {
     const movieId = crypto.randomUUID();
@@ -111,11 +117,11 @@ async function main() {
       matchRate: movie.matchRate || 100,
       ageRating: movie.ageRating || "PG-13",
       university: movie.university || null,
-      facebook: movie.facebook,
-      instagram: movie.instagram,
-      email: movie.email,
-      language: movie.language,
-      targetGroup: movie.targetGroup,
+      facebook: movie.facebook || null,
+      instagram: movie.instagram || null,
+      email: movie.email || null,
+      language: movie.language || null,
+      targetGroup: movie.targetGroup || null,
     });
 
     const oldCrew = movie.crew?.create;
@@ -143,19 +149,7 @@ async function main() {
       addCrewRelations(producers, "PRODUCER");
       addCrewRelations(writers, "WRITER");
       addCrewRelations(cast, "CAST");
-
-      if (movieCrewsToInsert.length > 0) {
-        const seen = new Set<string>();
-        const uniqueMovieCrews: any[] = [];
-        for (const item of movieCrewsToInsert) {
-          const key = `${item.movieId}-${item.crewMemberId}-${item.role}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            uniqueMovieCrews.push(item);
-          }
-        }
-      }
-
+      
       const btsVideo = oldCrew.btsVideo ? [oldCrew.btsVideo] : [];
       const btsPhotos = Array.isArray(oldCrew.btsPhotos)
         ? oldCrew.btsPhotos
@@ -176,7 +170,7 @@ async function main() {
   });
 
   const seen = new Set<string>();
-  const finalMovieCrews: any[] = [];
+  const finalMovieCrews: Prisma.MovieCrewCreateManyInput[] = [];
   for (const item of movieCrewsToInsert) {
     const key = `${item.movieId}-${item.crewMemberId}-${item.role}`;
     if (!seen.has(key)) {

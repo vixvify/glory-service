@@ -1,7 +1,6 @@
 import { prisma } from "../lib/prisma";
-import { RatingRepository } from "../modules/ratings/domain/rating.repository";
+import { RatingRepository, RatingWithRelations } from "../modules/ratings/domain/rating.repository";
 import {
-  Rating,
   AddRatingBodyInput,
   GetRatingsQueryInput,
   UpdateRatingBodyInput,
@@ -20,8 +19,8 @@ export class RatingRepositoryImpl implements RatingRepository {
 
   async getRatingsByUserIdAndMovieId(
     data: GetRatingsQueryInput,
-  ): Promise<Rating | null> {
-    const rating = await prisma.rating.findUnique({
+  ): Promise<RatingWithRelations | null> {
+    return prisma.rating.findUnique({
       where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
       include: {
         movie: true,
@@ -35,24 +34,6 @@ export class RatingRepositoryImpl implements RatingRepository {
         },
       },
     });
-
-    if (!rating) {
-      return null;
-    }
-
-    return {
-      ...rating,
-      user: {
-        ...rating.user,
-        name: rating.user.name ?? "Unknown User",
-        role: rating.user.role as "user" | "admin",
-      },
-      movie: {
-        ...rating.movie,
-        crew: [],
-        bts: null,
-      },
-    };
   }
 
   async deleteRating(userId: string, movieId: string): Promise<void> {

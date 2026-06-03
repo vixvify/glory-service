@@ -6,6 +6,7 @@ import {
   UpdateRatingBodyInput,
 } from "./domain/rating";
 import { RatingRepository } from "./domain/rating.repository";
+import { RatingFactory } from "./factory";
 
 export class RatingService {
   constructor(private repo: RatingRepository) {}
@@ -25,7 +26,9 @@ export class RatingService {
     data: GetRatingsQueryInput,
   ): Promise<Rating | null> {
     try {
-      return await this.repo.getRatingsByUserIdAndMovieId(data);
+      const rating = await this.repo.getRatingsByUserIdAndMovieId(data);
+      if (!rating) return null;
+      return RatingFactory.toDomain(rating);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

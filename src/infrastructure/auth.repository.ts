@@ -1,63 +1,34 @@
 import { prisma } from "../lib/prisma";
-import { User, RegisterUserBodyInput } from "../modules/auth/domain/auth";
+import { CreateUserRepositoryInput } from "../modules/auth/domain/auth";
 import { AuthRepository } from "../modules/auth/domain/auth.repository";
+import { User as PrismaUser } from "@prisma/client";
 
 export class AuthRepositoryImpl implements AuthRepository {
-  async findByEmail(email: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({
+  async findByEmail(email: string): Promise<PrismaUser | null> {
+    return prisma.user.findUnique({
       where: { email },
     });
-
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      name: user.name || "",
-      email: user.email,
-      role: user.role as "admin" | "user",
-    };
   }
 
-  async findByEmailWithPassword(
-    email: string,
-  ): Promise<(User & { password?: string }) | null> {
-    const user = await prisma.user.findUnique({
+  async findByEmailWithPassword(email: string): Promise<PrismaUser | null> {
+    return prisma.user.findUnique({
       where: { email },
     });
-
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      name: user.name || "",
-      email: user.email,
-      role: user.role as "admin" | "user",
-      password: user.password,
-    };
   }
 
-  async findById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({
+  async findById(id: string): Promise<PrismaUser | null> {
+    return prisma.user.findUnique({
       where: { id },
     });
-
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      name: user.name || "",
-      email: user.email,
-      role: user.role as "admin" | "user",
-    };
   }
-  async create(
-    data: Omit<RegisterUserBodyInput, "password"> & { passwordHash: string },
-  ): Promise<User> {
+
+  async create(data: CreateUserRepositoryInput): Promise<PrismaUser> {
+    const { passwordHash, ...dbData } = data;
+
     const user = await prisma.user.create({
       data: {
-        email: data.email,
-        password: data.passwordHash,
-        name: data.name,
+        ...dbData,
+        password: passwordHash,
         role: "user",
       },
     });
@@ -67,11 +38,6 @@ export class AuthRepositoryImpl implements AuthRepository {
       data: { userId: user.id },
     });
 
-    return {
-      id: user.id,
-      name: user.name || "",
-      email: user.email,
-      role: user.role as "admin" | "user",
-    };
+    return user;
   }
 }
