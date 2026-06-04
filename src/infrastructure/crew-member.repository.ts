@@ -1,40 +1,18 @@
 import { prisma } from "../lib/prisma";
 import { CrewMemberRepository } from "../modules/crew-members/domain/crew-member.repository";
-import { Prisma } from "@prisma/client";
+import { Prisma, CrewMember as PrismaCrewMember } from "@prisma/client";
 import {
-  CrewMember,
   CreateCrewMemberRepositoryInput,
   UpdateCrewMemberRepositoryInput,
   CrewFilterParams,
+  CrewMemberWithRelations,
 } from "../modules/crew-members/domain/crew-member";
 import calculatePagination from "../core/utils/pagination";
 import { CrewMemberUserSelect } from "../modules/crew-members/domain/crew-member";
 
+
 export class CrewMemberRepositoryImpl implements CrewMemberRepository {
-  private toDomain(member: any): CrewMember {
-    if (!member) return member;
-    return {
-      id: member.id,
-      name: member.name,
-      email: member.email,
-      userId: member.userId,
-      createdAt: member.createdAt,
-      updatedAt: member.updatedAt,
-      user: member.user
-        ? {
-            ...member.user,
-            name: member.user.name || "",
-            role: member.user.role as "admin" | "user",
-          }
-        : null,
-    };
-  }
-
-  private toDomainList(members: any[]): CrewMember[] {
-    return members.map((m) => this.toDomain(m));
-  }
-
-  async find(params?: CrewFilterParams): Promise<CrewMember[]> {
+  async find(params?: CrewFilterParams): Promise<CrewMemberWithRelations[]> {
     if (!params) {
       const results = await prisma.crewMember.findMany({
         orderBy: { name: "asc" },
@@ -49,7 +27,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
           },
         },
       });
-      return this.toDomainList(results);
+      return results as CrewMemberWithRelations[];
     }
 
     const {
@@ -96,10 +74,10 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       },
       ...calculatePagination(page, pagesize),
     });
-    return this.toDomainList(results);
+    return results as CrewMemberWithRelations[];
   }
 
-  async findById(id: string): Promise<CrewMember | null> {
+  async findById(id: string): Promise<CrewMemberWithRelations | null> {
     const result = await prisma.crewMember.findUnique({
       where: { id },
       include: {
@@ -113,10 +91,10 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         },
       },
     });
-    return result ? this.toDomain(result) : null;
+    return result as CrewMemberWithRelations | null;
   }
 
-  async findByName(name: string): Promise<CrewMember | null> {
+  async findByName(name: string): Promise<CrewMemberWithRelations | null> {
     const result = await prisma.crewMember.findUnique({
       where: { name },
       include: {
@@ -130,22 +108,23 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         },
       },
     });
-    return result ? this.toDomain(result) : null;
+    return result as CrewMemberWithRelations | null;
   }
 
-  async create(data: CreateCrewMemberRepositoryInput): Promise<CrewMember> {
-    const result = await prisma.crewMember.create({
+  async create(
+    data: CreateCrewMemberRepositoryInput,
+  ): Promise<PrismaCrewMember> {
+    return prisma.crewMember.create({
       data,
     });
-    return this.toDomain(result);
   }
 
   async update(
     id: string,
     data: UpdateCrewMemberRepositoryInput,
-  ): Promise<CrewMember> {
+  ): Promise<PrismaCrewMember> {
     const { name, email, userId } = data;
-    const result = await prisma.crewMember.update({
+    return prisma.crewMember.update({
       where: { id },
       data: {
         name,
@@ -153,17 +132,15 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         ...(userId !== undefined ? { userId } : {}),
       },
     });
-    return this.toDomain(result);
   }
 
-  async delete(id: string): Promise<CrewMember> {
-    const result = await prisma.crewMember.delete({
+  async delete(id: string): Promise<PrismaCrewMember> {
+    return prisma.crewMember.delete({
       where: { id },
     });
-    return this.toDomain(result);
   }
 
-  async findManyByIds(ids: string[]): Promise<CrewMember[]> {
+  async findManyByIds(ids: string[]): Promise<CrewMemberWithRelations[]> {
     const results = await prisma.crewMember.findMany({
       where: { id: { in: ids } },
       include: {
@@ -177,10 +154,10 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         },
       },
     });
-    return this.toDomainList(results);
+    return results as CrewMemberWithRelations[];
   }
 
-  async findManyByNames(names: string[]): Promise<CrewMember[]> {
+  async findManyByNames(names: string[]): Promise<CrewMemberWithRelations[]> {
     const results = await prisma.crewMember.findMany({
       where: { name: { in: names } },
       include: {
@@ -194,7 +171,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         },
       },
     });
-    return this.toDomainList(results);
+    return results as CrewMemberWithRelations[];
   }
 
   async createMany(names: string[]): Promise<void> {
@@ -215,3 +192,4 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     });
   }
 }
+

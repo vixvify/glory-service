@@ -13,6 +13,7 @@ import {
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { isDefaultQuery } from "../../core/utils/query";
+import { CrewMemberFactory } from "./factory";
 
 export class CrewMemberService {
   constructor(
@@ -25,7 +26,8 @@ export class CrewMemberService {
   ): Promise<CrewMember[]> {
     try {
       if (isDefaultQuery(params)) {
-        return await this.repo.find();
+        const results = await this.repo.find();
+        return CrewMemberFactory.toDomainList(results);
       }
 
       const { search, searchby, page, pagesize, sort, sortby } = params || {};
@@ -33,7 +35,7 @@ export class CrewMemberService {
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
 
-      return await this.repo.find({
+      const results = await this.repo.find({
         search: search || undefined,
         searchby: searchby || undefined,
         page: pageNum,
@@ -41,6 +43,7 @@ export class CrewMemberService {
         sort: sort || undefined,
         sortby: sortby || undefined,
       });
+      return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -55,7 +58,7 @@ export class CrewMemberService {
       if (!crewMember) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
       }
-      return crewMember;
+      return CrewMemberFactory.toDomain(crewMember);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -85,11 +88,12 @@ export class CrewMemberService {
         }
       }
 
-      return await this.repo.create({
+      const created = await this.repo.create({
         name: trimmedName,
         email: trimmedEmail,
         userId,
       });
+      return CrewMemberFactory.toDomain(created);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -136,11 +140,12 @@ export class CrewMemberService {
         }
       }
 
-      return await this.repo.update(id, {
+      const updated = await this.repo.update(id, {
         name: trimmedName,
         email: trimmedEmail,
         userId,
       });
+      return CrewMemberFactory.toDomain(updated);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -155,7 +160,8 @@ export class CrewMemberService {
       if (!existing) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
       }
-      return await this.repo.delete(id);
+      const deleted = await this.repo.delete(id);
+      return CrewMemberFactory.toDomain(deleted);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -164,3 +170,4 @@ export class CrewMemberService {
     }
   }
 }
+

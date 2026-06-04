@@ -18,9 +18,11 @@ export interface MovieCrew {
   crewMemberId: string;
   role: string;
   crewMember?: CrewMember;
+  movie?: Movie;
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export interface MovieBts {
   id: string;

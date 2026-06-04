@@ -1,5 +1,12 @@
 import { t, Static } from "elysia";
 import { User } from "../../auth/domain/auth";
+import { MovieCrew } from "../../movies/domain/movie";
+import {
+  CrewMember as PrismaCrewMember,
+  Movie as PrismaMovie,
+  MovieCrew as PrismaMovieCrew,
+  User as PrismaUser,
+} from "@prisma/client";
 
 export interface CrewMember {
   id: string;
@@ -9,6 +16,7 @@ export interface CrewMember {
   user?: User | null;
   createdAt: Date;
   updatedAt: Date;
+  movieCrews?: MovieCrew[];
 }
 
 export const createCrewMemberSchema = t.Object({
@@ -102,3 +110,30 @@ export const CrewMemberUserSelect = {
   birthday: true,
   awards: true,
 } as const;
+
+export type CrewMemberUserSelected = Pick<
+  PrismaUser,
+  | "id"
+  | "email"
+  | "name"
+  | "role"
+  | "createdAt"
+  | "photoUrl"
+  | "motto"
+  | "bio"
+  | "ig"
+  | "facebook"
+  | "youtube"
+  | "tiktok"
+  | "positions"
+  | "birthday"
+  | "awards"
+>;
+
+export type CrewMemberWithRelations = PrismaCrewMember & {
+  user: CrewMemberUserSelected | null;
+  movieCrews: (PrismaMovieCrew & {
+    movie: PrismaMovie;
+  })[];
+};
+
