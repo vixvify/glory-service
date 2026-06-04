@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { RatingRepositoryImpl } from "../../infrastructure/rating.repository";
 import { RatingService } from "./service";
-import { formatSuccess, formatError } from "../../core/interceptor";
+import { formatSuccess } from "../../core/interceptor";
 import {
   addRatingBodySchema,
   getRatingsQuerySchema,
@@ -18,9 +18,13 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .use(authMiddleware)
   .post(
     "/",
-    async ({ body }) => {
-      await service.addRating(body);
-      return formatSuccess(null, "Rating added successfully");
+    async ({ body, user }) => {
+      await service.addRating({
+        userId: user!.id,
+        movieId: body.movieId,
+        stars: body.stars,
+      });
+      return formatSuccess(null);
     },
     {
       body: addRatingBodySchema,
@@ -29,8 +33,11 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   )
   .get(
     "/",
-    async ({ query }) => {
-      const rating = await service.getRatingsByUserIdAndMovieId(query);
+    async ({ query, user }) => {
+      const rating = await service.getRatingsByUserIdAndMovieId({
+        userId: user!.id,
+        movieId: query.movieId,
+      });
       return formatSuccess(rating);
     },
     {
@@ -40,9 +47,9 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   )
   .delete(
     "/",
-    async ({ body }) => {
-      await service.deleteRating(body.userId, body.movieId);
-      return formatSuccess(null, "Rating deleted successfully");
+    async ({ body, user }) => {
+      await service.deleteRating(user!.id, body.movieId);
+      return formatSuccess(null);
     },
     {
       body: deleteRatingBodySchema,
@@ -51,9 +58,9 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   )
   .get(
     "/check",
-    async ({ query }) => {
-      const { userId, movieId } = query;
-      const rating = await service.checkRating(userId, movieId);
+    async ({ query, user }) => {
+      const { movieId } = query;
+      const rating = await service.checkRating(user!.id, movieId);
       return formatSuccess(rating);
     },
     {
@@ -63,9 +70,13 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   )
   .put(
     "/",
-    async ({ body }) => {
-      await service.updateRating(body);
-      return formatSuccess(null, "Rating updated successfully");
+    async ({ body, user }) => {
+      await service.updateRating({
+        userId: user!.id,
+        movieId: body.movieId,
+        stars: body.stars,
+      });
+      return formatSuccess(null);
     },
     {
       body: updateRatingBodySchema,

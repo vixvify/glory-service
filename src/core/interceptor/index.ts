@@ -3,7 +3,6 @@ import { AppError } from "../error";
 
 export function formatSuccess<T>(
   data: T,
-  message: string = "Success",
   statusCode: string = "SUCCESS",
   status: number = 200
 ): ApiResponse<T> {

@@ -69,7 +69,7 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     "/",
     async ({ body }) => {
       const movie = await service.createMovie(body);
-      return formatSuccess(movie, "Movie created successfully");
+      return formatSuccess(movie);
     },
     {
       body: createMovieBodySchema,
@@ -87,7 +87,7 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
         matchRate: Number(body.matchRate),
       };
       const movie = await service.updateMovie(id, payload);
-      return formatSuccess(movie, "Movie updated successfully");
+      return formatSuccess(movie);
     },
     {
       params: updateMovieParamsSchema,
@@ -100,7 +100,7 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     async ({ params }) => {
       const { id } = params;
       const movie = await service.deleteMovie(id);
-      return formatSuccess(movie, "Movie deleted successfully");
+      return formatSuccess(movie);
     },
     {
       params: deleteMovieParamsSchema,

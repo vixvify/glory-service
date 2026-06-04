@@ -21,7 +21,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
     "/register",
     async ({ body }) => {
       const user = await service.register(body);
-      return formatSuccess(user, "User registered successfully");
+      return formatSuccess(user);
     },
     {
       body: registerUserBodySchema,
@@ -42,7 +42,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
         maxAge: 86400,
       });
 
-      return formatSuccess(safeUser, "Logged in successfully");
+      return formatSuccess(safeUser);
     },
     {
       body: loginUserBodySchema,
@@ -50,7 +50,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
   )
   .post("/logout", async ({ cookie: { auth_token } }) => {
     auth_token.remove();
-    return formatSuccess(null, "Logged out successfully");
+    return formatSuccess(null);
   })
   .get(
     "/me",

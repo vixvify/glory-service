@@ -96,6 +96,18 @@ export class MovieRepositoryImpl implements MovieRepository {
           },
         },
         bts: true,
+        ratings: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -113,6 +125,18 @@ export class MovieRepositoryImpl implements MovieRepository {
           },
         },
         bts: true,
+        ratings: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });

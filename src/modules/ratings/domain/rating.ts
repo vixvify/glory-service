@@ -16,33 +16,45 @@ export interface Rating {
 }
 
 export const addRatingBodySchema = t.Object({
-  userId: t.String(),
   movieId: t.String(),
   stars: t.Number(),
 });
-export type AddRatingBodyInput = Static<typeof addRatingBodySchema>;
+export type AddRatingBodyInput = {
+  userId: string;
+  movieId: string;
+  stars: number;
+};
 
 export const getRatingsQuerySchema = t.Object({
-  userId: t.String(),
   movieId: t.String(),
 });
-export type GetRatingsQueryInput = Static<typeof getRatingsQuerySchema>;
+export type GetRatingsQueryInput = {
+  userId: string;
+  movieId: string;
+};
 
 export const deleteRatingBodySchema = t.Object({
-  userId: t.String(),
   movieId: t.String(),
 });
-export type DeleteRatingBodyInput = Static<typeof deleteRatingBodySchema>;
+export type DeleteRatingBodyInput = {
+  userId: string;
+  movieId: string;
+};
 
 export const checkRatingQuerySchema = t.Object({
-  userId: t.String(),
   movieId: t.String(),
 });
-export type CheckRatingQueryInput = Static<typeof checkRatingQuerySchema>;
+export type CheckRatingQueryInput = {
+  userId: string;
+  movieId: string;
+};
 
 export const updateRatingBodySchema = t.Object({
-  userId: t.String(),
   movieId: t.String(),
   stars: t.Number(),
 });
-export type UpdateRatingBodyInput = Static<typeof updateRatingBodySchema>;
+export type UpdateRatingBodyInput = {
+  userId: string;
+  movieId: string;
+  stars: number;
+};

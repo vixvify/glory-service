@@ -1,4 +1,4 @@
-import { AppError, BadRequestError } from "../../core/error";
+import { AppError, BadRequestError, ConflictError } from "../../core/error";
 import {
   AddRatingBodyInput,
   Rating,
@@ -13,6 +13,10 @@ export class RatingService {
 
   async addRating(data: AddRatingBodyInput): Promise<void> {
     try {
+      const existing = await this.repo.checkRating(data.userId, data.movieId);
+      if (existing) {
+        throw new ConflictError("You have already rated this movie. Use update instead.");
+      }
       return await this.repo.addRating(data);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;

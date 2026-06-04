@@ -30,7 +30,7 @@ export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
     async ({ user, body }) => {
       const { movieId } = body;
       await service.addMovieToFavorites(user!.id, movieId);
-      return formatSuccess(null, "Movie added to favorites");
+      return formatSuccess(null);
     },
     {
       requireAuth: true,
@@ -42,7 +42,7 @@ export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
     async ({ user, params }) => {
       const { movieId } = params;
       await service.removeMovieFromFavorites(user!.id, movieId);
-      return formatSuccess(null, "Movie removed from favorites");
+      return formatSuccess(null);
     },
     {
       requireAuth: true,
