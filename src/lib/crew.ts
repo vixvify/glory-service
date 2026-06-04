@@ -2,19 +2,24 @@ import { NotFoundError } from "../core/error";
 import { isUuid } from "../core/utils/validator";
 import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
 import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
+import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
 
 const crewMemberRepo = new CrewMemberRepositoryImpl();
 const movieCrewRepo = new MovieCrewRepositoryImpl();
 
 export async function associateCrewBulk(
-  movieId: string,
-  directors: string[],
-  producers: string[],
-  writers: string[],
-  cast: string[],
-  dops: string[],
-  editors: string[],
+  input: AssociateCrewBulkInput,
 ): Promise<void> {
+  const {
+    movieId,
+    directors,
+    producers,
+    writers,
+    cast,
+    dops,
+    editors,
+  } = input;
+
   const items: Array<{ value: string; role: string }> = [];
 
   const addItems = (list: string[], role: string) => {

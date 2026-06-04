@@ -1,33 +1,21 @@
 import { prisma } from "../lib/prisma";
-import { MovieCrewRepository } from "../modules/movies/domain/movie-crew.repository";
+import { MovieCrew } from "../modules/movies/domain/movie";
+import {
+  MovieCrewRepository,
+  MovieCrewRepositoryCreateInput,
+} from "../modules/movies/domain/movie-crew.repository";
 
 export class MovieCrewRepositoryImpl implements MovieCrewRepository {
-  async createMany(
-    data: Array<{
-      movieId: string;
-      crewMemberId: string;
-      role: string;
-    }>,
-  ): Promise<void> {
+  async createMany(data: MovieCrewRepositoryCreateInput[]): Promise<void> {
     await prisma.movieCrew.createMany({
       data,
       skipDuplicates: true,
     });
   }
 
-  async findByMovieId(
-    movieId: string,
-  ): Promise<
-    Array<{ id: string; movieId: string; crewMemberId: string; role: string }>
-  > {
+  async findByMovieId(movieId: string): Promise<MovieCrew[]> {
     return prisma.movieCrew.findMany({
       where: { movieId },
-      select: {
-        id: true,
-        movieId: true,
-        crewMemberId: true,
-        role: true,
-      },
     });
   }
 

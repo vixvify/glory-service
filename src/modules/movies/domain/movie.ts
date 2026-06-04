@@ -202,3 +202,14 @@ export interface MovieFilterParams {
   sort?: string;
   sortby?: string;
 }
+
+export interface AssociateCrewBulkInput {
+  movieId: string;
+  directors: string[];
+  producers: string[];
+  writers: string[];
+  cast: string[];
+  dops: string[];
+  editors: string[];
+}
+

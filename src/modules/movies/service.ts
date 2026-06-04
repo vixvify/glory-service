@@ -126,7 +126,15 @@ export class MovieService {
         studio: data.studio || null,
       });
 
-      await associateCrewBulk(movieRecord.id, directors, producers, writers, cast, dops, editors);
+      await associateCrewBulk({
+        movieId: movieRecord.id,
+        directors,
+        producers,
+        writers,
+        cast,
+        dops,
+        editors,
+      });
 
       await this.btsRepo.create(movieRecord.id, btsVideo);
 
@@ -185,7 +193,15 @@ export class MovieService {
         studio: data.studio || null,
       });
 
-      await associateCrewBulk(id, directors, producers, writers, cast, dops, editors);
+      await associateCrewBulk({
+        movieId: id,
+        directors,
+        producers,
+        writers,
+        cast,
+        dops,
+        editors,
+      });
 
       await this.btsRepo.upsert(id, btsVideo);
 
