@@ -58,3 +58,21 @@ export type UpdateRatingBodyInput = {
   movieId: string;
   stars: number;
 };
+
+export const RatingUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  createdAt: true,
+  photoUrl: true,
+  motto: true,
+  bio: true,
+  ig: true,
+  facebook: true,
+  youtube: true,
+  tiktok: true,
+  positions: true,
+  birthday: true,
+  awards: true,
+} as const;

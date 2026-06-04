@@ -79,7 +79,6 @@ export const targetGroups = ["เด็กและครอบครัว", "�
 
 export interface SeedCrewMember {
   name: string;
-  photoUrl?: string;
 }
 
 export interface SeedMovie {
@@ -136,41 +135,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Emma Thomas",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jonathan Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christopher Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Christian Bale",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Heath Ledger",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Aaron Eckhart",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -205,47 +190,31 @@ export const seedMovies: SeedMovie[] = [
         director: [
           {
             name: "Anthony Russo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Joe Russo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         producer: {
           name: "Kevin Feige",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Christopher Markus",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Stephen McFeely",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Robert Downey Jr.",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Chris Evans",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Mark Ruffalo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -279,41 +248,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ridley Scott",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Douglas Wick",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "David Franzoni",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "John Logan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Russell Crowe",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Joaquin Phoenix",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Connie Nielsen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=1F7771Zf3uE",
@@ -347,48 +302,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "George Miller",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Doug Mitchell",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "George Miller",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "George Miller",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Brendan McCarthy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tom Hardy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Charlize Theron",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Nicholas Hoult",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -422,41 +361,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ryan Coogler",
-          photoUrl:
-            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Kevin Feige",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Ryan Coogler",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Joe Robert Cole",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Chadwick Boseman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael B. Jordan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lupita Nyong'o",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -490,48 +415,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Jon Watts",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Kevin Feige",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Amy Pascal",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Chris McKenna",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Erik Sommers",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tom Holland",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Zendaya",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Benedict Cumberbatch",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -565,34 +474,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Chad Stahelski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Basil Iwanyk",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Derek Kolstad",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Keanu Reeves",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael Nyqvist",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Alfie Allen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -626,41 +523,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher McQuarrie",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Tom Cruise",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jake Myers",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: {
           name: "Christopher McQuarrie",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Tom Cruise",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Henry Cavill",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ving Rhames",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -694,48 +577,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Joseph Kosinski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Jerry Bruckheimer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Tom Cruise",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Ehren Kruger",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Eric Warren Singer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tom Cruise",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Miles Teller",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jennifer Connelly",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -769,41 +636,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Lana Wachowski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "James McTeigue",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Lana Wachowski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "David Mitchell",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Keanu Reeves",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Carrie-Anne Moss",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Yahya Abdul-Mateen II",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=u8M3z0gHk3c",
@@ -839,34 +692,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Emma Thomas",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Leonardo DiCaprio",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Joseph Gordon-Levitt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Elliot Page",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -900,41 +741,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Emma Thomas",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jonathan Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christopher Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Matthew McConaughey",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Anne Hathaway",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jessica Chastain",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -969,47 +796,31 @@ export const seedMovies: SeedMovie[] = [
         director: [
           {
             name: "Lana Wachowski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lilly Wachowski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         producer: {
           name: "Joel Silver",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Lana Wachowski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lilly Wachowski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Keanu Reeves",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Laurence Fishburne",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Carrie-Anne Moss",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1043,48 +854,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Denis Villeneuve",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Mary Parent",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Cale Boyter",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Jon Spaihts",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Denis Villeneuve",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Timothée Chalamet",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rebecca Ferguson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Oscar Isaac",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -1120,46 +915,30 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Irvin Kershner",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Gary Kurtz",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Leigh Brackett",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lawrence Kasdan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "George Lucas",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Mark Hamill",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Harrison Ford",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Carrie Fisher",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1193,41 +972,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Denis Villeneuve",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Andrew A. Kosove",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Hampton Fancher",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael Green",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ryan Gosling",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Harrison Ford",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ana de Armas",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1261,41 +1026,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Denis Villeneuve",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Dan Levine",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Eric Heisserer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ted Chiang",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Amy Adams",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jeremy Renner",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Forest Whitaker",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1329,41 +1080,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ridley Scott",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Simon Kinberg",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Drew Goddard",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Andy Weir",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Matt Damon",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jessica Chastain",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Kristen Wiig",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1397,43 +1134,29 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Alfonso Cuarón",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Alfonso Cuarón",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "David Heyman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Alfonso Cuarón",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jonás Cuarón",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Sandra Bullock",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "George Clooney",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1467,41 +1190,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Emma Thomas",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christopher Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "John David Washington",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Robert Pattinson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Elizabeth Debicki",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1537,41 +1246,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "James Wan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Tony DeRosa-Grund",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Chad Hayes",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Carey W. Hayes",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Vera Farmiga",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Patrick Wilson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lili Taylor",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1605,48 +1300,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "John Krasinski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Michael Bay",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Andrew Form",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Bryan Woods",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Scott Beck",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Emily Blunt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "John Krasinski",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Millicent Simmonds",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1680,34 +1359,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ari Aster",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Kevin Frakes",
-          photoUrl:
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Ari Aster",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Toni Collette",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Alex Wolff",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Milly Shapiro",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1741,41 +1408,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Andy Muschietti",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Roy Lee",
-          photoUrl:
-            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Stephen King",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Chase Palmer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Bill Skarsgård",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jaeden Martell",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Finn Wolfhard",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=FnCdOQsX5kc",
@@ -1809,34 +1462,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Leigh Whannell",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jason Blum",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Leigh Whannell",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Elisabeth Moss",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Oliver Jackson-Cohen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Harriet Dyer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -1871,42 +1512,28 @@ export const seedMovies: SeedMovie[] = [
         director: [
           {
             name: "Banjong Pisanthanakun",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Parkpoom Wongpoom",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         producer: {
           name: "Yodphet Sudsawad",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Banjong Pisanthanakun",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Parkpoom Wongpoom",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ananda Everingham",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Natthaweeranuch Thongmee",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -1940,36 +1567,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Sophon Sakdaphisit",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jira Maligool",
-          photoUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Sophon Sakdaphisit",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Sopana Chaowwiwatkul",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Saharat Sangkapreecha",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Piyathida Woramusik",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -2003,36 +1618,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Banjong Pisanthanakun",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Na Hong-jin",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Banjong Pisanthanakun",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Na Hong-jin",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Narilya Gulmongkolpech",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Sawanee Utoomma",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -2066,36 +1669,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Banjong Pisanthanakun",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Chenchonnanee Suntornyanakit",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Banjong Pisanthanakun",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Nontra Chalermchat",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Mario Maurer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Davika Hoorne",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -2129,36 +1720,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Hideo Nakata",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Shinya Kawai",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Koji Suzuki",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Hiroshi Takahashi",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Nanako Matsushima",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Hiroyuki Sanada",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2194,41 +1773,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Todd Phillips",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Daniel Goldberg",
-          photoUrl:
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jon Lucas",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Scott Moore",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Bradley Cooper",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ed Helms",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Zach Galifianakis",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2262,36 +1827,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Harold Ramis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Trevor Albert",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Danny Rubin",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Harold Ramis",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Bill Murray",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Andie MacDowell",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2325,34 +1878,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Mark Waters",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Lorne Michaels",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Tina Fey",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Lindsay Lohan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rachel McAdams",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Amanda Seyfried",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2386,41 +1927,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Greg Mottola",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Judd Apatow",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Seth Rogen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Evan Goldberg",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Jonah Hill",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael Cera",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christopher Mintz-Plasse",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2454,48 +1981,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Shawn Levy",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Ryan Reynolds",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Shawn Levy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Matt Lieberman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Zak Penn",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ryan Reynolds",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jodie Comer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Taika Waititi",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2529,48 +2040,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Tim Miller",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Simon Kinberg",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lauren Shuler Donner",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Rhett Reese",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Paul Wernick",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ryan Reynolds",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Morena Baccarin",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ed Skrein",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2604,36 +2099,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Peter Farrelly",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Charles B. Wessler",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Ted Cohen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Peter Farrelly",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Jim Carrey",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jeff Daniels",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=8hP9D6kZseM",
@@ -2667,36 +2150,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Mez Tharatorn",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jira Maligool",
-          photoUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Mez Tharatorn",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Benjamaporn Srabua",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Sunny Suwanmethanont",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Preechaya Pongthananikorn",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -2732,34 +2203,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Denis Villeneuve",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Kira Davis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Aaron Guzikowski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Hugh Jackman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jake Gyllenhaal",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Viola Davis",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=Xh0YpA9g9X8",
@@ -2793,34 +2252,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "David Fincher",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Arnold Kopelson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Andrew Kevin Walker",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Brad Pitt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Morgan Freeman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Gwyneth Paltrow",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=Xh0YpA9g9X8",
@@ -2854,34 +2301,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "David Fincher",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Ceán Chaffin",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Gillian Flynn",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Ben Affleck",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rosamund Pike",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Neil Patrick Harris",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=Xh0YpA9g9X8",
@@ -2915,48 +2350,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "David Fincher",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Ceán Chaffin",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Mike Medavoy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "James Vanderbilt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Robert Graysmith",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Jake Gyllenhaal",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Mark Ruffalo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Robert Downey Jr.",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=Xh0YpA9g9X8",
@@ -2990,41 +2409,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Martin Scorsese",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Mike Medavoy",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Laeta Kalogridis",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Dennis Lehane",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Leonardo DiCaprio",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Mark Ruffalo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ben Kingsley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=Xh0YpA9g9X8",
@@ -3058,34 +2463,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Dan Gilroy",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jennifer Fox",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Dan Gilroy",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Jake Gyllenhaal",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rene Russo",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Riz Ahmed",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=X8kXYg_OBdc",
@@ -3121,48 +2514,32 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Frank Darabont",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Frank Darabont",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "David Valdes",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: [
           {
             name: "Stephen King",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Frank Darabont",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tom Hanks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "David Morse",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael Clarke Duncan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=1F7771Zf3uE",
@@ -3196,41 +2573,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "David Fincher",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Art Linson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Chuck Palahniuk",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jim Uhls",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Brad Pitt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Edward Norton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Helena Bonham Carter",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=1F7771Zf3uE",
@@ -3264,41 +2627,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Christopher Nolan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Emma Thomas",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jonathan Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christopher Nolan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Hugh Jackman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Christian Bale",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Scarlett Johansson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=1F7771Zf3uE",
@@ -3332,41 +2681,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Steven Spielberg",
-          photoUrl:
-            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Branko Lustig",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Thomas Keneally",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Steven Zaillian",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Liam Neeson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ben Kingsley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ralph Fiennes",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=1F7771Zf3uE",
@@ -3402,34 +2737,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Richard Curtis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Tim Bevan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Richard Curtis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Domhnall Gleeson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rachel McAdams",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Bill Nighy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3463,41 +2786,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Nick Cassavetes",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Lynn Harris",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Nicholas Sparks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jan Sardi",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ryan Gosling",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rachel McAdams",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "James Garner",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3531,36 +2840,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Richard Linklater",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Anne Walker-McBay",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Richard Linklater",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Kim Krizan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ethan Hawke",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Julie Delpy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3594,41 +2891,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Joe Wright",
-          photoUrl:
-            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Tim Bevan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jane Austen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Deborah Moggach",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Keira Knightley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Matthew Macfadyen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Brenda Blethyn",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3662,41 +2945,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Jon M. Chu",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Nina Jacobson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Kevin Kwan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Peter Chiarelli",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Constance Wu",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Henry Golding",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michelle Yeoh",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3730,34 +2999,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Roger Michell",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Duncan Kenworthy",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Richard Curtis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Hugh Grant",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Julia Roberts",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Richard McCabe",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3791,41 +3048,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Michel Gondry",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Steve Golin",
-          photoUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Charlie Kaufman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michel Gondry",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Jim Carrey",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Kate Winslet",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Kirsten Dunst",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3859,41 +3102,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Luca Guadagnino",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Peter Spears",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "André Aciman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "James Ivory",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Timothée Chalamet",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Armie Hammer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michael Stuhlbarg",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -3929,41 +3158,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ang Lee",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Gil Netter",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Yann Martel",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "David Magee",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Suraj Sharma",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Irrfan Khan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Adil Hussain",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -3997,36 +3212,24 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Robert Zemeckis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "Tom Hanks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jack Rapke",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: {
           name: "William Broyles Jr.",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Tom Hanks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Helen Hunt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4060,41 +3263,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Alejandro G. Iñárritu",
-          photoUrl:
-            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Arnon Milchan",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Michael Punke",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Alejandro G. Iñárritu",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Leonardo DiCaprio",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Tom Hardy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Domhnall Gleeson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4128,41 +3317,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "James Cameron",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: [
           {
             name: "James Cameron",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jon Landau",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         writer: {
           name: "James Cameron",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Sam Worthington",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Zoe Saldana",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Sigourney Weaver",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4198,41 +3373,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Steven Spielberg",
-          photoUrl:
-            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Frank Marshall",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "George Lucas",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lawrence Kasdan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Harrison Ford",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Karen Allen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Paul Freeman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4268,41 +3429,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Gore Verbinski",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jerry Bruckheimer",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Ted Elliott",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Terry Rossio",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Johnny Depp",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Geoffrey Rush",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Orlando Bloom",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4336,41 +3483,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Peter Jackson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Carolynne Cunningham",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "J.R.R. Tolkien",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Fran Walsh",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Martin Freeman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ian McKellen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Richard Armitage",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4404,34 +3537,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Stephen Sommers",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Sean Daniel",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Stephen Sommers",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Brendan Fraser",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rachel Weisz",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "John Hannah",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=l7O8VeaS3L8",
@@ -4465,34 +3586,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Ron Howard",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "William M. Connor",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "William Nicholson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Viggo Mortensen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Colin Farrell",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Joel Edgerton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=t5JvD90v-bM",
@@ -4531,41 +3640,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Andrew Adamson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Mark Johnson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "C.S. Lewis",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ann Peacock",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tilda Swinton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Georgie Henley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "William Moseley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4599,41 +3694,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Tim Burton",
-          photoUrl:
-            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Richard D. Zanuck",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Lewis Carroll",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Linda Woolverton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Johnny Depp",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Mia Wasikowska",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Helena Bonham Carter",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4667,34 +3748,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Guillermo del Toro",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Alfonso Cuarón",
-          photoUrl:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Guillermo del Toro",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Ivana Baquero",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ariadna Gil",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Sergi López",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4730,41 +3799,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Chris Columbus",
-          photoUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Karen Rosenfelt",
-          photoUrl:
-            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Rick Riordan",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Craig Titley",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Logan Lerman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Brandon T. Jackson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Alexandra Daddario",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4798,41 +3853,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Bill Condon",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "David Hoberman",
-          photoUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Stephen Chbosky",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Evan Spiliotopoulos",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Emma Watson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Dan Stevens",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Luke Evans",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4866,41 +3907,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Scott Derrickson",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Kevin Feige",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jon Spaihts",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Scott Derrickson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Benedict Cumberbatch",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Chiwetel Ejiofor",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Rachel McAdams",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4934,34 +3961,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "David Yates",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "David Heyman",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "J.K. Rowling",
-          photoUrl:
-            "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Eddie Redmayne",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Katherine Waterston",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Dan Fogler",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -4995,41 +4010,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Matthew Vaughn",
-          photoUrl:
-            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Lorenzo di Bonaventura",
-          photoUrl:
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Jane Goldman",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Matthew Vaughn",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Charlie Cox",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Claire Danes",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Michelle Pfeiffer",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=R32qYStZ-g4",
@@ -5065,41 +4066,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "John Lasseter",
-          photoUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Ralph Guggenheim",
-          photoUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "John Lasseter",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Pete Docter",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Tom Hanks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Tim Allen",
-            photoUrl:
-              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Don Rickles",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",
@@ -5133,41 +4120,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Andrew Stanton",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Graham Walters",
-          photoUrl:
-            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Andrew Stanton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Bob Peterson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Albert Brooks",
-            photoUrl:
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ellen DeGeneres",
-            photoUrl:
-              "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Alexander Gould",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",
@@ -5201,41 +4174,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Brad Bird",
-          photoUrl:
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Brad Lewis",
-          photoUrl:
-            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Brad Bird",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jan Pinkava",
-            photoUrl:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Patton Oswalt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Ian Holm",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Lou Romano",
-            photoUrl:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",
@@ -5269,41 +4228,27 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Andrew Stanton",
-          photoUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Jim Morris",
-          photoUrl:
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Andrew Stanton",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jim Reardon",
-            photoUrl:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Ben Burtt",
-            photoUrl:
-              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Elissa Knight",
-            photoUrl:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Jeff Garlin",
-            photoUrl:
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",
@@ -5338,47 +4283,31 @@ export const seedMovies: SeedMovie[] = [
         director: [
           {
             name: "Andrew Adamson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Vicky Jenson",
-            photoUrl:
-              "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
           },
         ],
         producer: {
           name: "Aron Warner",
-          photoUrl:
-            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
         },
         writer: [
           {
             name: "Ted Elliott",
-            photoUrl:
-              "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Terry Rossio",
-            photoUrl:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
           },
         ],
         cast: [
           {
             name: "Mike Myers",
-            photoUrl:
-              "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Eddie Murphy",
-            photoUrl:
-              "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Cameron Diaz",
-            photoUrl:
-              "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",
@@ -5412,34 +4341,22 @@ export const seedMovies: SeedMovie[] = [
       create: {
         director: {
           name: "Haruo Sotozaki",
-          photoUrl:
-            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80",
         },
         producer: {
           name: "Masanori Miyake",
-          photoUrl:
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
         },
         writer: {
           name: "Koyoharu Gotouge",
-          photoUrl:
-            "https://images.unsplash.com/photo-1504257400762-971f9e9964d8?auto=format&fit=crop&w=300&q=80",
         },
         cast: [
           {
             name: "Natsuki Hanae",
-            photoUrl:
-              "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Akari Kito",
-            photoUrl:
-              "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
           },
           {
             name: "Yoshitsugu Matsuoka",
-            photoUrl:
-              "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80",
           },
         ],
         btsVideo: "https://www.youtube.com/watch?v=3KR8_M-G9pA",

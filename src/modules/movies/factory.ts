@@ -28,9 +28,24 @@ export interface PrismaMovieWithRelations extends PrismaMovie {
     crewMember?: {
       id: string;
       name: string;
-      photoUrl?: string | null;
       email?: string | null;
       userId?: string | null;
+      user?: {
+        id: string;
+        email: string;
+        name: string | null;
+        role: string;
+        photoUrl?: string | null;
+        motto?: string | null;
+        bio?: string | null;
+        ig?: string | null;
+        facebook?: string | null;
+        youtube?: string | null;
+        tiktok?: string | null;
+        positions?: string[];
+        birthday?: Date | null;
+        awards?: string[];
+      } | null;
       createdAt: Date;
       updatedAt: Date;
     } | null;
@@ -121,9 +136,26 @@ export class MovieFactory {
               ? {
                   id: c.crewMember.id,
                   name: c.crewMember.name,
-                  photoUrl: c.crewMember.photoUrl,
                   email: c.crewMember.email,
                   userId: c.crewMember.userId,
+                  user: c.crewMember.user
+                    ? {
+                        id: c.crewMember.user.id,
+                        email: c.crewMember.user.email,
+                        name: c.crewMember.user.name ?? "Unknown User",
+                        role: (c.crewMember.user.role as "user" | "admin") || "user",
+                        photoUrl: c.crewMember.user.photoUrl,
+                        motto: c.crewMember.user.motto,
+                        bio: c.crewMember.user.bio,
+                        ig: c.crewMember.user.ig,
+                        facebook: c.crewMember.user.facebook,
+                        youtube: c.crewMember.user.youtube,
+                        tiktok: c.crewMember.user.tiktok,
+                        positions: c.crewMember.user.positions,
+                        birthday: c.crewMember.user.birthday,
+                        awards: c.crewMember.user.awards,
+                      }
+                    : undefined,
                   createdAt: c.crewMember.createdAt,
                   updatedAt: c.crewMember.updatedAt,
                 }

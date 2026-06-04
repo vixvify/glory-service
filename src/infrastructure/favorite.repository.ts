@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma";
 import { FavoriteRepository } from "../modules/favorites/domain/favorite.repository";
 import { Movie as PrismaMovie } from "@prisma/client";
+import { FavoriteUserSelect } from "../modules/favorites/domain/favorite";
 
 export class FavoriteRepositoryImpl implements FavoriteRepository {
   async getFavorites(userId: string): Promise<PrismaMovie[]> {
@@ -18,12 +19,7 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
             ratings: {
               include: {
                 user: {
-                  select: {
-                    id: true,
-                    email: true,
-                    name: true,
-                    role: true,
-                  },
+                  select: FavoriteUserSelect,
                 },
               },
             },

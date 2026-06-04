@@ -78,12 +78,10 @@ export class CrewMemberService {
       }
 
       let userId: string | undefined = undefined;
-      let photoUrl: string | undefined = undefined;
       if (trimmedEmail && this.authRepo) {
         const user = await this.authRepo.findByEmail(trimmedEmail);
         if (user) {
           userId = user.id;
-          photoUrl = user.photoUrl || undefined;
         }
       }
 
@@ -124,20 +122,16 @@ export class CrewMemberService {
       const trimmedEmail =
         email !== undefined ? email?.trim() || null : undefined;
       let userId: string | null | undefined = undefined;
-      let photoUrl: string | null | undefined = undefined;
 
       if (trimmedEmail !== undefined && this.authRepo) {
         if (trimmedEmail === null) {
           userId = null;
-          photoUrl = null;
         } else {
           const user = await this.authRepo.findByEmail(trimmedEmail);
           if (user) {
             userId = user.id;
-            photoUrl = user.photoUrl;
           } else {
             userId = null;
-            photoUrl = null;
           }
         }
       }

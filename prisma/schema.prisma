@@ -71,7 +71,6 @@ model CrewMember {
   id        String      @id @default(uuid()) @db.Uuid
   name      String      @unique
   email     String?     @unique
-  photoUrl  String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 

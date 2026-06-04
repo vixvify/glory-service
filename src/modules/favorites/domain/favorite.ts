@@ -22,3 +22,21 @@ export const removeFavoriteParamsSchema = t.Object({
 export type RemoveFavoriteParamsInput = Static<
   typeof removeFavoriteParamsSchema
 >;
+
+export const FavoriteUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  createdAt: true,
+  photoUrl: true,
+  motto: true,
+  bio: true,
+  ig: true,
+  facebook: true,
+  youtube: true,
+  tiktok: true,
+  positions: true,
+  birthday: true,
+  awards: true,
+} as const;

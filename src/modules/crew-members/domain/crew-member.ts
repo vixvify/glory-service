@@ -1,10 +1,12 @@
 import { t, Static } from "elysia";
+import { User } from "../../auth/domain/auth";
 
 export interface CrewMember {
   id: string;
   name: string;
   email?: string | null;
   userId?: string | null;
+  user?: User | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -82,3 +84,21 @@ export interface UpdateCrewMemberRepositoryInput {
   email?: string | null;
   userId?: string | null;
 }
+
+export const CrewMemberUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  createdAt: true,
+  photoUrl: true,
+  motto: true,
+  bio: true,
+  ig: true,
+  facebook: true,
+  youtube: true,
+  tiktok: true,
+  positions: true,
+  birthday: true,
+  awards: true,
+} as const;

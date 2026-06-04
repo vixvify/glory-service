@@ -6,6 +6,7 @@ import calculatePagination from "../core/utils/pagination";
 import {
   MovieRepositoryCreateInput,
   MovieRepositoryUpdateInput,
+  MovieUserSelect,
 } from "../modules/movies/domain/movie";
 
 export class MovieRepositoryImpl implements MovieRepository {
@@ -15,19 +16,20 @@ export class MovieRepositoryImpl implements MovieRepository {
         include: {
           crew: {
             include: {
-              crewMember: true,
+              crewMember: {
+                include: {
+                  user: {
+                    select: MovieUserSelect,
+                  },
+                },
+              },
             },
           },
           bts: true,
           ratings: {
             include: {
               user: {
-                select: {
-                  id: true,
-                  email: true,
-                  name: true,
-                  role: true,
-                },
+                select: MovieUserSelect,
               },
             },
           },
@@ -60,19 +62,20 @@ export class MovieRepositoryImpl implements MovieRepository {
       include: {
         crew: {
           include: {
-            crewMember: true,
+            crewMember: {
+              include: {
+                user: {
+                  select: MovieUserSelect,
+                },
+              },
+            },
           },
         },
         bts: true,
         ratings: {
           include: {
             user: {
-              select: {
-                id: true,
-                email: true,
-                name: true,
-                role: true,
-              },
+              select: MovieUserSelect,
             },
           },
         },
@@ -92,19 +95,20 @@ export class MovieRepositoryImpl implements MovieRepository {
       include: {
         crew: {
           include: {
-            crewMember: true,
+            crewMember: {
+              include: {
+                user: {
+                  select: MovieUserSelect,
+                },
+              },
+            },
           },
         },
         bts: true,
         ratings: {
           include: {
             user: {
-              select: {
-                id: true,
-                email: true,
-                name: true,
-                role: true,
-              },
+              select: MovieUserSelect,
             },
           },
         },
@@ -121,19 +125,20 @@ export class MovieRepositoryImpl implements MovieRepository {
       include: {
         crew: {
           include: {
-            crewMember: true,
+            crewMember: {
+              include: {
+                user: {
+                  select: MovieUserSelect,
+                },
+              },
+            },
           },
         },
         bts: true,
         ratings: {
           include: {
             user: {
-              select: {
-                id: true,
-                email: true,
-                name: true,
-                role: true,
-              },
+              select: MovieUserSelect,
             },
           },
         },
@@ -148,19 +153,20 @@ export class MovieRepositoryImpl implements MovieRepository {
       include: {
         crew: {
           include: {
-            crewMember: true,
+            crewMember: {
+              include: {
+                user: {
+                  select: MovieUserSelect,
+                },
+              },
+            },
           },
         },
         bts: true,
         ratings: {
           include: {
             user: {
-              select: {
-                id: true,
-                email: true,
-                name: true,
-                role: true,
-              },
+              select: MovieUserSelect,
             },
           },
         },

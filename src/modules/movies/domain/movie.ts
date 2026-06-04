@@ -1,12 +1,14 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
 import { tArrayCoerce } from "../../../core/utils/parser";
+import { User } from "../../auth/domain/auth";
+
 export interface CrewMember {
   id: string;
   name: string;
   email?: string | null;
-  photoUrl?: string | null;
   userId?: string | null;
+  user?: User | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -214,3 +216,20 @@ export interface AssociateCrewBulkInput {
   editors: string[];
 }
 
+export const MovieUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  createdAt: true,
+  photoUrl: true,
+  motto: true,
+  bio: true,
+  ig: true,
+  facebook: true,
+  youtube: true,
+  tiktok: true,
+  positions: true,
+  birthday: true,
+  awards: true,
+} as const;

@@ -46,8 +46,8 @@ async function main() {
   });
 
   console.log("Gathering unique crew members...");
-  const uniqueCrew = new Map<string, string | undefined>();
-
+  const uniqueCrew = new Set<string>();
+ 
   const processCrew = (
     input:
       | SeedCrewMember
@@ -61,14 +61,14 @@ async function main() {
     if (Array.isArray(input)) {
       for (const item of input) {
         if (item && typeof item === "object" && "name" in item && item.name) {
-          uniqueCrew.set(item.name.trim(), item.photoUrl);
+          uniqueCrew.add(item.name.trim());
         }
       }
     } else if (typeof input === "object" && "name" in input && input.name) {
-      uniqueCrew.set(input.name.trim(), input.photoUrl);
+      uniqueCrew.add(input.name.trim());
     }
   };
-
+ 
   for (const movie of seedMovies) {
     const oldCrew = movie.crew?.create;
     if (oldCrew) {
@@ -78,15 +78,14 @@ async function main() {
       processCrew(oldCrew.cast);
     }
   }
-
+ 
   console.log(
     `Found ${uniqueCrew.size} unique crew members. Syncing with database in bulk...`,
   );
-  const crewData = Array.from(uniqueCrew.entries()).map(([name, photoUrl]) => ({
+  const crewData = Array.from(uniqueCrew).map((name) => ({
     name,
-    photoUrl,
   }));
-
+ 
   await prisma.crewMember.createMany({
     data: crewData,
     skipDuplicates: true,

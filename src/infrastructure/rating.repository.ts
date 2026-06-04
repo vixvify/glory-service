@@ -8,6 +8,7 @@ import {
   GetRatingsQueryInput,
   UpdateRatingBodyInput,
 } from "../modules/ratings/domain/rating";
+import { RatingUserSelect } from "../modules/ratings/domain/rating";
 
 export class RatingRepositoryImpl implements RatingRepository {
   async addRating(data: AddRatingBodyInput): Promise<void> {
@@ -24,12 +25,7 @@ export class RatingRepositoryImpl implements RatingRepository {
       include: {
         movie: true,
         user: {
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            role: true,
-          },
+          select: RatingUserSelect,
         },
       },
     });
