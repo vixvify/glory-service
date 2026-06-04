@@ -93,9 +93,8 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     });
   }
   async create(data: CreateCrewMemberRepositoryInput): Promise<CrewMember> {
-    const { name, photoUrl, email, userId } = data;
     return prisma.crewMember.create({
-      data: { name, photoUrl, email, userId },
+      data,
     });
   }
 
@@ -103,12 +102,11 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     id: string,
     data: UpdateCrewMemberRepositoryInput,
   ): Promise<CrewMember> {
-    const { name, photoUrl, email, userId } = data;
+    const { name, email, userId } = data;
     return prisma.crewMember.update({
       where: { id },
       data: {
         name,
-        ...(photoUrl !== undefined ? { photoUrl } : {}),
         ...(email !== undefined ? { email } : {}),
         ...(userId !== undefined ? { userId } : {}),
       },

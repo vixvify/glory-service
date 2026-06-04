@@ -12,7 +12,6 @@ import {
 } from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
-import { uploadToSupabase } from "../../lib/supabase";
 import { isDefaultQuery } from "../../core/utils/query";
 
 export class CrewMemberService {
@@ -90,7 +89,6 @@ export class CrewMemberService {
 
       return await this.repo.create({
         name: trimmedName,
-        photoUrl,
         email: trimmedEmail,
         userId,
       });
@@ -146,7 +144,6 @@ export class CrewMemberService {
 
       return await this.repo.update(id, {
         name: trimmedName,
-        photoUrl,
         email: trimmedEmail,
         userId,
       });

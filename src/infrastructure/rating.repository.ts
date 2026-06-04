@@ -1,5 +1,8 @@
 import { prisma } from "../lib/prisma";
-import { RatingRepository, RatingWithRelations } from "../modules/ratings/domain/rating.repository";
+import {
+  RatingRepository,
+  RatingWithRelations,
+} from "../modules/ratings/domain/rating.repository";
 import {
   AddRatingBodyInput,
   GetRatingsQueryInput,
@@ -9,11 +12,7 @@ import {
 export class RatingRepositoryImpl implements RatingRepository {
   async addRating(data: AddRatingBodyInput): Promise<void> {
     await prisma.rating.create({
-      data: {
-        userId: data.userId,
-        movieId: data.movieId,
-        stars: data.stars,
-      },
+      data,
     });
   }
 

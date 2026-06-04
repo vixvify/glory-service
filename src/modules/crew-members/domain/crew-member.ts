@@ -4,7 +4,6 @@ export interface CrewMember {
   id: string;
   name: string;
   email?: string | null;
-  photoUrl?: string | null;
   userId?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -74,14 +73,12 @@ export interface CrewFilterParams {
 
 export interface CreateCrewMemberRepositoryInput {
   name: string;
-  photoUrl?: string | null;
   email?: string | null;
   userId?: string | null;
 }
 
 export interface UpdateCrewMemberRepositoryInput {
   name: string;
-  photoUrl?: string | null;
   email?: string | null;
   userId?: string | null;
 }

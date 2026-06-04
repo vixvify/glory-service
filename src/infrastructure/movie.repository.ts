@@ -145,45 +145,8 @@ export class MovieRepositoryImpl implements MovieRepository {
   }
 
   async create(data: MovieRepositoryCreateInput): Promise<PrismaMovie> {
-    const {
-      title,
-      description,
-      thumbnail,
-      youtubeUrl,
-      trailerUrl,
-      category,
-      year,
-      duration,
-      matchRate,
-      ageRating,
-      university,
-      language,
-      targetGroup,
-      hasProfanity,
-      hasDrugs,
-      colorType,
-      studio,
-    } = data;
     return prisma.movie.create({
-      data: {
-        title,
-        description,
-        thumbnail,
-        youtubeUrl,
-        trailerUrl,
-        category,
-        year,
-        duration,
-        matchRate,
-        ageRating,
-        university,
-        language,
-        targetGroup,
-        hasProfanity,
-        hasDrugs,
-        colorType,
-        studio,
-      },
+      data,
     });
   }
 
@@ -191,46 +154,9 @@ export class MovieRepositoryImpl implements MovieRepository {
     id: string,
     data: MovieRepositoryUpdateInput,
   ): Promise<PrismaMovie> {
-    const {
-      title,
-      description,
-      thumbnail,
-      youtubeUrl,
-      trailerUrl,
-      category,
-      year,
-      duration,
-      matchRate,
-      ageRating,
-      university,
-      language,
-      targetGroup,
-      hasProfanity,
-      hasDrugs,
-      colorType,
-      studio,
-    } = data;
     return prisma.movie.update({
       where: { id },
-      data: {
-        title,
-        description,
-        thumbnail,
-        youtubeUrl,
-        trailerUrl,
-        category,
-        year,
-        duration,
-        matchRate,
-        ageRating,
-        university,
-        language,
-        targetGroup,
-        hasProfanity,
-        hasDrugs,
-        colorType,
-        studio,
-      },
+      data,
     });
   }
 
