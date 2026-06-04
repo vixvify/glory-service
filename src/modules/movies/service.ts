@@ -10,7 +10,6 @@ import { MovieBtsRepository } from "./domain/movie-bts.repository";
 import { MovieFactory } from "./factory";
 import { uploadToSupabase } from "../../lib/supabase";
 import { isDefaultQuery } from "../../core/utils/query";
-import { parseStringOrArray } from "../../core/utils/parser";
 import { associateCrewBulk } from "../../lib/crew";
 
 export class MovieService {
@@ -98,13 +97,13 @@ export class MovieService {
         thumbnailUrl = data.thumbnail;
       }
 
-      const directors = parseStringOrArray(data.director);
-      const producers = parseStringOrArray(data.producer);
-      const writers = parseStringOrArray(data.writer);
-      const cast = parseStringOrArray(data.cast);
-      const dops = parseStringOrArray(data.dop);
-      const editors = parseStringOrArray(data.editor);
-      const btsVideo = parseStringOrArray(data.btsVideo);
+      const directors = data.director || [];
+      const producers = data.producer || [];
+      const writers = data.writer || [];
+      const cast = data.cast || [];
+      const dops = data.dop || [];
+      const editors = data.editor || [];
+      const btsVideo = data.btsVideo || [];
 
       const movieRecord = await this.repo.create({
         title: data.title,
@@ -165,13 +164,13 @@ export class MovieService {
         thumbnailUrl = data.thumbnail;
       }
 
-      const directors = parseStringOrArray(data.director);
-      const producers = parseStringOrArray(data.producer);
-      const writers = parseStringOrArray(data.writer);
-      const cast = parseStringOrArray(data.cast);
-      const dops = parseStringOrArray(data.dop);
-      const editors = parseStringOrArray(data.editor);
-      const btsVideo = parseStringOrArray(data.btsVideo);
+      const directors = data.director || [];
+      const producers = data.producer || [];
+      const writers = data.writer || [];
+      const cast = data.cast || [];
+      const dops = data.dop || [];
+      const editors = data.editor || [];
+      const btsVideo = data.btsVideo || [];
 
       await this.repo.update(id, {
         title: data.title,

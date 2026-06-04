@@ -15,7 +15,6 @@ import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
 import { uploadToSupabase } from "../../lib/supabase";
-import { parseStringOrArray } from "../../core/utils/parser";
 
 export class AuthService {
   constructor(
@@ -35,8 +34,8 @@ export class AuthService {
         photoUrl = await uploadToSupabase(data.photo, "users");
       }
 
-      const positions = parseStringOrArray(data.positions);
-      const awards = parseStringOrArray(data.awards);
+      const positions = data.positions || [];
+      const awards = data.awards || [];
 
       let birthday: Date | undefined = undefined;
       if (data.birthday) {

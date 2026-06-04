@@ -1,5 +1,6 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
+import { tArrayCoerce } from "../../../core/utils/parser";
 export interface CrewMember {
   id: string;
   name: string;
@@ -112,13 +113,13 @@ export const createMovieBodySchema = t.Object({
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.String(),
   studio: t.Optional(t.String()),
-  director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  cast: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  dop: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  editor: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  btsVideo: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  director: t.Optional(tArrayCoerce),
+  producer: t.Optional(tArrayCoerce),
+  writer: t.Optional(tArrayCoerce),
+  cast: t.Optional(tArrayCoerce),
+  dop: t.Optional(tArrayCoerce),
+  editor: t.Optional(tArrayCoerce),
+  btsVideo: t.Optional(tArrayCoerce),
 });
 export type CreateMovieBodyInput = Static<typeof createMovieBodySchema>;
 
@@ -145,13 +146,13 @@ export const updateMovieBodySchema = t.Object({
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.String(),
   studio: t.Optional(t.String()),
-  director: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  producer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  writer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  cast: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  dop: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  editor: t.Optional(t.Union([t.String(), t.Array(t.String())])),
-  btsVideo: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  director: t.Optional(tArrayCoerce),
+  producer: t.Optional(tArrayCoerce),
+  writer: t.Optional(tArrayCoerce),
+  cast: t.Optional(tArrayCoerce),
+  dop: t.Optional(tArrayCoerce),
+  editor: t.Optional(tArrayCoerce),
+  btsVideo: t.Optional(tArrayCoerce),
 });
 export type UpdateMovieBodyInput = Static<typeof updateMovieBodySchema>;
 

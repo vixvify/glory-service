@@ -1,4 +1,5 @@
 import { t, Static } from "elysia";
+import { tArrayCoerce } from "../../../core/utils/parser";
 
 export interface User {
   id: string;
@@ -45,9 +46,9 @@ export const registerUserBodySchema = t.Object({
   facebook: t.Optional(t.String()),
   youtube: t.Optional(t.String()),
   tiktok: t.Optional(t.String()),
-  positions: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  positions: t.Optional(tArrayCoerce),
   birthday: t.Optional(t.String()),
-  awards: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+  awards: t.Optional(tArrayCoerce),
 });
 
 export type RegisterUserBodyInput = Static<typeof registerUserBodySchema>;
