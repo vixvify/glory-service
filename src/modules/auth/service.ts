@@ -14,7 +14,7 @@ import { User, RegisterUserBodyInput, LoginUserBodyInput } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
-import { uploadToSupabase } from "../../lib/supabase";
+import { uploadToR2 } from "../../lib/r2";
 
 export class AuthService {
   constructor(
@@ -31,7 +31,7 @@ export class AuthService {
 
       let photoUrl: string | undefined = undefined;
       if (data.photo) {
-        photoUrl = await uploadToSupabase(data.photo, "users");
+        photoUrl = await uploadToR2(data.photo, "users");
       }
 
       const positions = data.positions || [];

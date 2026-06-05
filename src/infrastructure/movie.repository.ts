@@ -149,6 +149,42 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
+  async findContributed(userId: string): Promise<PrismaMovie[]> {
+    return prisma.movie.findMany({
+      where: {
+        crew: {
+          some: {
+            crewMember: {
+              userId,
+            },
+          },
+        },
+      },
+      include: {
+        crew: {
+          include: {
+            crewMember: {
+              include: {
+                user: {
+                  select: MovieUserSelect,
+                },
+              },
+            },
+          },
+        },
+        bts: true,
+        ratings: {
+          include: {
+            user: {
+              select: MovieUserSelect,
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
   async findById(id: string): Promise<PrismaMovie | null> {
     return prisma.movie.findUnique({
       where: { id },

@@ -3,10 +3,12 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/glory_db?schema=public",
   jwtSecret: process.env.JWT_SECRET || "super-secret-glory-key-change-me",
   env: process.env.NODE_ENV || "development",
-  supabase: {
-    url: process.env.SUPABASE_URL || "",
-    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-    bucketName: process.env.SUPABASE_BUCKET_NAME || "",
+  r2: {
+    accountId: process.env.R2_ACCOUNT_ID || "",
+    accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
+    bucketName: process.env.R2_BUCKET_NAME || "",
+    publicUrl: process.env.R2_PUBLIC_URL || "",
   },
 };
 

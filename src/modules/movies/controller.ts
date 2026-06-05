@@ -65,6 +65,16 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     },
   )
   .get(
+    "/my-contributions",
+    async ({ user }) => {
+      const movies = await service.getContributedMovies(user!.id);
+      return formatSuccess(movies);
+    },
+    {
+      requireAuth: true,
+    },
+  )
+  .get(
     "/:id",
     async ({ params }) => {
       const { id } = params;

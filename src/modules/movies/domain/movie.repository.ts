@@ -9,6 +9,7 @@ export interface MovieRepository {
   find(params?: MovieFilterParams): Promise<PrismaMovie[]>;
   findByCategory(category: string): Promise<PrismaMovie[]>;
   findByUniversity(university: string): Promise<PrismaMovie[]>;
+  findContributed(userId: string): Promise<PrismaMovie[]>;
   findById(id: string): Promise<PrismaMovie | null>;
   create(data: MovieRepositoryCreateInput): Promise<PrismaMovie>;
   update(id: string, data: MovieRepositoryUpdateInput): Promise<PrismaMovie>;

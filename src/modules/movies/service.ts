@@ -8,7 +8,7 @@ import {
 import { MovieRepository } from "./domain/movie.repository";
 import { MovieBtsRepository } from "./domain/movie-bts.repository";
 import { MovieFactory } from "./factory";
-import { uploadToSupabase } from "../../lib/supabase";
+import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
 import { associateCrewBulk } from "../../lib/crew";
 
@@ -53,6 +53,18 @@ export class MovieService {
       if (error instanceof AppError) throw error;
       const message =
         error instanceof Error ? error.message : "Failed to get my movies";
+      throw new BadRequestError(message, error);
+    }
+  }
+
+  async getContributedMovies(userId: string): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.findContributed(userId);
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      if (error instanceof AppError) throw error;
+      const message =
+        error instanceof Error ? error.message : "Failed to get contributed movies";
       throw new BadRequestError(message, error);
     }
   }
@@ -104,7 +116,7 @@ export class MovieService {
     try {
       let thumbnailUrl = "";
       if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToSupabase(data.thumbnail);
+        thumbnailUrl = await uploadToR2(data.thumbnail);
       } else {
         thumbnailUrl = data.thumbnail;
       }
@@ -182,7 +194,7 @@ export class MovieService {
 
       let thumbnailUrl = existing.thumbnail;
       if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToSupabase(data.thumbnail);
+        thumbnailUrl = await uploadToR2(data.thumbnail);
       } else if (typeof data.thumbnail === "string") {
         thumbnailUrl = data.thumbnail;
       }
@@ -252,6 +264,9 @@ export class MovieService {
         throw new ForbiddenError("You do not have permission to delete this movie");
       }
       const movie = await this.repo.delete(id);
+      if (movie.thumbnail) {
+        await deleteFromR2(movie.thumbnail);
+      }
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
