@@ -201,7 +201,6 @@ export const getMoviesQuerySchema = t.Object({
   pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
-  createdBy: t.Optional(t.String()),
 });
 export type GetMoviesQueryInput = Static<typeof getMoviesQuerySchema>;
 

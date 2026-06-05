@@ -20,11 +20,11 @@ export class MovieService {
 
   async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
-      if (isDefaultQuery(params) && !params?.createdBy) {
+      if (isDefaultQuery(params)) {
         const movies = await this.repo.find();
         return MovieFactory.toDomainList(movies);
       }
-      const { search, searchby, page, pagesize, sort, sortby, createdBy } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby } = params || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
@@ -35,7 +35,6 @@ export class MovieService {
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
-        createdBy: createdBy || undefined,
       });
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
