@@ -3,6 +3,7 @@ import {
   NotFoundError,
   BadRequestError,
   ConflictError,
+  ForbiddenError,
 } from "../../core/error";
 import {
   CrewMember,
@@ -67,7 +68,7 @@ export class CrewMemberService {
     }
   }
 
-  async createCrewMember(data: CreateCrewMemberInput): Promise<CrewMember> {
+  async createCrewMember(data: CreateCrewMemberInput, creatorId: string): Promise<CrewMember> {
     try {
       const { name, email } = data;
       const trimmedName = name.trim();
@@ -92,6 +93,7 @@ export class CrewMemberService {
         name: trimmedName,
         email: trimmedEmail,
         userId,
+        createdBy: creatorId,
       });
       return CrewMemberFactory.toDomain(created);
     } catch (error: unknown) {
@@ -105,12 +107,18 @@ export class CrewMemberService {
   async updateCrewMember(
     id: string,
     data: UpdateCrewMemberBodyInput,
+    userId: string,
+    role: string,
   ): Promise<CrewMember> {
     try {
       const { name, email } = data;
       const existingById = await this.repo.findById(id);
       if (!existingById) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
+      }
+
+      if (existingById.createdBy !== userId && role !== "admin") {
+        throw new ForbiddenError("You do not have permission to update this crew member");
       }
 
       const trimmedName = name.trim();
@@ -125,17 +133,17 @@ export class CrewMemberService {
 
       const trimmedEmail =
         email !== undefined ? email?.trim() || null : undefined;
-      let userId: string | null | undefined = undefined;
+      let linkedUserId: string | null | undefined = undefined;
 
       if (trimmedEmail !== undefined && this.authRepo) {
         if (trimmedEmail === null) {
-          userId = null;
+          linkedUserId = null;
         } else {
           const user = await this.authRepo.findByEmail(trimmedEmail);
           if (user) {
-            userId = user.id;
+            linkedUserId = user.id;
           } else {
-            userId = null;
+            linkedUserId = null;
           }
         }
       }
@@ -143,7 +151,7 @@ export class CrewMemberService {
       const updated = await this.repo.update(id, {
         name: trimmedName,
         email: trimmedEmail,
-        userId,
+        userId: linkedUserId,
       });
       return CrewMemberFactory.toDomain(updated);
     } catch (error: unknown) {
@@ -154,11 +162,15 @@ export class CrewMemberService {
     }
   }
 
-  async deleteCrewMember(id: string): Promise<CrewMember> {
+  async deleteCrewMember(id: string, userId: string, role: string): Promise<CrewMember> {
     try {
       const existing = await this.repo.findById(id);
       if (!existing) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
+      }
+
+      if (existing.createdBy !== userId && role !== "admin") {
+        throw new ForbiddenError("You do not have permission to delete this crew member");
       }
       const deleted = await this.repo.delete(id);
       return CrewMemberFactory.toDomain(deleted);

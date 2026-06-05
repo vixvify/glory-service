@@ -26,10 +26,11 @@ model User {
   birthday      DateTime?
   awards        String[]     @default([])
 
-  favorites   Favorite[]
-  ratings     Rating[]
-  crewMembers CrewMember[]
-  movies      Movie[]
+  favorites          Favorite[]
+  ratings            Rating[]
+  crewMembers        CrewMember[]
+  movies             Movie[]
+  createdCrewMembers CrewMember[] @relation("CreatedCrewMembers")
 
   @@map("users")
 }
@@ -56,8 +57,8 @@ model Movie {
   colorType    String      @default("COLOR")
   studio       String?
 
-  userId       String      @db.Uuid
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdBy    String      @db.Uuid
+  user         User        @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
   favorites Favorite[]
   ratings   Rating[]
@@ -81,6 +82,9 @@ model CrewMember {
 
   userId    String?     @db.Uuid
   user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdBy String      @db.Uuid
+  creator   User        @relation("CreatedCrewMembers", fields: [createdBy], references: [id], onDelete: Cascade)
 
   movieCrews MovieCrew[]
 

@@ -13,6 +13,7 @@ export class CrewMemberFactory {
       name: member.name,
       email: member.email,
       userId: member.userId,
+      createdBy: member.createdBy,
       createdAt: member.createdAt,
       updatedAt: member.updatedAt,
       user: member.user
@@ -64,7 +65,7 @@ export class CrewMemberFactory {
                   hasDrugs: mc.movie.hasDrugs,
                   colorType: mc.movie.colorType,
                   studio: mc.movie.studio,
-                  userId: mc.movie.userId,
+                  createdBy: mc.movie.createdBy,
                   crew: [],
                   bts: null,
                   createdAt: mc.movie.createdAt,

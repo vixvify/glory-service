@@ -14,6 +14,7 @@ export interface CrewMember {
   email?: string | null;
   userId?: string | null;
   user?: User | null;
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
   movieCrews?: MovieCrew[];
@@ -69,6 +70,7 @@ export const getCrewMembersQuerySchema = t.Object({
   pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
+  createdBy: t.Optional(t.String()),
 });
 export type GetCrewMembersQueryInput = Static<typeof getCrewMembersQuerySchema>;
 
@@ -79,12 +81,14 @@ export interface CrewFilterParams {
   pagesize?: number;
   sort?: string;
   sortby?: string;
+  createdBy?: string;
 }
 
 export interface CreateCrewMemberRepositoryInput {
   name: string;
   email?: string | null;
   userId?: string | null;
+  createdBy: string;
 }
 
 export interface UpdateCrewMemberRepositoryInput {

@@ -101,6 +101,7 @@ async function main() {
   );
   const crewData = Array.from(uniqueCrew).map((name) => ({
     name,
+    createdBy: defaultUserId,
   }));
  
   await prisma.crewMember.createMany({
@@ -186,7 +187,7 @@ async function main() {
       hasDrugs,
       colorType,
       studio,
-      userId: defaultUserId,
+      createdBy: defaultUserId,
     });
 
     const oldCrew = movie.crew?.create;

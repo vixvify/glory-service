@@ -37,7 +37,7 @@ export class RatingFactory {
         hasDrugs: rating.movie.hasDrugs,
         colorType: rating.movie.colorType,
         studio: rating.movie.studio,
-        userId: rating.movie.userId,
+        createdBy: rating.movie.createdBy,
         crew: [],
         bts: null,
         createdAt: rating.movie.createdAt,

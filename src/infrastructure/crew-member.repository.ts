@@ -37,6 +37,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       pagesize,
       sort = "asc",
       sortby = "name",
+      createdBy,
     } = params;
 
     const where: Prisma.CrewMemberWhereInput = {
@@ -55,6 +56,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
             mode: "insensitive",
           },
         }),
+      ...(createdBy && { createdBy }),
     };
 
     const results = await prisma.crewMember.findMany({
@@ -174,9 +176,9 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     return results as CrewMemberWithRelations[];
   }
 
-  async createMany(names: string[]): Promise<void> {
+  async createMany(names: string[], createdBy: string): Promise<void> {
     await prisma.crewMember.createMany({
-      data: names.map((name) => ({ name })),
+      data: names.map((name) => ({ name, createdBy })),
       skipDuplicates: true,
     });
   }

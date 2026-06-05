@@ -107,7 +107,7 @@ export class MovieFactory {
                 hasDrugs: movie.hasDrugs,
                 colorType: movie.colorType,
                 studio: movie.studio,
-                userId: movie.userId,
+                createdBy: movie.createdBy,
                 crew: [],
                 bts: null,
                 createdAt: movie.createdAt,
@@ -128,7 +128,7 @@ export class MovieFactory {
       hasDrugs: movie.hasDrugs,
       colorType: movie.colorType,
       studio: movie.studio,
-      userId: movie.userId,
+      createdBy: movie.createdBy,
 
       crew: movie.crew
         ? movie.crew.map((c) => ({

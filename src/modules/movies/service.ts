@@ -20,11 +20,11 @@ export class MovieService {
 
   async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
-      if (isDefaultQuery(params) && !params?.userId) {
+      if (isDefaultQuery(params) && !params?.createdBy) {
         const movies = await this.repo.find();
         return MovieFactory.toDomainList(movies);
       }
-      const { search, searchby, page, pagesize, sort, sortby, userId } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby, createdBy } = params || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
@@ -35,7 +35,7 @@ export class MovieService {
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
-        userId: userId || undefined,
+        createdBy: createdBy || undefined,
       });
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
@@ -125,7 +125,7 @@ export class MovieService {
         hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
         colorType: data.colorType || "COLOR",
         studio: data.studio || null,
-        userId,
+        createdBy: userId,
       });
 
       await associateCrewBulk({
@@ -136,7 +136,7 @@ export class MovieService {
         cast,
         dops,
         editors,
-      });
+      }, userId);
 
       await this.btsRepo.create(movieRecord.id, btsVideo);
 
@@ -165,7 +165,7 @@ export class MovieService {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
 
-      if (existing.userId !== userId && role !== "admin") {
+      if (existing.createdBy !== userId && role !== "admin") {
         throw new ForbiddenError("You do not have permission to update this movie");
       }
 
@@ -213,7 +213,7 @@ export class MovieService {
         cast,
         dops,
         editors,
-      });
+      }, userId);
 
       await this.btsRepo.upsert(id, btsVideo);
 
@@ -237,7 +237,7 @@ export class MovieService {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
 
-      if (existing.userId !== userId && role !== "admin") {
+      if (existing.createdBy !== userId && role !== "admin") {
         throw new ForbiddenError("You do not have permission to delete this movie");
       }
       const movie = await this.repo.delete(id);

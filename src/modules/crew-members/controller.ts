@@ -42,8 +42,8 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   )
   .post(
     "/",
-    async ({ body }) => {
-      const crewMember = await service.createCrewMember(body);
+    async ({ body, user }) => {
+      const crewMember = await service.createCrewMember(body, user!.id);
       return formatSuccess(crewMember);
     },
     {
@@ -53,9 +53,9 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   )
   .put(
     "/:id",
-    async ({ params, body }) => {
+    async ({ params, body, user }) => {
       const { id } = params;
-      const crewMember = await service.updateCrewMember(id, body);
+      const crewMember = await service.updateCrewMember(id, body, user!.id, user!.role);
       return formatSuccess(crewMember);
     },
     {
@@ -66,9 +66,9 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   )
   .delete(
     "/:id",
-    async ({ params }) => {
+    async ({ params, user }) => {
       const { id } = params;
-      const crewMember = await service.deleteCrewMember(id);
+      const crewMember = await service.deleteCrewMember(id, user!.id, user!.role);
       return formatSuccess(crewMember);
     },
     {

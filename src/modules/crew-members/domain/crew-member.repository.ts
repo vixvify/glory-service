@@ -18,7 +18,7 @@ export interface CrewMemberRepository {
   delete(id: string): Promise<PrismaCrewMember>;
   findManyByIds(ids: string[]): Promise<CrewMemberWithRelations[]>;
   findManyByNames(names: string[]): Promise<CrewMemberWithRelations[]>;
-  createMany(names: string[]): Promise<void>;
+  createMany(names: string[], createdBy: string): Promise<void>;
   count(): Promise<number>;
   updateUserIdByEmail(email: string, userId: string): Promise<void>;
 }

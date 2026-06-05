@@ -44,7 +44,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       pagesize,
       sort = "desc",
       sortby = "createdAt",
-      userId,
+      createdBy,
     } = params;
 
     const where: Prisma.MovieWhereInput = {
@@ -56,7 +56,7 @@ export class MovieRepositoryImpl implements MovieRepository {
             mode: "insensitive",
           },
         }),
-      ...(userId && { userId }),
+      ...(createdBy && { createdBy }),
     };
 
     return prisma.movie.findMany({

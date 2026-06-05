@@ -9,6 +9,7 @@ const movieCrewRepo = new MovieCrewRepositoryImpl();
 
 export async function associateCrewBulk(
   input: AssociateCrewBulkInput,
+  createdBy: string,
 ): Promise<void> {
   const {
     movieId,
@@ -70,7 +71,7 @@ export async function associateCrewBulk(
 
     const missingNames = names.filter((name) => !existingNames.has(name));
     if (missingNames.length > 0) {
-      await crewMemberRepo.createMany(missingNames);
+      await crewMemberRepo.createMany(missingNames, createdBy);
 
       const newMembers = await crewMemberRepo.findManyByNames(missingNames);
 

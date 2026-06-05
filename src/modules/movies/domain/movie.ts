@@ -54,7 +54,7 @@ export interface Movie {
   hasDrugs: boolean;
   colorType: string;
   studio?: string | null;
-  userId: string;
+  createdBy: string;
   crew: MovieCrew[];
   bts?: MovieBts | null;
   createdAt: Date;
@@ -80,7 +80,7 @@ export interface MovieRepositoryCreateInput {
   hasDrugs?: boolean;
   colorType?: string;
   studio?: string | null;
-  userId: string;
+  createdBy: string;
 }
 
 export interface MovieRepositoryUpdateInput {
@@ -201,7 +201,7 @@ export const getMoviesQuerySchema = t.Object({
   pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
-  userId: t.Optional(t.String()),
+  createdBy: t.Optional(t.String()),
 });
 export type GetMoviesQueryInput = Static<typeof getMoviesQuerySchema>;
 
@@ -212,7 +212,7 @@ export interface MovieFilterParams {
   pagesize?: number;
   sort?: string;
   sortby?: string;
-  userId?: string;
+  createdBy?: string;
 }
 
 export interface AssociateCrewBulkInput {
