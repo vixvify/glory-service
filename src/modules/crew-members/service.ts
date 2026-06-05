@@ -26,12 +26,12 @@ export class CrewMemberService {
     params?: GetCrewMembersQueryInput,
   ): Promise<CrewMember[]> {
     try {
-      if (isDefaultQuery(params)) {
+      if (isDefaultQuery(params) && !params?.createdBy) {
         const results = await this.repo.find();
         return CrewMemberFactory.toDomainList(results);
       }
 
-      const { search, searchby, page, pagesize, sort, sortby } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby, createdBy } = params || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
@@ -43,6 +43,7 @@ export class CrewMemberService {
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
+        createdBy: createdBy || undefined,
       });
       return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
