@@ -29,6 +29,7 @@ model User {
   favorites   Favorite[]
   ratings     Rating[]
   crewMembers CrewMember[]
+  movies      Movie[]
 
   @@map("users")
 }
@@ -45,6 +46,7 @@ model Movie {
   duration     Int
   views        Int         @default(0)
   matchRate    Int         @default(100)
+  aspectRatio  String      @default("16:9")
   ageRating    String      @default("PG-13")
   university   String?
   language     String?
@@ -53,6 +55,9 @@ model Movie {
   hasDrugs     Boolean     @default(false)
   colorType    String      @default("COLOR")
   studio       String?
+
+  userId       String      @db.Uuid
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   favorites Favorite[]
   ratings   Rating[]

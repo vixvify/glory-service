@@ -24,6 +24,23 @@ async function main() {
   await prisma.language.deleteMany();
   await prisma.targetGroup.deleteMany();
 
+  console.log("Syncing default user...");
+  let defaultUser = await prisma.user.findFirst({
+    where: { email: "admin@thaiflix.com" },
+  });
+  if (!defaultUser) {
+    const hashedPassword = await Bun.password.hash("password123");
+    defaultUser = await prisma.user.create({
+      data: {
+        email: "admin@thaiflix.com",
+        password: hashedPassword,
+        name: "Admin System",
+        role: "admin",
+      },
+    });
+  }
+  const defaultUserId = defaultUser.id;
+
   console.log("Seeding master data...");
   await prisma.category.createMany({
     data: categories.map((name) => ({ name })),
@@ -160,6 +177,7 @@ async function main() {
       duration: movie.duration,
       views: movie.views || 0,
       matchRate: movie.matchRate || 100,
+      aspectRatio: "16:9",
       ageRating: movie.ageRating || "PG-13",
       university: movie.university || null,
       language: movie.language || null,
@@ -168,6 +186,7 @@ async function main() {
       hasDrugs,
       colorType,
       studio,
+      userId: defaultUserId,
     });
 
     const oldCrew = movie.crew?.create;

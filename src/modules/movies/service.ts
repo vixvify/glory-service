@@ -1,4 +1,4 @@
-import { AppError, NotFoundError, BadRequestError } from "../../core/error";
+import { AppError, NotFoundError, BadRequestError, ForbiddenError } from "../../core/error";
 import {
   Movie,
   CreateMovieBodyInput,
@@ -20,11 +20,11 @@ export class MovieService {
 
   async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
-      if (isDefaultQuery(params)) {
+      if (isDefaultQuery(params) && !params?.userId) {
         const movies = await this.repo.find();
         return MovieFactory.toDomainList(movies);
       }
-      const { search, searchby, page, pagesize, sort, sortby } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby, userId } = params || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
@@ -35,6 +35,7 @@ export class MovieService {
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
+        userId: userId || undefined,
       });
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
@@ -88,7 +89,7 @@ export class MovieService {
     }
   }
 
-  async createMovie(data: CreateMovieBodyInput): Promise<Movie> {
+  async createMovie(data: CreateMovieBodyInput, userId: string): Promise<Movie> {
     try {
       let thumbnailUrl = "";
       if (data.thumbnail instanceof File) {
@@ -114,7 +115,8 @@ export class MovieService {
         category: data.category,
         year: Number(data.year),
         duration: Number(data.duration),
-        matchRate: Number(data.matchRate),
+        matchRate: 100,
+        aspectRatio: data.aspectRatio,
         ageRating: data.ageRating,
         university: data.university || null,
         language: data.language || null,
@@ -123,6 +125,7 @@ export class MovieService {
         hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
         colorType: data.colorType || "COLOR",
         studio: data.studio || null,
+        userId,
       });
 
       await associateCrewBulk({
@@ -150,11 +153,20 @@ export class MovieService {
     }
   }
 
-  async updateMovie(id: string, data: UpdateMovieBodyInput): Promise<Movie> {
+  async updateMovie(
+    id: string,
+    data: UpdateMovieBodyInput,
+    userId: string,
+    role: string,
+  ): Promise<Movie> {
     try {
       const existing = await this.repo.findById(id);
       if (!existing) {
         throw new NotFoundError(`Movie with id ${id} not found`);
+      }
+
+      if (existing.userId !== userId && role !== "admin") {
+        throw new ForbiddenError("You do not have permission to update this movie");
       }
 
       let thumbnailUrl = existing.thumbnail;
@@ -181,7 +193,8 @@ export class MovieService {
         category: data.category,
         year: Number(data.year),
         duration: Number(data.duration),
-        matchRate: Number(data.matchRate),
+        matchRate: existing.matchRate,
+        aspectRatio: data.aspectRatio,
         ageRating: data.ageRating,
         university: data.university || null,
         language: data.language || null,
@@ -217,11 +230,15 @@ export class MovieService {
     }
   }
 
-  async deleteMovie(id: string): Promise<Movie> {
+  async deleteMovie(id: string, userId: string, role: string): Promise<Movie> {
     try {
       const existing = await this.repo.findById(id);
       if (!existing) {
         throw new NotFoundError(`Movie with id ${id} not found`);
+      }
+
+      if (existing.userId !== userId && role !== "admin") {
+        throw new ForbiddenError("You do not have permission to delete this movie");
       }
       const movie = await this.repo.delete(id);
       return MovieFactory.toDomain(movie);

@@ -44,6 +44,7 @@ export interface Movie {
   ratings: Rating[];
   year: number;
   matchRate: number;
+  aspectRatio: string;
   ageRating: string;
   duration: number;
   university?: string | null;
@@ -53,6 +54,7 @@ export interface Movie {
   hasDrugs: boolean;
   colorType: string;
   studio?: string | null;
+  userId: string;
   crew: MovieCrew[];
   bts?: MovieBts | null;
   createdAt: Date;
@@ -69,6 +71,7 @@ export interface MovieRepositoryCreateInput {
   year: number;
   duration: number;
   matchRate: number;
+  aspectRatio: string;
   ageRating: string;
   university?: string | null;
   language?: string | null;
@@ -77,6 +80,7 @@ export interface MovieRepositoryCreateInput {
   hasDrugs?: boolean;
   colorType?: string;
   studio?: string | null;
+  userId: string;
 }
 
 export interface MovieRepositoryUpdateInput {
@@ -89,6 +93,7 @@ export interface MovieRepositoryUpdateInput {
   year: number;
   duration: number;
   matchRate: number;
+  aspectRatio: string;
   ageRating: string;
   university?: string | null;
   language?: string | null;
@@ -108,7 +113,7 @@ export const createMovieBodySchema = t.Object({
   trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
-  matchRate: t.Numeric(),
+  aspectRatio: t.String({ pattern: "^\\d+:\\d+$" }),
   ageRating: t.String(),
   university: t.Optional(t.String()),
   language: t.Optional(t.String()),
@@ -141,7 +146,7 @@ export const updateMovieBodySchema = t.Object({
   trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
-  matchRate: t.Numeric(),
+  aspectRatio: t.String({ pattern: "^\\d+:\\d+$" }),
   ageRating: t.String(),
   university: t.Optional(t.String()),
   language: t.Optional(t.String()),
@@ -196,6 +201,7 @@ export const getMoviesQuerySchema = t.Object({
   pagesize: t.Optional(t.String()),
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
+  userId: t.Optional(t.String()),
 });
 export type GetMoviesQueryInput = Static<typeof getMoviesQuerySchema>;
 
@@ -206,6 +212,7 @@ export interface MovieFilterParams {
   pagesize?: number;
   sort?: string;
   sortby?: string;
+  userId?: string;
 }
 
 export interface AssociateCrewBulkInput {

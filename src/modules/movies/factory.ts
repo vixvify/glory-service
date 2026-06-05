@@ -97,6 +97,7 @@ export class MovieFactory {
                 views: movie.views,
                 year: movie.year,
                 matchRate: movie.matchRate,
+                aspectRatio: movie.aspectRatio,
                 ageRating: movie.ageRating,
                 duration: movie.duration,
                 university: movie.university,
@@ -106,6 +107,7 @@ export class MovieFactory {
                 hasDrugs: movie.hasDrugs,
                 colorType: movie.colorType,
                 studio: movie.studio,
+                userId: movie.userId,
                 crew: [],
                 bts: null,
                 createdAt: movie.createdAt,
@@ -116,6 +118,7 @@ export class MovieFactory {
         : [],
       year: movie.year,
       matchRate: movie.matchRate,
+      aspectRatio: movie.aspectRatio,
       ageRating: movie.ageRating,
       duration: movie.duration,
       university: movie.university,
@@ -125,6 +128,7 @@ export class MovieFactory {
       hasDrugs: movie.hasDrugs,
       colorType: movie.colorType,
       studio: movie.studio,
+      userId: movie.userId,
 
       crew: movie.crew
         ? movie.crew.map((c) => ({
