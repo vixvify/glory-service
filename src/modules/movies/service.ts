@@ -46,6 +46,18 @@ export class MovieService {
     }
   }
 
+  async getMyMovies(userId: string): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.find({ createdBy: userId });
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      if (error instanceof AppError) throw error;
+      const message =
+        error instanceof Error ? error.message : "Failed to get my movies";
+      throw new BadRequestError(message, error);
+    }
+  }
+
   async getMoviesByCategory(category: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findByCategory(category);

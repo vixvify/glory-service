@@ -2,12 +2,10 @@ import { User as DomainUser } from "./domain/auth";
 import { User as PrismaUser } from "@prisma/client";
 
 export class AuthFactory {
-  static toSafeUserDTO(user: PrismaUser, token?: string): DomainUser & { token?: string } {
+  static toSafeUserDTO(user: PrismaUser, token?: string): Omit<DomainUser, "id" | "role"> & { token?: string } {
     return {
-      id: user.id,
       name: user.name || "",
       email: user.email,
-      role: user.role as "admin" | "user",
       photoUrl: user.photoUrl,
       motto: user.motto,
       bio: user.bio,
@@ -22,12 +20,10 @@ export class AuthFactory {
     };
   }
 
-  static toDomainUser(user: PrismaUser): DomainUser {
+  static toDomainUser(user: PrismaUser): Omit<DomainUser, "id" | "role"> {
     return {
-      id: user.id,
       name: user.name || "",
       email: user.email,
-      role: user.role as "admin" | "user",
       photoUrl: user.photoUrl,
       motto: user.motto,
       bio: user.bio,

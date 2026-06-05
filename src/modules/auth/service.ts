@@ -22,7 +22,7 @@ export class AuthService {
     private crewMemberRepo: CrewMemberRepository,
   ) {}
 
-  async register(data: RegisterUserBodyInput): Promise<User> {
+  async register(data: RegisterUserBodyInput): Promise<Omit<User, "id" | "role">> {
     try {
       const existing = await this.repo.findByEmail(data.email);
       if (existing) {
@@ -80,7 +80,7 @@ export class AuthService {
     }
   }
 
-  async login(data: LoginUserBodyInput): Promise<User & { token?: string }> {
+  async login(data: LoginUserBodyInput): Promise<Omit<User, "id" | "role"> & { token?: string }> {
     try {
       const user = await this.repo.findByEmailWithPassword(data.email);
       if (!user) {
@@ -111,7 +111,7 @@ export class AuthService {
     }
   }
 
-  async me(userId: string): Promise<User | null> {
+  async me(userId: string): Promise<Omit<User, "id" | "role"> | null> {
     try {
       const user = await this.repo.findById(userId);
       if (!user) return null;
@@ -132,9 +132,12 @@ export class AuthService {
       if (!payload || !payload.id) {
         return null;
       }
-      const user = await this.repo.findById(payload.id);
-      if (!user) return null;
-      return AuthFactory.toDomainUser(user);
+      return {
+        id: payload.id as string,
+        name: payload.name as string,
+        email: payload.email as string,
+        role: payload.role as "admin" | "user",
+      } as any;
     } catch {
       return null;
     }

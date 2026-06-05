@@ -30,6 +30,16 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
     },
   )
   .get(
+    "/my-crew",
+    async ({ user }) => {
+      const crewMembers = await service.getMyCrewMembers(user!.id);
+      return formatSuccess(crewMembers);
+    },
+    {
+      requireAuth: true,
+    },
+  )
+  .get(
     "/:id",
     async ({ params }) => {
       const { id } = params;

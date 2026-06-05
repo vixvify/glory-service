@@ -55,7 +55,8 @@ export const authRouter = new Elysia({ prefix: "/auth" })
   .get(
     "/me",
     async ({ user }) => {
-      return formatSuccess(user as User);
+      const fullUser = await service.me(user!.id);
+      return formatSuccess(fullUser);
     },
     {
       requireAuth: true,

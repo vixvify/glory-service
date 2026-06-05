@@ -54,6 +54,18 @@ export class CrewMemberService {
     }
   }
 
+  async getMyCrewMembers(userId: string): Promise<CrewMember[]> {
+    try {
+      const results = await this.repo.find({ createdBy: userId });
+      return CrewMemberFactory.toDomainList(results);
+    } catch (error: unknown) {
+      if (error instanceof AppError) throw error;
+      const message =
+        error instanceof Error ? error.message : "Failed to get my crew members";
+      throw new BadRequestError(message, error);
+    }
+  }
+
   async getCrewMemberById(id: string): Promise<CrewMember> {
     try {
       const crewMember = await this.repo.findById(id);
