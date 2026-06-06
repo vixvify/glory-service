@@ -1,7 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
-import { MovieBtsRepositoryImpl } from "../../infrastructure/movie-bts.repository";
 import { MovieService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
 import {
@@ -16,8 +15,7 @@ import {
 } from "./domain/movie";
 
 const repo = new MovieRepositoryImpl();
-const btsRepo = new MovieBtsRepositoryImpl();
-const service = new MovieService(repo, btsRepo);
+const service = new MovieService(repo);
 
 export const movieRouter = new Elysia({ prefix: "/movie" })
   .use(authMiddleware)

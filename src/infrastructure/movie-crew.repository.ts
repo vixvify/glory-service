@@ -1,9 +1,9 @@
 import { prisma } from "../lib/prisma";
-import { MovieCrew } from "../modules/movies/domain/movie";
+import { MovieCrew as PrismaMovieCrew } from "@prisma/client";
 import {
   MovieCrewRepository,
-  MovieCrewRepositoryCreateInput,
 } from "../modules/movies/domain/movie-crew.repository";
+import { MovieCrewRepositoryCreateInput } from "../modules/movies/domain/movie";
 
 export class MovieCrewRepositoryImpl implements MovieCrewRepository {
   async createMany(data: MovieCrewRepositoryCreateInput[]): Promise<void> {
@@ -13,7 +13,7 @@ export class MovieCrewRepositoryImpl implements MovieCrewRepository {
     });
   }
 
-  async findByMovieId(movieId: string): Promise<MovieCrew[]> {
+  async findByMovieId(movieId: string): Promise<PrismaMovieCrew[]> {
     return prisma.movieCrew.findMany({
       where: { movieId },
     });

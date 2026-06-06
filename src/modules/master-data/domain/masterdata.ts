@@ -28,3 +28,10 @@ export interface TargetGroup {
   createdAt: Date;
 }
 
+export interface CrewRole {
+  id: string;
+  name: string;
+  createdAt: Date;
+}
+
+

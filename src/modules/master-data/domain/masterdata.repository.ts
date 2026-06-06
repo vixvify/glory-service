@@ -1,4 +1,4 @@
-import { Category, University, AgeRating, Language, TargetGroup } from "./masterdata";
+import { Category, University, AgeRating, Language, TargetGroup, CrewRole } from "./masterdata";
 
 export interface MasterDataRepository {
   getCategories(): Promise<Category[]>;
@@ -6,5 +6,6 @@ export interface MasterDataRepository {
   getAgeRatings(): Promise<AgeRating[]>;
   getLanguages(): Promise<Language[]>;
   getTargetGroups(): Promise<TargetGroup[]>;
+  getCrewRoles(): Promise<CrewRole[]>;
   countCategories(): Promise<number>;
 }

@@ -23,6 +23,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
         userId: user!.id,
         movieId: body.movieId,
         stars: body.stars,
+        comment: body.comment,
       });
       return formatSuccess(null);
     },
@@ -75,6 +76,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
         userId: user!.id,
         movieId: body.movieId,
         stars: body.stars,
+        comment: body.comment,
       });
       return formatSuccess(null);
     },

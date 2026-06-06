@@ -1,7 +1,6 @@
 import { CrewMember as PrismaCrewMember } from "@prisma/client";
 import { CrewMember, CrewMemberWithRelations } from "./domain/crew-member";
 
-
 export type CrewMemberDbResult = PrismaCrewMember &
   Partial<Omit<CrewMemberWithRelations, keyof PrismaCrewMember>>;
 
@@ -34,12 +33,13 @@ export class CrewMemberFactory {
             awards: member.user.awards,
           }
         : null,
-      movieCrews: member.movieCrews
-        ? member.movieCrews.map((mc) => ({
+      movies: member.movies
+        ? member.movies.map((mc) => ({
             id: mc.id,
             movieId: mc.movieId,
             crewMemberId: mc.crewMemberId,
-            role: mc.role,
+            roleId: mc.roleId,
+            role: mc.crewRole?.name || "",
             createdAt: mc.createdAt,
             updatedAt: mc.updatedAt,
             movie: mc.movie
@@ -50,24 +50,50 @@ export class CrewMemberFactory {
                   thumbnail: mc.movie.thumbnail,
                   youtubeUrl: mc.movie.youtubeUrl,
                   trailerUrl: mc.movie.trailerUrl,
-                  category: mc.movie.category,
+                  category: {
+                    id: mc.movie.category.id,
+                    name: mc.movie.category.name,
+                    createdAt: mc.movie.category.createdAt,
+                  },
                   views: mc.movie.views,
                   ratings: [],
                   year: mc.movie.year,
                   matchRate: mc.movie.matchRate,
                   aspectRatio: mc.movie.aspectRatio,
-                  ageRating: mc.movie.ageRating,
+                  ageRating: {
+                    id: mc.movie.ageRating.id,
+                    name: mc.movie.ageRating.name,
+                    createdAt: mc.movie.ageRating.createdAt,
+                  },
                   duration: mc.movie.duration,
-                  university: mc.movie.university,
-                  language: mc.movie.language,
-                  targetGroup: mc.movie.targetGroup,
+                  university: mc.movie.university
+                    ? {
+                        id: mc.movie.university.id,
+                        name: mc.movie.university.name,
+                        createdAt: mc.movie.university.createdAt,
+                      }
+                    : null,
+                  language: mc.movie.language
+                    ? {
+                        id: mc.movie.language.id,
+                        name: mc.movie.language.name,
+                        createdAt: mc.movie.language.createdAt,
+                      }
+                    : null,
+                  targetGroup: mc.movie.targetGroup
+                    ? {
+                        id: mc.movie.targetGroup.id,
+                        name: mc.movie.targetGroup.name,
+                        createdAt: mc.movie.targetGroup.createdAt,
+                      }
+                    : null,
                   hasProfanity: mc.movie.hasProfanity,
                   hasDrugs: mc.movie.hasDrugs,
                   colorType: mc.movie.colorType,
                   studio: mc.movie.studio,
                   createdBy: mc.movie.createdBy,
                   crew: [],
-                  bts: null,
+                  btsVideos: [],
                   createdAt: mc.movie.createdAt,
                   updatedAt: mc.movie.updatedAt,
                 }

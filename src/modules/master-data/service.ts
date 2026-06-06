@@ -1,6 +1,6 @@
 import { AppError, BadRequestError } from "../../core/error";
 import { MasterDataRepository } from "./domain/masterdata.repository";
-import { Category, University, AgeRating, Language, TargetGroup } from "./domain/masterdata";
+import { Category, University, AgeRating, Language, TargetGroup, CrewRole } from "./domain/masterdata";
 
 export class MasterDataService {
   constructor(private repo: MasterDataRepository) {}
@@ -56,6 +56,17 @@ export class MasterDataService {
       if (error instanceof AppError) throw error;
       const message =
         error instanceof Error ? error.message : "Failed to get target groups";
+      throw new BadRequestError(message, error);
+    }
+  }
+
+  async getCrewRoles(): Promise<CrewRole[]> {
+    try {
+      return await this.repo.getCrewRoles();
+    } catch (error: unknown) {
+      if (error instanceof AppError) throw error;
+      const message =
+        error instanceof Error ? error.message : "Failed to get crew roles";
       throw new BadRequestError(message, error);
     }
   }

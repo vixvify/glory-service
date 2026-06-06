@@ -6,6 +6,13 @@ import {
   Movie as PrismaMovie,
   MovieCrew as PrismaMovieCrew,
   User as PrismaUser,
+  CrewRole as PrismaCrewRole,
+  Category as PrismaCategory,
+  AgeRating as PrismaAgeRating,
+  University as PrismaUniversity,
+  Language as PrismaLanguage,
+  TargetGroup as PrismaTargetGroup,
+  Prisma,
 } from "@prisma/client";
 
 export interface CrewMember {
@@ -17,7 +24,7 @@ export interface CrewMember {
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
-  movieCrews?: MovieCrew[];
+  movies?: MovieCrew[];
 }
 
 export const createCrewMemberSchema = t.Object({
@@ -135,8 +142,34 @@ export type CrewMemberUserSelected = Pick<
 
 export type CrewMemberWithRelations = PrismaCrewMember & {
   user: CrewMemberUserSelected | null;
-  movieCrews: (PrismaMovieCrew & {
-    movie: PrismaMovie;
+  movies: (PrismaMovieCrew & {
+    movie: PrismaMovie & {
+      category: PrismaCategory;
+      ageRating: PrismaAgeRating;
+      university: PrismaUniversity | null;
+      language: PrismaLanguage | null;
+      targetGroup: PrismaTargetGroup | null;
+    };
+    crewRole: PrismaCrewRole;
   })[];
 };
 
+export const crewMemberIncludes = {
+  movies: {
+    include: {
+      crewRole: true,
+      movie: {
+        include: {
+          category: true,
+          ageRating: true,
+          university: true,
+          language: true,
+          targetGroup: true,
+        },
+      },
+    },
+  },
+  user: {
+    select: CrewMemberUserSelect,
+  },
+} satisfies Prisma.CrewMemberInclude;

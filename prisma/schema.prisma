@@ -7,13 +7,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  admin
+  user
+}
+
+enum ColorType {
+  color
+  black_and_white
+}
+
 model User {
   id            String       @id @default(uuid()) @db.Uuid
   email         String       @unique
   password      String
   name          String?
-  role          String       @default("user")
+  role          Role         @default(user)
   createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   photoUrl      String?
   motto         String?
@@ -28,8 +39,8 @@ model User {
 
   favorites          Favorite[]
   ratings            Rating[]
-  crewMembers        CrewMember[]
-  movies             Movie[]
+  crewProfile        CrewMember?
+  createdMovies      Movie[]
   createdCrewMembers CrewMember[] @relation("CreatedCrewMembers")
 
   @@map("users")
@@ -42,33 +53,49 @@ model Movie {
   thumbnail    String
   youtubeUrl   String
   trailerUrl   String?
-  category     String
+  
+  categoryId   String      @db.Uuid
+  category     Category    @relation(fields: [categoryId], references: [id])
+  
   year         Int
   duration     Int
   views        Int         @default(0)
   matchRate    Int         @default(100)
   aspectRatio  String      @default("16:9")
-  ageRating    String      @default("PG-13")
-  university   String?
-  language     String?
-  targetGroup  String?
+  
+  ageRatingId  String      @db.Uuid
+  ageRating    AgeRating   @relation(fields: [ageRatingId], references: [id])
+  
+  universityId String?     @db.Uuid
+  university   University? @relation(fields: [universityId], references: [id])
+  
+  languageId   String?     @db.Uuid
+  language     Language?   @relation(fields: [languageId], references: [id])
+  
+  targetGroupId String?    @db.Uuid
+  targetGroup  TargetGroup? @relation(fields: [targetGroupId], references: [id])
+  
   hasProfanity Boolean     @default(false)
   hasDrugs     Boolean     @default(false)
-  colorType    String      @default("COLOR")
+  colorType    ColorType   @default(color)
   studio       String?
 
   createdBy    String      @db.Uuid
-  user         User        @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  creator      User        @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
   favorites Favorite[]
   ratings   Rating[]
   crew      MovieCrew[]
-  bts       MovieBts?
+  btsVideos String[]   @default([])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  @@index([category])
-  @@index([university])
+  @@index([categoryId])
+  @@index([universityId])
+  @@index([createdBy])
+  @@index([ageRatingId])
+  @@index([languageId])
+  @@index([targetGroupId])
   @@index([title])
   @@map("movies")
 }
@@ -80,14 +107,16 @@ model CrewMember {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  userId    String?     @db.Uuid
+  userId    String?     @unique @db.Uuid
   user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdBy String      @db.Uuid
   creator   User        @relation("CreatedCrewMembers", fields: [createdBy], references: [id], onDelete: Cascade)
 
-  movieCrews MovieCrew[]
+  movies    MovieCrew[]
 
+  @@index([userId])
+  @@index([createdBy])
   @@map("crew_members")
 }
 
@@ -95,53 +124,44 @@ model MovieCrew {
   id           String     @id @default(uuid()) @db.Uuid
   movieId      String     @db.Uuid
   crewMemberId String     @db.Uuid
-  role         String
+  roleId       String     @db.Uuid
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
   movie        Movie      @relation(fields: [movieId], references: [id], onDelete: Cascade)
   crewMember   CrewMember @relation(fields: [crewMemberId], references: [id], onDelete: Cascade)
+  crewRole     CrewRole   @relation(fields: [roleId], references: [id])
 
-  @@unique([movieId, crewMemberId, role])
+  @@unique([movieId, crewMemberId, roleId])
+  @@index([crewMemberId])
+  @@index([roleId])
   @@map("movie_crews")
 }
 
-model MovieBts {
-  id        String   @id @default(uuid()) @db.Uuid
-  movieId   String   @unique @db.Uuid
-  btsVideo  String[] @default([])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
-
-  @@map("movie_bts")
-}
-
 model Favorite {
-  id        String   @id @default(uuid()) @db.Uuid
   userId    String   @db.Uuid
   movieId   String   @db.Uuid
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   
-
-  @@unique([userId, movieId])
+  @@id([userId, movieId])
+  @@index([movieId])
   @@map("favorites")
 }
 
 model Rating {
-  id        String   @id @default(uuid()) @db.Uuid
   movieId   String   @db.Uuid
   userId    String   @db.Uuid
   stars     Int
+  comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  @@unique([userId, movieId])
+  @@id([userId, movieId])
+  @@index([movieId])
   @@map("ratings")
 }
 
@@ -149,6 +169,7 @@ model Category {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
   createdAt DateTime @default(now())
+  movies    Movie[]
 
   @@map("categories")
 }
@@ -157,6 +178,7 @@ model University {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
   createdAt DateTime @default(now())
+  movies    Movie[]
 
   @@map("universities")
 }
@@ -165,6 +187,7 @@ model AgeRating {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
   createdAt DateTime @default(now())
+  movies    Movie[]
 
   @@map("age_ratings")
 }
@@ -173,6 +196,7 @@ model Language {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
   createdAt DateTime @default(now())
+  movies    Movie[]
 
   @@map("languages")
 }
@@ -181,8 +205,16 @@ model TargetGroup {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
   createdAt DateTime @default(now())
+  movies    Movie[]
 
   @@map("target_groups")
 }
 
+model CrewRole {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String      @unique
+  createdAt DateTime    @default(now())
+  movieCrews MovieCrew[]
 
+  @@map("crew_roles")
+}

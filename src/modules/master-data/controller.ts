@@ -28,4 +28,8 @@ export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
   .get("/target-groups", async () => {
     const targetGroups = await service.getTargetGroups();
     return formatSuccess(targetGroups);
+  })
+  .get("/crew-roles", async () => {
+    const crewRoles = await service.getCrewRoles();
+    return formatSuccess(crewRoles);
   });

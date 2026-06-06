@@ -6,28 +6,18 @@ import {
   UpdateCrewMemberRepositoryInput,
   CrewFilterParams,
   CrewMemberWithRelations,
+  crewMemberIncludes,
 } from "../modules/crew-members/domain/crew-member";
 import calculatePagination from "../core/utils/pagination";
-import { CrewMemberUserSelect } from "../modules/crew-members/domain/crew-member";
-
 
 export class CrewMemberRepositoryImpl implements CrewMemberRepository {
   async find(params?: CrewFilterParams): Promise<CrewMemberWithRelations[]> {
     if (!params) {
       const results = await prisma.crewMember.findMany({
         orderBy: { name: "asc" },
-        include: {
-          movieCrews: {
-            include: {
-              movie: true,
-            },
-          },
-          user: {
-            select: CrewMemberUserSelect,
-          },
-        },
+        include: crewMemberIncludes,
       });
-      return results as CrewMemberWithRelations[];
+      return results as unknown as CrewMemberWithRelations[];
     }
 
     const {
@@ -43,9 +33,11 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     const where: Prisma.CrewMemberWhereInput = {
       ...(search &&
         searchby === "role" && {
-          movieCrews: {
+          movies: {
             some: {
-              role: { equals: search, mode: "insensitive" },
+              crewRole: {
+                name: { equals: search, mode: "insensitive" },
+              },
             },
           },
         }),
@@ -64,53 +56,26 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       orderBy: {
         [sortby]: sort,
       },
-      include: {
-        movieCrews: {
-          include: {
-            movie: true,
-          },
-        },
-        user: {
-          select: CrewMemberUserSelect,
-        },
-      },
+      include: crewMemberIncludes,
       ...calculatePagination(page, pagesize),
     });
-    return results as CrewMemberWithRelations[];
+    return results as unknown as CrewMemberWithRelations[];
   }
 
   async findById(id: string): Promise<CrewMemberWithRelations | null> {
     const result = await prisma.crewMember.findUnique({
       where: { id },
-      include: {
-        movieCrews: {
-          include: {
-            movie: true,
-          },
-        },
-        user: {
-          select: CrewMemberUserSelect,
-        },
-      },
+      include: crewMemberIncludes,
     });
-    return result as CrewMemberWithRelations | null;
+    return result as unknown as CrewMemberWithRelations | null;
   }
 
   async findByName(name: string): Promise<CrewMemberWithRelations | null> {
     const result = await prisma.crewMember.findUnique({
       where: { name },
-      include: {
-        movieCrews: {
-          include: {
-            movie: true,
-          },
-        },
-        user: {
-          select: CrewMemberUserSelect,
-        },
-      },
+      include: crewMemberIncludes,
     });
-    return result as CrewMemberWithRelations | null;
+    return result as unknown as CrewMemberWithRelations | null;
   }
 
   async create(
@@ -145,35 +110,17 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
   async findManyByIds(ids: string[]): Promise<CrewMemberWithRelations[]> {
     const results = await prisma.crewMember.findMany({
       where: { id: { in: ids } },
-      include: {
-        movieCrews: {
-          include: {
-            movie: true,
-          },
-        },
-        user: {
-          select: CrewMemberUserSelect,
-        },
-      },
+      include: crewMemberIncludes,
     });
-    return results as CrewMemberWithRelations[];
+    return results as unknown as CrewMemberWithRelations[];
   }
 
   async findManyByNames(names: string[]): Promise<CrewMemberWithRelations[]> {
     const results = await prisma.crewMember.findMany({
       where: { name: { in: names } },
-      include: {
-        movieCrews: {
-          include: {
-            movie: true,
-          },
-        },
-        user: {
-          select: CrewMemberUserSelect,
-        },
-      },
+      include: crewMemberIncludes,
     });
-    return results as CrewMemberWithRelations[];
+    return results as unknown as CrewMemberWithRelations[];
   }
 
   async createMany(names: string[], createdBy: string): Promise<void> {
@@ -194,4 +141,3 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     });
   }
 }
-

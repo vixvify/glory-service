@@ -1,41 +1,42 @@
 import { prisma } from "../lib/prisma";
-import {
-  RatingRepository,
-  RatingWithRelations,
-} from "../modules/ratings/domain/rating.repository";
+import { RatingRepository } from "../modules/ratings/domain/rating.repository";
+import { RatingWithRelations } from "../modules/ratings/domain/rating";
 import {
   AddRatingBodyInput,
   GetRatingsQueryInput,
   UpdateRatingBodyInput,
+  ratingIncludes,
 } from "../modules/ratings/domain/rating";
-import { RatingUserSelect } from "../modules/ratings/domain/rating";
 
 export class RatingRepositoryImpl implements RatingRepository {
   async addRating(data: AddRatingBodyInput): Promise<void> {
     await prisma.rating.create({
-      data,
+      data: {
+        userId: data.userId,
+        movieId: data.movieId,
+        stars: data.stars,
+        comment: data.comment ?? null,
+      },
     });
   }
 
   async getRatingsByUserIdAndMovieId(
     data: GetRatingsQueryInput,
   ): Promise<RatingWithRelations | null> {
-    return prisma.rating.findUnique({
+    const result = await prisma.rating.findUnique({
       where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
-      include: {
-        movie: true,
-        user: {
-          select: RatingUserSelect,
-        },
-      },
+      include: ratingIncludes,
     });
+    return result as unknown as RatingWithRelations | null;
   }
 
   async deleteRating(userId: string, movieId: string): Promise<void> {
-    await prisma.rating.deleteMany({
+    await prisma.rating.delete({
       where: {
-        userId,
-        movieId,
+        userId_movieId: {
+          userId,
+          movieId,
+        },
       },
     });
   }
@@ -62,6 +63,7 @@ export class RatingRepositoryImpl implements RatingRepository {
       },
       data: {
         stars: data.stars,
+        comment: data.comment !== undefined ? data.comment : undefined,
       },
     });
   }

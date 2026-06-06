@@ -1,63 +1,37 @@
 import { Movie as DtoMovie } from "./domain/movie";
-import { Movie as PrismaMovie } from "@prisma/client";
+import {
+  Movie as PrismaMovie,
+  Rating as PrismaRating,
+  User as PrismaUser,
+  MovieCrew as PrismaMovieCrew,
+  CrewMember as PrismaCrewMember,
+  CrewRole as PrismaCrewRole,
+  Category as PrismaCategory,
+  AgeRating as PrismaAgeRating,
+  University as PrismaUniversity,
+  Language as PrismaLanguage,
+  TargetGroup as PrismaTargetGroup,
+} from "@prisma/client";
 import { Rating } from "../ratings/domain/rating";
 
 export interface PrismaMovieWithRelations extends PrismaMovie {
-  ratings?: Array<{
-    id: string;
-    movieId: string;
-    userId: string;
-    stars: number;
-    createdAt: Date;
-    updatedAt: Date;
-    user?: {
-      id: string;
-      email: string;
-      name: string | null;
-      role: string;
-    } | null;
+  category: PrismaCategory;
+  ageRating: PrismaAgeRating;
+  university: PrismaUniversity | null;
+  language: PrismaLanguage | null;
+  targetGroup: PrismaTargetGroup | null;
+  creator: PrismaUser;
+
+  ratings?: Array<PrismaRating & {
+    user?: PrismaUser | null;
   }> | null;
 
-  crew?: Array<{
-    id: string;
-    movieId: string;
-    crewMemberId: string;
-    role: string;
-    createdAt: Date;
-    updatedAt: Date;
-    crewMember?: {
-      id: string;
-      name: string;
-      email?: string | null;
-      userId?: string | null;
-      user?: {
-        id: string;
-        email: string;
-        name: string | null;
-        role: string;
-        photoUrl?: string | null;
-        motto?: string | null;
-        bio?: string | null;
-        ig?: string | null;
-        facebook?: string | null;
-        youtube?: string | null;
-        tiktok?: string | null;
-        positions?: string[];
-        birthday?: Date | null;
-        awards?: string[];
-      } | null;
-      createdAt: Date;
-      updatedAt: Date;
-    } | null;
+  crew?: Array<PrismaMovieCrew & {
+    crewRole: PrismaCrewRole;
+    crewMember?: (PrismaCrewMember & {
+      user?: PrismaUser | null;
+    }) | null;
   }> | null;
-
-  bts?: {
-    id: string;
-    movieId: string;
-    btsVideo: string[];
-    createdAt: Date;
-    updatedAt: Date;
-  } | null;
 }
 
 export class MovieFactory {
@@ -66,7 +40,11 @@ export class MovieFactory {
       id: movie.id,
       title: movie.title,
       description: movie.description,
-      category: movie.category,
+      category: {
+        id: movie.category.id,
+        name: movie.category.name,
+        createdAt: movie.category.createdAt,
+      },
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl || "",
       trailerUrl: movie.trailerUrl || "",
@@ -74,10 +52,10 @@ export class MovieFactory {
       ratings: movie.ratings
         ? movie.ratings.map(
             (r): Rating => ({
-              id: r.id,
               movieId: r.movieId,
               userId: r.userId,
               stars: r.stars,
+              comment: r.comment || null,
               createdAt: r.createdAt,
               updatedAt: r.updatedAt,
               user: {
@@ -90,7 +68,11 @@ export class MovieFactory {
                 id: movie.id,
                 title: movie.title,
                 description: movie.description,
-                category: movie.category,
+                category: {
+                  id: movie.category.id,
+                  name: movie.category.name,
+                  createdAt: movie.category.createdAt,
+                },
                 thumbnail: movie.thumbnail,
                 youtubeUrl: movie.youtubeUrl || "",
                 trailerUrl: movie.trailerUrl || "",
@@ -98,18 +80,40 @@ export class MovieFactory {
                 year: movie.year,
                 matchRate: movie.matchRate,
                 aspectRatio: movie.aspectRatio,
-                ageRating: movie.ageRating,
+                ageRating: {
+                  id: movie.ageRating.id,
+                  name: movie.ageRating.name,
+                  createdAt: movie.ageRating.createdAt,
+                },
                 duration: movie.duration,
-                university: movie.university,
-                language: movie.language,
-                targetGroup: movie.targetGroup,
+                university: movie.university
+                  ? {
+                      id: movie.university.id,
+                      name: movie.university.name,
+                      createdAt: movie.university.createdAt,
+                    }
+                  : null,
+                language: movie.language
+                  ? {
+                      id: movie.language.id,
+                      name: movie.language.name,
+                      createdAt: movie.language.createdAt,
+                    }
+                  : null,
+                targetGroup: movie.targetGroup
+                  ? {
+                      id: movie.targetGroup.id,
+                      name: movie.targetGroup.name,
+                      createdAt: movie.targetGroup.createdAt,
+                    }
+                  : null,
                 hasProfanity: movie.hasProfanity,
                 hasDrugs: movie.hasDrugs,
                 colorType: movie.colorType,
                 studio: movie.studio,
                 createdBy: movie.createdBy,
                 crew: [],
-                bts: null,
+                btsVideos: [],
                 createdAt: movie.createdAt,
                 updatedAt: movie.updatedAt,
               },
@@ -119,23 +123,60 @@ export class MovieFactory {
       year: movie.year,
       matchRate: movie.matchRate,
       aspectRatio: movie.aspectRatio,
-      ageRating: movie.ageRating,
+      ageRating: {
+        id: movie.ageRating.id,
+        name: movie.ageRating.name,
+        createdAt: movie.ageRating.createdAt,
+      },
       duration: movie.duration,
-      university: movie.university,
-      language: movie.language,
-      targetGroup: movie.targetGroup,
+      university: movie.university
+        ? {
+            id: movie.university.id,
+            name: movie.university.name,
+            createdAt: movie.university.createdAt,
+          }
+        : null,
+      language: movie.language
+        ? {
+            id: movie.language.id,
+            name: movie.language.name,
+            createdAt: movie.language.createdAt,
+          }
+        : null,
+      targetGroup: movie.targetGroup
+        ? {
+            id: movie.targetGroup.id,
+            name: movie.targetGroup.name,
+            createdAt: movie.targetGroup.createdAt,
+          }
+        : null,
       hasProfanity: movie.hasProfanity,
       hasDrugs: movie.hasDrugs,
       colorType: movie.colorType,
       studio: movie.studio,
       createdBy: movie.createdBy,
-
+      creator: movie.creator
+        ? {
+            id: movie.creator.id,
+            email: movie.creator.email,
+            name: movie.creator.name || "",
+            role: (movie.creator.role as "admin" | "user") || "user",
+          }
+        : undefined,
       crew: movie.crew
         ? movie.crew.map((c) => ({
             id: c.id,
             movieId: c.movieId,
             crewMemberId: c.crewMemberId,
-            role: c.role,
+            roleId: c.roleId,
+            role: c.crewRole?.name || "",
+            crewRole: c.crewRole
+              ? {
+                  id: c.crewRole.id,
+                  name: c.crewRole.name,
+                  createdAt: c.crewRole.createdAt,
+                }
+              : undefined,
             crewMember: c.crewMember
               ? {
                   id: c.crewMember.id,
@@ -168,16 +209,7 @@ export class MovieFactory {
             updatedAt: c.updatedAt,
           }))
         : [],
-
-      bts: movie.bts
-        ? {
-            id: movie.bts.id,
-            movieId: movie.bts.movieId,
-            btsVideo: movie.bts.btsVideo || [],
-            createdAt: movie.bts.createdAt,
-            updatedAt: movie.bts.updatedAt,
-          }
-        : null,
+      btsVideos: movie.btsVideos || [],
       createdAt: movie.createdAt,
       updatedAt: movie.updatedAt,
     };

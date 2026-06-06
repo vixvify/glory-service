@@ -1,4 +1,5 @@
 import { AppError, NotFoundError, BadRequestError, ForbiddenError } from "../../core/error";
+import { ColorType } from "@prisma/client";
 import {
   Movie,
   CreateMovieBodyInput,
@@ -6,8 +7,7 @@ import {
   GetMoviesQueryInput,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
-import { MovieBtsRepository } from "./domain/movie-bts.repository";
-import { MovieFactory } from "./factory";
+import { MovieFactory, PrismaMovieWithRelations } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
 import { associateCrewBulk } from "../../lib/crew";
@@ -15,14 +15,13 @@ import { associateCrewBulk } from "../../lib/crew";
 export class MovieService {
   constructor(
     private repo: MovieRepository,
-    private btsRepo: MovieBtsRepository,
   ) {}
 
   async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
     try {
       if (isDefaultQuery(params)) {
         const movies = await this.repo.find();
-        return MovieFactory.toDomainList(movies);
+        return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
       }
       const { search, searchby, page, pagesize, sort, sortby } = params || {};
 
@@ -36,7 +35,7 @@ export class MovieService {
         sort: sort || undefined,
         sortby: sortby || undefined,
       });
-      return MovieFactory.toDomainList(movies);
+      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -48,7 +47,7 @@ export class MovieService {
   async getMyMovies(userId: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.find({ createdBy: userId });
-      return MovieFactory.toDomainList(movies);
+      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -60,7 +59,7 @@ export class MovieService {
   async getContributedMovies(userId: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findContributed(userId);
-      return MovieFactory.toDomainList(movies);
+      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -72,7 +71,7 @@ export class MovieService {
   async getMoviesByCategory(category: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findByCategory(category);
-      return MovieFactory.toDomainList(movies);
+      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -86,7 +85,7 @@ export class MovieService {
   async getMoviesByUniversity(university: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findByUniversity(university);
-      return MovieFactory.toDomainList(movies);
+      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -103,7 +102,7 @@ export class MovieService {
       if (!movie) {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
-      return MovieFactory.toDomain(movie);
+      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -135,20 +134,21 @@ export class MovieService {
         thumbnail: thumbnailUrl,
         youtubeUrl: data.youtubeUrl,
         trailerUrl: data.trailerUrl || null,
-        category: data.category,
+        categoryId: data.categoryId,
         year: Number(data.year),
         duration: Number(data.duration),
         matchRate: 100,
         aspectRatio: data.aspectRatio,
-        ageRating: data.ageRating,
-        university: data.university || null,
-        language: data.language || null,
-        targetGroup: data.targetGroup || null,
+        ageRatingId: data.ageRatingId,
+        universityId: data.universityId || null,
+        languageId: data.languageId || null,
+        targetGroupId: data.targetGroupId || null,
         hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
         hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
-        colorType: data.colorType || "COLOR",
+        colorType: (data.colorType as ColorType) || "color",
         studio: data.studio || null,
         createdBy: userId,
+        btsVideos: btsVideo,
       });
 
       await associateCrewBulk({
@@ -161,13 +161,11 @@ export class MovieService {
         editors,
       }, userId);
 
-      await this.btsRepo.create(movieRecord.id, btsVideo);
-
       const movie = await this.repo.findById(movieRecord.id);
       if (!movie) {
         throw new Error("Failed to retrieve created movie");
       }
-      return MovieFactory.toDomain(movie);
+      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -213,19 +211,20 @@ export class MovieService {
         thumbnail: thumbnailUrl,
         youtubeUrl: data.youtubeUrl,
         trailerUrl: data.trailerUrl || null,
-        category: data.category,
+        categoryId: data.categoryId,
         year: Number(data.year),
         duration: Number(data.duration),
         matchRate: existing.matchRate,
         aspectRatio: data.aspectRatio,
-        ageRating: data.ageRating,
-        university: data.university || null,
-        language: data.language || null,
-        targetGroup: data.targetGroup || null,
+        ageRatingId: data.ageRatingId,
+        universityId: data.universityId || null,
+        languageId: data.languageId || null,
+        targetGroupId: data.targetGroupId || null,
         hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
         hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
-        colorType: data.colorType || "COLOR",
+        colorType: (data.colorType as ColorType) || "color",
         studio: data.studio || null,
+        btsVideos: btsVideo,
       });
 
       await associateCrewBulk({
@@ -238,13 +237,11 @@ export class MovieService {
         editors,
       }, userId);
 
-      await this.btsRepo.upsert(id, btsVideo);
-
       const movie = await this.repo.findById(id);
       if (!movie) {
         throw new Error("Failed to retrieve updated movie");
       }
-      return MovieFactory.toDomain(movie);
+      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -267,7 +264,7 @@ export class MovieService {
       if (movie.thumbnail) {
         await deleteFromR2(movie.thumbnail);
       }
-      return MovieFactory.toDomain(movie);
+      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

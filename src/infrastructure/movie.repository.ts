@@ -6,34 +6,14 @@ import calculatePagination from "../core/utils/pagination";
 import {
   MovieRepositoryCreateInput,
   MovieRepositoryUpdateInput,
-  MovieUserSelect,
+  movieIncludes,
 } from "../modules/movies/domain/movie";
 
 export class MovieRepositoryImpl implements MovieRepository {
   async find(params?: MovieFilterParams): Promise<PrismaMovie[]> {
     if (!params) {
       return prisma.movie.findMany({
-        include: {
-          crew: {
-            include: {
-              crewMember: {
-                include: {
-                  user: {
-                    select: MovieUserSelect,
-                  },
-                },
-              },
-            },
-          },
-          bts: true,
-          ratings: {
-            include: {
-              user: {
-                select: MovieUserSelect,
-              },
-            },
-          },
-        },
+        include: movieIncludes,
         orderBy: { createdAt: "desc" },
       });
     }
@@ -50,10 +30,30 @@ export class MovieRepositoryImpl implements MovieRepository {
     const where: Prisma.MovieWhereInput = {
       ...(search && searchby === "year" && { year: parseInt(search, 10) }),
       ...(search &&
-        searchby !== "year" && {
+        searchby !== "year" &&
+        searchby !== "category" &&
+        searchby !== "university" && {
           [searchby || "title"]: {
             contains: search,
             mode: "insensitive",
+          },
+        }),
+      ...(search &&
+        searchby === "category" && {
+          category: {
+            name: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+        }),
+      ...(search &&
+        searchby === "university" && {
+          university: {
+            name: {
+              contains: search,
+              mode: "insensitive",
+            },
           },
         }),
       ...(createdBy && { createdBy }),
@@ -61,27 +61,7 @@ export class MovieRepositoryImpl implements MovieRepository {
 
     return prisma.movie.findMany({
       where,
-      include: {
-        crew: {
-          include: {
-            crewMember: {
-              include: {
-                user: {
-                  select: MovieUserSelect,
-                },
-              },
-            },
-          },
-        },
-        bts: true,
-        ratings: {
-          include: {
-            user: {
-              select: MovieUserSelect,
-            },
-          },
-        },
-      },
+      include: movieIncludes,
       orderBy: {
         [sortby]: sort,
       },
@@ -92,29 +72,11 @@ export class MovieRepositoryImpl implements MovieRepository {
   async findByCategory(category: string): Promise<PrismaMovie[]> {
     return prisma.movie.findMany({
       where: {
-        category: { equals: category, mode: "insensitive" },
-      },
-      include: {
-        crew: {
-          include: {
-            crewMember: {
-              include: {
-                user: {
-                  select: MovieUserSelect,
-                },
-              },
-            },
-          },
-        },
-        bts: true,
-        ratings: {
-          include: {
-            user: {
-              select: MovieUserSelect,
-            },
-          },
+        category: {
+          name: { equals: category, mode: "insensitive" },
         },
       },
+      include: movieIncludes,
       orderBy: { createdAt: "desc" },
     });
   }
@@ -122,29 +84,11 @@ export class MovieRepositoryImpl implements MovieRepository {
   async findByUniversity(university: string): Promise<PrismaMovie[]> {
     return prisma.movie.findMany({
       where: {
-        university: { equals: university, mode: "insensitive" },
-      },
-      include: {
-        crew: {
-          include: {
-            crewMember: {
-              include: {
-                user: {
-                  select: MovieUserSelect,
-                },
-              },
-            },
-          },
-        },
-        bts: true,
-        ratings: {
-          include: {
-            user: {
-              select: MovieUserSelect,
-            },
-          },
+        university: {
+          name: { equals: university, mode: "insensitive" },
         },
       },
+      include: movieIncludes,
       orderBy: { createdAt: "desc" },
     });
   }
@@ -160,27 +104,7 @@ export class MovieRepositoryImpl implements MovieRepository {
           },
         },
       },
-      include: {
-        crew: {
-          include: {
-            crewMember: {
-              include: {
-                user: {
-                  select: MovieUserSelect,
-                },
-              },
-            },
-          },
-        },
-        bts: true,
-        ratings: {
-          include: {
-            user: {
-              select: MovieUserSelect,
-            },
-          },
-        },
-      },
+      include: movieIncludes,
       orderBy: { createdAt: "desc" },
     });
   }
@@ -188,27 +112,7 @@ export class MovieRepositoryImpl implements MovieRepository {
   async findById(id: string): Promise<PrismaMovie | null> {
     return prisma.movie.findUnique({
       where: { id },
-      include: {
-        crew: {
-          include: {
-            crewMember: {
-              include: {
-                user: {
-                  select: MovieUserSelect,
-                },
-              },
-            },
-          },
-        },
-        bts: true,
-        ratings: {
-          include: {
-            user: {
-              select: MovieUserSelect,
-            },
-          },
-        },
-      },
+      include: movieIncludes,
     });
   }
 

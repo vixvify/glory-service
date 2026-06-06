@@ -1,14 +1,9 @@
-import { Rating as PrismaRating, Movie as PrismaMovie, User as PrismaUser } from "@prisma/client";
 import {
   AddRatingBodyInput,
   GetRatingsQueryInput,
   UpdateRatingBodyInput,
+  RatingWithRelations,
 } from "./rating";
-
-export type RatingWithRelations = PrismaRating & {
-  movie: PrismaMovie;
-  user: Pick<PrismaUser, "id" | "email" | "name" | "role">;
-};
 
 export interface RatingRepository {
   addRating(data: AddRatingBodyInput): Promise<void>;

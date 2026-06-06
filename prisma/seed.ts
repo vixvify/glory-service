@@ -15,9 +15,9 @@ async function main() {
   console.log("Starting seeding...");
   console.log("Cleaning up database...");
   await prisma.movieCrew.deleteMany();
-  await prisma.movieBts.deleteMany();
   await prisma.movie.deleteMany();
   await prisma.crewMember.deleteMany();
+  await prisma.crewRole.deleteMany();
   await prisma.category.deleteMany();
   await prisma.university.deleteMany();
   await prisma.ageRating.deleteMany();
@@ -61,6 +61,30 @@ async function main() {
   await prisma.targetGroup.createMany({
     data: targetGroups.map((name) => ({ name })),
   });
+
+  const roles = ["DIRECTOR", "PRODUCER", "WRITER", "CAST", "DOP", "EDITOR"];
+  await prisma.crewRole.createMany({
+    data: roles.map((name) => ({ name })),
+  });
+
+  console.log("Retrieving master data mappings...");
+  const dbCategories = await prisma.category.findMany();
+  const categoryMap = new Map(dbCategories.map((c) => [c.name.toLowerCase(), c.id]));
+
+  const dbAgeRatings = await prisma.ageRating.findMany();
+  const ageRatingMap = new Map(dbAgeRatings.map((ar) => [ar.name.toLowerCase(), ar.id]));
+
+  const dbUniversities = await prisma.university.findMany();
+  const universityMap = new Map(dbUniversities.map((u) => [u.name.toLowerCase(), u.id]));
+
+  const dbLanguages = await prisma.language.findMany();
+  const languageMap = new Map(dbLanguages.map((l) => [l.name.toLowerCase(), l.id]));
+
+  const dbTargetGroups = await prisma.targetGroup.findMany();
+  const targetGroupMap = new Map(dbTargetGroups.map((tg) => [tg.name.toLowerCase(), tg.id]));
+
+  const dbCrewRoles = await prisma.crewRole.findMany();
+  const crewRoleMap = new Map(dbCrewRoles.map((cr) => [cr.name.toLowerCase(), cr.id]));
 
   console.log("Gathering unique crew members...");
   const uniqueCrew = new Set<string>();
@@ -145,7 +169,14 @@ async function main() {
   console.log("Preparing movies and relations in memory...");
   const moviesToInsert: Prisma.MovieCreateManyInput[] = [];
   const movieCrewsToInsert: Prisma.MovieCrewCreateManyInput[] = [];
-  const movieBtsToInsert: Prisma.MovieBtsCreateManyInput[] = [];
+
+  const getColorType = (type: string): "color" | "black_and_white" => {
+    const clean = type.toUpperCase();
+    if (clean === "BLACK_AND_WHITE" || clean === "BLACK_AND_WHITE") {
+      return "black_and_white";
+    }
+    return "color";
+  };
 
   let idx = 0;
   for (const movie of seedMovies) {
@@ -155,7 +186,7 @@ async function main() {
     const hasDrugs = idx % 3 === 2;
 
     const colorTypes = ["COLOR", "BLACK_AND_WHITE", "COLOR_AND_BW"];
-    const colorType = colorTypes[idx % colorTypes.length];
+    const colorType = getColorType(colorTypes[idx % colorTypes.length]);
 
     const studios = [
       "Glory Original",
@@ -166,6 +197,20 @@ async function main() {
     ];
     const studio = studios[idx % studios.length];
 
+    const categoryId = categoryMap.get(movie.category.toLowerCase());
+    if (!categoryId) throw new Error(`Category not found: ${movie.category}`);
+
+    const ageRatingStr = movie.ageRating || "PG-13";
+    const ageRatingId = ageRatingMap.get(ageRatingStr.toLowerCase());
+    if (!ageRatingId) throw new Error(`Age rating not found: ${ageRatingStr}`);
+
+    const universityId = movie.university ? universityMap.get(movie.university.toLowerCase()) || null : null;
+    const languageId = movie.language ? languageMap.get(movie.language.toLowerCase()) || null : null;
+    const targetGroupId = movie.targetGroup ? targetGroupMap.get(movie.targetGroup.toLowerCase()) || null : null;
+
+    const oldCrew = movie.crew?.create;
+    const btsVideos = oldCrew?.btsVideo ? [oldCrew.btsVideo] : [];
+
     moviesToInsert.push({
       id: movieId,
       title: movie.title,
@@ -173,26 +218,29 @@ async function main() {
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl,
       trailerUrl: movie.trailerUrl || movie.youtubeUrl,
-      category: movie.category,
+      categoryId,
       year: movie.year,
       duration: movie.duration,
       views: movie.views || 0,
       matchRate: movie.matchRate || 100,
       aspectRatio: "16:9",
-      ageRating: movie.ageRating || "PG-13",
-      university: movie.university || null,
-      language: movie.language || null,
-      targetGroup: movie.targetGroup || null,
+      ageRatingId,
+      universityId,
+      languageId,
+      targetGroupId,
       hasProfanity,
       hasDrugs,
       colorType,
       studio,
       createdBy: defaultUserId,
+      btsVideos,
     });
 
-    const oldCrew = movie.crew?.create;
     if (oldCrew) {
-      const addCrewRelations = (names: string[], role: string) => {
+      const addCrewRelations = (names: string[], roleName: string) => {
+        const roleId = crewRoleMap.get(roleName.toLowerCase());
+        if (!roleId) throw new Error(`Role ID not found for role: ${roleName}`);
+
         for (const name of names) {
           if (!name) continue;
           const crewMemberId = crewMap.get(name);
@@ -200,7 +248,7 @@ async function main() {
             movieCrewsToInsert.push({
               movieId,
               crewMemberId,
-              role,
+              roleId,
             });
           }
         }
@@ -222,24 +270,24 @@ async function main() {
         const editorMember =
           allCrewMembers[(idx * 2 + 1) % allCrewMembers.length];
 
-        movieCrewsToInsert.push({
-          movieId,
-          crewMemberId: dopMember.id,
-          role: "DOP",
-        });
-        movieCrewsToInsert.push({
-          movieId,
-          crewMemberId: editorMember.id,
-          role: "EDITOR",
-        });
+        const dopRoleId = crewRoleMap.get("dop");
+        const editorRoleId = crewRoleMap.get("editor");
+
+        if (dopRoleId) {
+          movieCrewsToInsert.push({
+            movieId,
+            crewMemberId: dopMember.id,
+            roleId: dopRoleId,
+          });
+        }
+        if (editorRoleId) {
+          movieCrewsToInsert.push({
+            movieId,
+            crewMemberId: editorMember.id,
+            roleId: editorRoleId,
+          });
+        }
       }
-
-      const btsVideo = oldCrew.btsVideo ? [oldCrew.btsVideo] : [];
-
-      movieBtsToInsert.push({
-        movieId,
-        btsVideo,
-      });
     }
     idx++;
   }
@@ -253,7 +301,7 @@ async function main() {
   const seen = new Set<string>();
   const finalMovieCrews: Prisma.MovieCrewCreateManyInput[] = [];
   for (const item of movieCrewsToInsert) {
-    const key = `${item.movieId}-${item.crewMemberId}-${item.role}`;
+    const key = `${item.movieId}-${item.crewMemberId}-${item.roleId}`;
     if (!seen.has(key)) {
       seen.add(key);
       finalMovieCrews.push(item);
@@ -265,14 +313,6 @@ async function main() {
   );
   await prisma.movieCrew.createMany({
     data: finalMovieCrews,
-    skipDuplicates: true,
-  });
-
-  console.log(
-    `Inserting ${movieBtsToInsert.length} movie BTS records in bulk...`,
-  );
-  await prisma.movieBts.createMany({
-    data: movieBtsToInsert,
     skipDuplicates: true,
   });
 

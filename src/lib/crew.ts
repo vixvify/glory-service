@@ -3,6 +3,7 @@ import { isUuid } from "../core/utils/validator";
 import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
 import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
+import { prisma } from "./prisma";
 
 const crewMemberRepo = new CrewMemberRepositoryImpl();
 const movieCrewRepo = new MovieCrewRepositoryImpl();
@@ -81,15 +82,23 @@ export async function associateCrewBulk(
     }
   }
 
+  // Fetch all crew roles to map names to IDs
+  const dbCrewRoles = await prisma.crewRole.findMany();
+  const crewRoleMap = new Map(dbCrewRoles.map((cr) => [cr.name.toUpperCase(), cr.id]));
+
   const movieCrewsData = items.map((item) => {
     const crewMemberId = crewIdMap.get(item.value);
     if (!crewMemberId) {
       throw new Error(`Failed to map crew member for value: ${item.value}`);
     }
+    const roleId = crewRoleMap.get(item.role.toUpperCase());
+    if (!roleId) {
+      throw new Error(`Role ID not found for role: ${item.role}`);
+    }
     return {
       movieId,
       crewMemberId,
-      role: item.role,
+      roleId,
     };
   });
 
@@ -97,24 +106,24 @@ export async function associateCrewBulk(
 
   const existingMap = new Map<string, string>();
   for (const ext of existing) {
-    existingMap.set(`${ext.crewMemberId}-${ext.role}`, ext.id);
+    existingMap.set(`${ext.crewMemberId}-${ext.roleId}`, ext.id);
   }
 
   const targetKeys = new Set<string>();
   for (const target of movieCrewsData) {
-    targetKeys.add(`${target.crewMemberId}-${target.role}`);
+    targetKeys.add(`${target.crewMemberId}-${target.roleId}`);
   }
 
   const toDelete: string[] = [];
   for (const ext of existing) {
-    const key = `${ext.crewMemberId}-${ext.role}`;
+    const key = `${ext.crewMemberId}-${ext.roleId}`;
     if (!targetKeys.has(key)) {
       toDelete.push(ext.id);
     }
   }
 
   const toInsert = movieCrewsData.filter((target) => {
-    const key = `${target.crewMemberId}-${target.role}`;
+    const key = `${target.crewMemberId}-${target.roleId}`;
     return !existingMap.has(key);
   });
 

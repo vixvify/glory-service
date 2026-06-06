@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma";
 import { FavoriteRepository } from "../modules/favorites/domain/favorite.repository";
 import { Movie as PrismaMovie } from "@prisma/client";
-import { FavoriteUserSelect } from "../modules/favorites/domain/favorite";
+import { movieIncludes } from "../modules/movies/domain/movie";
 
 export class FavoriteRepositoryImpl implements FavoriteRepository {
   async getFavorites(userId: string): Promise<PrismaMovie[]> {
@@ -9,25 +9,11 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
       where: { userId },
       include: {
         movie: {
-          include: {
-            crew: {
-              include: {
-                crewMember: true,
-              },
-            },
-            bts: true,
-            ratings: {
-              include: {
-                user: {
-                  select: FavoriteUserSelect,
-                },
-              },
-            },
-          },
+          include: movieIncludes,
         },
       },
     });
-    return favorites.map((fav) => fav.movie);
+    return favorites.map((fav) => fav.movie) as unknown as PrismaMovie[];
   }
 
   async checkFavorite(userId: string, movieId: string): Promise<boolean> {
@@ -52,10 +38,12 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
   }
 
   async removeFavorite(userId: string, movieId: string): Promise<void> {
-    await prisma.favorite.deleteMany({
+    await prisma.favorite.delete({
       where: {
-        userId,
-        movieId,
+        userId_movieId: {
+          userId,
+          movieId,
+        },
       },
     });
   }
