@@ -70,6 +70,14 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     return result as unknown as CrewMemberWithRelations | null;
   }
 
+  async findByEmail(email: string): Promise<CrewMemberWithRelations | null> {
+    const result = await prisma.crewMember.findFirst({
+      where: { email },
+      include: crewMemberIncludes,
+    });
+    return result as unknown as CrewMemberWithRelations | null;
+  }
+
   async findByName(name: string): Promise<CrewMemberWithRelations | null> {
     const result = await prisma.crewMember.findUnique({
       where: { name },

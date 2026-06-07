@@ -9,6 +9,7 @@ import {
 export interface CrewMemberRepository {
   find(input?: CrewFilterInput): Promise<CrewMemberWithRelations[]>;
   findById(id: string): Promise<CrewMemberWithRelations | null>;
+  findByEmail(email: string): Promise<CrewMemberWithRelations | null>;
   findByName(name: string): Promise<CrewMemberWithRelations | null>;
   create(input: CreateCrewMemberInput): Promise<PrismaCrewMember>;
   update(

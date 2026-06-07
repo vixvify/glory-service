@@ -123,10 +123,25 @@ async function main() {
   console.log(
     `Found ${uniqueCrew.size} unique crew members. Syncing with database in bulk...`,
   );
-  const crewData = Array.from(uniqueCrew).map((name) => ({
-    name,
-    createdBy: defaultUserId,
-  }));
+  const seenEmails = new Set<string>();
+  const crewData = Array.from(uniqueCrew).map((name) => {
+    let emailPrefix = name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (!emailPrefix) emailPrefix = "crew";
+    
+    let email = `${emailPrefix}@thaiflix.com`;
+    let counter = 1;
+    while (seenEmails.has(email)) {
+      email = `${emailPrefix}${counter}@thaiflix.com`;
+      counter++;
+    }
+    seenEmails.add(email);
+
+    return {
+      name,
+      email,
+      createdBy: defaultUserId,
+    };
+  });
  
   await prisma.crewMember.createMany({
     data: crewData,

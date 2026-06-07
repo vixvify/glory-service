@@ -1,6 +1,6 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
-import { tArrayCoerce } from "../../../core/utils/parser";
+import { tArrayCoerce, tCrewArrayCoerce, MovieCrewInputItem } from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
 import { ColorType, Prisma } from "@prisma/client";
 
@@ -132,12 +132,12 @@ export const createMovieBodySchema = t.Object({
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.String(),
   studio: t.Optional(t.String()),
-  director: t.Optional(tArrayCoerce),
-  producer: t.Optional(tArrayCoerce),
-  writer: t.Optional(tArrayCoerce),
-  cast: t.Optional(tArrayCoerce),
-  dop: t.Optional(tArrayCoerce),
-  editor: t.Optional(tArrayCoerce),
+  director: t.Optional(tCrewArrayCoerce),
+  producer: t.Optional(tCrewArrayCoerce),
+  writer: t.Optional(tCrewArrayCoerce),
+  cast: t.Optional(tCrewArrayCoerce),
+  dop: t.Optional(tCrewArrayCoerce),
+  editor: t.Optional(tCrewArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
 });
 export type CreateMovieBodyDTO = Static<typeof createMovieBodySchema>;
@@ -165,12 +165,12 @@ export const updateMovieBodySchema = t.Object({
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.String(),
   studio: t.Optional(t.String()),
-  director: t.Optional(tArrayCoerce),
-  producer: t.Optional(tArrayCoerce),
-  writer: t.Optional(tArrayCoerce),
-  cast: t.Optional(tArrayCoerce),
-  dop: t.Optional(tArrayCoerce),
-  editor: t.Optional(tArrayCoerce),
+  director: t.Optional(tCrewArrayCoerce),
+  producer: t.Optional(tCrewArrayCoerce),
+  writer: t.Optional(tCrewArrayCoerce),
+  cast: t.Optional(tCrewArrayCoerce),
+  dop: t.Optional(tCrewArrayCoerce),
+  editor: t.Optional(tCrewArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
 });
 export type UpdateMovieBodyDTO = Static<typeof updateMovieBodySchema>;
@@ -226,12 +226,12 @@ export interface MovieFilterInput {
 
 export interface AssociateCrewBulkInput {
   movieId: string;
-  directors: string[];
-  producers: string[];
-  writers: string[];
-  cast: string[];
-  dops: string[];
-  editors: string[];
+  directors: MovieCrewInputItem[];
+  producers: MovieCrewInputItem[];
+  writers: MovieCrewInputItem[];
+  cast: MovieCrewInputItem[];
+  dops: MovieCrewInputItem[];
+  editors: MovieCrewInputItem[];
 }
 
 export const MovieUserSelect = {

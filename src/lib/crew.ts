@@ -1,12 +1,14 @@
 import { NotFoundError } from "../core/error";
-import { isUuid } from "../core/utils/validator";
 import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
 import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
+import { AuthRepositoryImpl } from "../infrastructure/auth.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
+import { MovieCrewInputItem } from "../core/utils/parser";
 import { prisma } from "./prisma";
 
 const crewMemberRepo = new CrewMemberRepositoryImpl();
 const movieCrewRepo = new MovieCrewRepositoryImpl();
+const authRepo = new AuthRepositoryImpl();
 
 export async function associateCrewBulk(
   input: AssociateCrewBulkInput,
@@ -14,12 +16,12 @@ export async function associateCrewBulk(
 ): Promise<void> {
   const { movieId, directors, producers, writers, cast, dops, editors } = input;
 
-  const items: Array<{ value: string; role: string }> = [];
+  const items: Array<{ item: MovieCrewInputItem; role: string }> = [];
 
-  const addItems = (list: string[], role: string) => {
+  const addItems = (list: MovieCrewInputItem[], role: string) => {
     for (const val of list) {
-      if (val && val.trim()) {
-        items.push({ value: val.trim(), role });
+      if (val && (val.crewMemberId || (val.name && val.name.trim()))) {
+        items.push({ item: val, role });
       }
     }
   };
@@ -33,18 +35,21 @@ export async function associateCrewBulk(
 
   if (items.length === 0) return;
 
-  const uuidItems = items.filter((item) => isUuid(item.value));
-  const nameItems = items.filter((item) => !isUuid(item.value));
-
   const crewIdMap = new Map<string, string>();
 
-  if (uuidItems.length > 0) {
-    const uuids = Array.from(new Set(uuidItems.map((item) => item.value)));
-    const existingMembers = await crewMemberRepo.findManyByIds(uuids);
+  // 1. First, validate and collect all explicitly provided IDs
+  const explicitIds = Array.from(
+    new Set(
+      items.map((x) => x.item.crewMemberId).filter((id): id is string => !!id),
+    ),
+  );
 
-    if (existingMembers.length !== uuids.length) {
+  if (explicitIds.length > 0) {
+    const existingMembers = await crewMemberRepo.findManyByIds(explicitIds);
+
+    if (existingMembers.length !== explicitIds.length) {
       const foundUuids = new Set(existingMembers.map((m) => m.id));
-      const missing = uuids.find((id) => !foundUuids.has(id));
+      const missing = explicitIds.find((id) => !foundUuids.has(id));
       throw new NotFoundError(`Crew member with ID ${missing} not found`);
     }
 
@@ -53,25 +58,62 @@ export async function associateCrewBulk(
     }
   }
 
-  if (nameItems.length > 0) {
-    const names = Array.from(new Set(nameItems.map((item) => item.value)));
-    const existingMembers = await crewMemberRepo.findManyByNames(names);
-
-    const existingNames = new Set(existingMembers.map((m) => m.name));
-    for (const m of existingMembers) {
-      crewIdMap.set(m.name, m.id);
+  // 2. Resolve items that do not have crewMemberId
+  for (const { item } of items) {
+    if (item.crewMemberId) {
+      continue;
     }
 
-    const missingNames = names.filter((name) => !existingNames.has(name));
-    if (missingNames.length > 0) {
-      await crewMemberRepo.createMany(missingNames, createdBy);
+    const email = item.email?.trim() || "";
+    const name = item.name?.trim() || "";
 
-      const newMembers = await crewMemberRepo.findManyByNames(missingNames);
+    if (!name) continue;
 
-      for (const m of newMembers) {
-        crewIdMap.set(m.name, m.id);
+    let memberId = "";
+
+    // A. Look up by email if provided
+    if (email) {
+      const byEmail = await crewMemberRepo.findByEmail(email);
+      if (byEmail) {
+        memberId = byEmail.id;
       }
     }
+
+    // B. Look up by name if not found by email or email was not provided
+    if (!memberId) {
+      const byName = await crewMemberRepo.findByName(name);
+      if (byName) {
+        memberId = byName.id;
+        if (!byName.email && email) {
+          const user = await authRepo.findByEmail(email);
+          await crewMemberRepo.update(byName.id, {
+            name: byName.name,
+            email,
+            userId: user?.id || null,
+          });
+        }
+      }
+    }
+
+    // C. If still not found, create new CrewMember
+    if (!memberId) {
+      let userId: string | null = null;
+      if (email) {
+        const user = await authRepo.findByEmail(email);
+        userId = user?.id || null;
+      }
+
+      const created = await crewMemberRepo.create({
+        name,
+        email: email || null,
+        userId,
+        createdBy,
+      });
+      memberId = created.id;
+    }
+
+    const itemKey = email ? `email:${email.toLowerCase()}` : `name:${name}`;
+    crewIdMap.set(itemKey, memberId);
   }
 
   const dbCrewRoles = await prisma.crewRole.findMany();
@@ -80,9 +122,18 @@ export async function associateCrewBulk(
   );
 
   const movieCrewsData = items.map((item) => {
-    const crewMemberId = crewIdMap.get(item.value);
+    let itemKey = "";
+    if (item.item.crewMemberId) {
+      itemKey = item.item.crewMemberId;
+    } else {
+      const email = item.item.email?.trim() || "";
+      const name = item.item.name?.trim() || "";
+      itemKey = email ? `email:${email.toLowerCase()}` : `name:${name}`;
+    }
+
+    const crewMemberId = crewIdMap.get(itemKey);
     if (!crewMemberId) {
-      throw new Error(`Failed to map crew member for value: ${item.value}`);
+      throw new Error(`Failed to map crew member for key: ${itemKey}`);
     }
     const roleId = crewRoleMap.get(item.role.toUpperCase());
     if (!roleId) {
