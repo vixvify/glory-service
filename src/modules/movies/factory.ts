@@ -201,6 +201,7 @@ export class MovieFactory {
                         awards: c.crewMember.user.awards,
                       }
                     : undefined,
+                  createdBy: c.crewMember.createdBy,
                   createdAt: c.crewMember.createdAt,
                   updatedAt: c.crewMember.updatedAt,
                 }

@@ -2,6 +2,7 @@ import { User } from "../../auth/domain/auth";
 import { Movie } from "../../movies/domain/movie";
 import { t, Static } from "elysia";
 import { Movie as PrismaMovie, User as PrismaUser, Rating as PrismaRating, Prisma } from "@prisma/client";
+import { Category, AgeRating, University, Language, TargetGroup } from "../../master-data/domain/masterdata";
 
 type RatingMovie = Omit<Movie, "ratings">;
 
@@ -103,11 +104,11 @@ export const RatingUserSelect = {
 
 export type RatingWithRelations = PrismaRating & {
   movie: PrismaMovie & {
-    category: { id: string; name: string; createdAt: Date };
-    ageRating: { id: string; name: string; createdAt: Date };
-    university: { id: string; name: string; createdAt: Date } | null;
-    language: { id: string; name: string; createdAt: Date } | null;
-    targetGroup: { id: string; name: string; createdAt: Date } | null;
+    category: Category;
+    ageRating: AgeRating;
+    university: University | null;
+    language: Language | null;
+    targetGroup: TargetGroup | null;
   };
   user: Pick<PrismaUser, "id" | "email" | "name" | "role">;
 };

@@ -3,28 +3,8 @@ import { Rating } from "../../ratings/domain/rating";
 import { tArrayCoerce, tCrewArrayCoerce, MovieCrewInputItem } from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
 import { ColorType, Prisma } from "@prisma/client";
-
-export interface MasterDataField {
-  id: string;
-  name: string;
-  createdAt: Date;
-}
-
-export interface CrewRole {
-  id: string;
-  name: string;
-  createdAt: Date;
-}
-
-export interface CrewMember {
-  id: string;
-  name: string;
-  email?: string | null;
-  userId?: string | null;
-  user?: User | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { CrewMember } from "../../crew-members/domain/crew-member";
+import { Category, AgeRating, University, Language, TargetGroup, CrewRole } from "../../master-data/domain/masterdata";
 
 export interface MovieCrew {
   id: string;
@@ -43,7 +23,7 @@ export interface Movie {
   id: string;
   title: string;
   description: string;
-  category: MasterDataField;
+  category: Category;
   thumbnail: string;
   youtubeUrl: string;
   trailerUrl?: string | null;
@@ -52,11 +32,11 @@ export interface Movie {
   year: number;
   matchRate: number;
   aspectRatio: string;
-  ageRating: MasterDataField;
+  ageRating: AgeRating;
   duration: number;
-  university?: MasterDataField | null;
-  language?: MasterDataField | null;
-  targetGroup?: MasterDataField | null;
+  university?: University | null;
+  language?: Language | null;
+  targetGroup?: TargetGroup | null;
   hasProfanity: boolean;
   hasDrugs: boolean;
   colorType: ColorType;
@@ -68,6 +48,7 @@ export interface Movie {
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export interface CreateMovieInput {
   title: string;
