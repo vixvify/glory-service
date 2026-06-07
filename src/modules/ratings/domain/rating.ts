@@ -21,48 +21,67 @@ export const addRatingBodySchema = t.Object({
   stars: t.Number(),
   comment: t.Optional(t.Union([t.String(), t.Null()])),
 });
-export type AddRatingBodyInput = {
+export type AddRatingBodyDTO = Static<typeof addRatingBodySchema>;
+
+export interface AddRatingDTO {
   userId: string;
   movieId: string;
   stars: number;
   comment?: string | null;
-};
+}
+
+export interface AddRatingInput {
+  userId: string;
+  movieId: string;
+  stars: number;
+  comment?: string | null;
+}
 
 export const getRatingsQuerySchema = t.Object({
   movieId: t.String(),
 });
-export type GetRatingsQueryInput = {
+export type GetRatingsQueryDTO = Static<typeof getRatingsQuerySchema>;
+
+export interface GetRatingsDTO {
   userId: string;
   movieId: string;
-};
+}
+
+export interface GetRatingsInput {
+  userId: string;
+  movieId: string;
+}
 
 export const deleteRatingBodySchema = t.Object({
   movieId: t.String(),
 });
-export type DeleteRatingBodyInput = {
-  userId: string;
-  movieId: string;
-};
+export type DeleteRatingBodyDTO = Static<typeof deleteRatingBodySchema>;
 
 export const checkRatingQuerySchema = t.Object({
   movieId: t.String(),
 });
-export type CheckRatingQueryInput = {
-  userId: string;
-  movieId: string;
-};
+export type CheckRatingQueryDTO = Static<typeof checkRatingQuerySchema>;
 
 export const updateRatingBodySchema = t.Object({
   movieId: t.String(),
   stars: t.Number(),
   comment: t.Optional(t.Union([t.String(), t.Null()])),
 });
-export type UpdateRatingBodyInput = {
+export type UpdateRatingBodyDTO = Static<typeof updateRatingBodySchema>;
+
+export interface UpdateRatingDTO {
   userId: string;
   movieId: string;
   stars: number;
   comment?: string | null;
-};
+}
+
+export interface UpdateRatingInput {
+  userId: string;
+  movieId: string;
+  stars: number;
+  comment?: string | null;
+}
 
 export const RatingUserSelect = {
   id: true,

@@ -3,12 +3,12 @@ import { MovieCrew as PrismaMovieCrew } from "@prisma/client";
 import {
   MovieCrewRepository,
 } from "../modules/movies/domain/movie-crew.repository";
-import { MovieCrewRepositoryCreateInput } from "../modules/movies/domain/movie";
+import { CreateMovieCrewInput } from "../modules/movies/domain/movie";
 
 export class MovieCrewRepositoryImpl implements MovieCrewRepository {
-  async createMany(data: MovieCrewRepositoryCreateInput[]): Promise<void> {
+  async createMany(inputs: CreateMovieCrewInput[]): Promise<void> {
     await prisma.movieCrew.createMany({
-      data,
+      data: inputs,
       skipDuplicates: true,
     });
   }

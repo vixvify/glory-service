@@ -69,7 +69,7 @@ export interface Movie {
   updatedAt: Date;
 }
 
-export interface MovieRepositoryCreateInput {
+export interface CreateMovieInput {
   title: string;
   description: string;
   thumbnail: string;
@@ -92,7 +92,7 @@ export interface MovieRepositoryCreateInput {
   btsVideos?: string[];
 }
 
-export interface MovieRepositoryUpdateInput {
+export interface UpdateMovieInput {
   title: string;
   description: string;
   thumbnail: string;
@@ -140,12 +140,12 @@ export const createMovieBodySchema = t.Object({
   editor: t.Optional(tArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
 });
-export type CreateMovieBodyInput = Static<typeof createMovieBodySchema>;
+export type CreateMovieBodyDTO = Static<typeof createMovieBodySchema>;
 
 export const updateMovieParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type UpdateMovieParamsInput = Static<typeof updateMovieParamsSchema>;
+export type UpdateMovieParamsDTO = Static<typeof updateMovieParamsSchema>;
 
 export const updateMovieBodySchema = t.Object({
   title: t.String(),
@@ -173,36 +173,36 @@ export const updateMovieBodySchema = t.Object({
   editor: t.Optional(tArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
 });
-export type UpdateMovieBodyInput = Static<typeof updateMovieBodySchema>;
+export type UpdateMovieBodyDTO = Static<typeof updateMovieBodySchema>;
 
 export const getMovieByIdParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type GetMovieByIdParamsInput = Static<typeof getMovieByIdParamsSchema>;
+export type GetMovieByIdParamsDTO = Static<typeof getMovieByIdParamsSchema>;
 
 export const getMoviesByCategoryParamsSchema = t.Object({
   category: t.String(),
 });
-export type GetMoviesByCategoryParamsInput = Static<
+export type GetMoviesByCategoryParamsDTO = Static<
   typeof getMoviesByCategoryParamsSchema
 >;
 
 export const getMoviesByUniversityParamsSchema = t.Object({
   university: t.String(),
 });
-export type GetMoviesByUniversityParamsInput = Static<
+export type GetMoviesByUniversityParamsDTO = Static<
   typeof getMoviesByUniversityParamsSchema
 >;
 
 export const deleteMovieParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type DeleteMovieParamsInput = Static<typeof deleteMovieParamsSchema>;
+export type DeleteMovieParamsDTO = Static<typeof deleteMovieParamsSchema>;
 
 export const searchMoviesQuerySchema = t.Object({
   q: t.Optional(t.String()),
 });
-export type SearchMoviesQueryInput = Static<typeof searchMoviesQuerySchema>;
+export type SearchMoviesQueryDTO = Static<typeof searchMoviesQuerySchema>;
 
 export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),
@@ -212,9 +212,9 @@ export const getMoviesQuerySchema = t.Object({
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
 });
-export type GetMoviesQueryInput = Static<typeof getMoviesQuerySchema>;
+export type GetMoviesQueryDTO = Static<typeof getMoviesQuerySchema>;
 
-export interface MovieFilterParams {
+export interface MovieFilterInput {
   search?: string;
   searchby?: string;
   page?: number;
@@ -252,7 +252,7 @@ export const MovieUserSelect = {
   awards: true,
 } as const;
 
-export interface MovieCrewRepositoryCreateInput {
+export interface CreateMovieCrewInput {
   movieId: string;
   crewMemberId: string;
   roleId: string;

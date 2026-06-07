@@ -1,17 +1,17 @@
 import { prisma } from "../lib/prisma";
 import { MovieRepository } from "../modules/movies/domain/movie.repository";
 import { Movie as PrismaMovie, Prisma } from "@prisma/client";
-import { MovieFilterParams } from "../modules/movies/domain/movie";
+import { MovieFilterInput } from "../modules/movies/domain/movie";
 import calculatePagination from "../core/utils/pagination";
 import {
-  MovieRepositoryCreateInput,
-  MovieRepositoryUpdateInput,
+  CreateMovieInput,
+  UpdateMovieInput,
   movieIncludes,
 } from "../modules/movies/domain/movie";
 
 export class MovieRepositoryImpl implements MovieRepository {
-  async find(params?: MovieFilterParams): Promise<PrismaMovie[]> {
-    if (!params) {
+  async find(input?: MovieFilterInput): Promise<PrismaMovie[]> {
+    if (!input) {
       return prisma.movie.findMany({
         include: movieIncludes,
         orderBy: { createdAt: "desc" },
@@ -25,7 +25,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       sort = "desc",
       sortby = "createdAt",
       createdBy,
-    } = params;
+    } = input;
 
     const where: Prisma.MovieWhereInput = {
       ...(search && searchby === "year" && { year: parseInt(search, 10) }),
@@ -116,19 +116,19 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async create(data: MovieRepositoryCreateInput): Promise<PrismaMovie> {
+  async create(input: CreateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.create({
-      data,
+      data: input,
     });
   }
 
   async update(
     id: string,
-    data: MovieRepositoryUpdateInput,
+    input: UpdateMovieInput,
   ): Promise<PrismaMovie> {
     return prisma.movie.update({
       where: { id },
-      data,
+      data: input,
     });
   }
 

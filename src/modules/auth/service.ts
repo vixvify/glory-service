@@ -10,7 +10,7 @@ import {
   UnauthorizedError,
   BadRequestError,
 } from "../../core/error";
-import { User, RegisterUserBodyInput, LoginUserBodyInput } from "./domain/auth";
+import { User, RegisterUserBodyDTO, LoginUserBodyDTO, CreateUserInput } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
@@ -22,30 +22,30 @@ export class AuthService {
     private crewMemberRepo: CrewMemberRepository,
   ) {}
 
-  async register(data: RegisterUserBodyInput): Promise<Omit<User, "id" | "role">> {
+  async register(dto: RegisterUserBodyDTO): Promise<Omit<User, "id" | "role">> {
     try {
-      const existing = await this.repo.findByEmail(data.email);
+      const existing = await this.repo.findByEmail(dto.email);
       if (existing) {
         throw new ConflictError("Email already exists");
       }
 
       let photoUrl: string | undefined = undefined;
-      if (data.photo) {
-        photoUrl = await uploadToR2(data.photo, "users");
+      if (dto.photo) {
+        photoUrl = await uploadToR2(dto.photo, "users");
       }
 
-      const positions = data.positions || [];
-      const awards = data.awards || [];
+      const positions = dto.positions || [];
+      const awards = dto.awards || [];
 
       let birthday: Date | undefined = undefined;
-      if (data.birthday) {
-        const parsedDate = new Date(data.birthday);
+      if (dto.birthday) {
+        const parsedDate = new Date(dto.birthday);
         if (!isNaN(parsedDate.getTime())) {
           birthday = parsedDate;
         }
       }
 
-      const passwordHash = await hashPassword(data.password);
+      const passwordHash = await hashPassword(dto.password);
 
       const {
         password,
@@ -54,22 +54,24 @@ export class AuthService {
         awards: _a,
         birthday: _b,
         ...rest
-      } = data;
+      } = dto;
 
       const profileFields = Object.fromEntries(Object.entries(rest));
 
-      const user = await this.repo.create({
+      const input: CreateUserInput = {
         ...profileFields,
-        email: data.email,
-        name: data.name,
+        email: dto.email,
+        name: dto.name,
         passwordHash,
         photoUrl,
         positions,
         birthday,
         awards,
-      });
+      };
 
-      await this.crewMemberRepo.updateUserIdByEmail(data.email, user.id);
+      const user = await this.repo.create(input);
+
+      await this.crewMemberRepo.updateUserIdByEmail(dto.email, user.id);
 
       return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
@@ -80,15 +82,15 @@ export class AuthService {
     }
   }
 
-  async login(data: LoginUserBodyInput): Promise<Omit<User, "id" | "role"> & { token?: string }> {
+  async login(dto: LoginUserBodyDTO): Promise<Omit<User, "id" | "role"> & { token?: string }> {
     try {
-      const user = await this.repo.findByEmailWithPassword(data.email);
+      const user = await this.repo.findByEmailWithPassword(dto.email);
       if (!user) {
         throw new UnauthorizedError("Invalid email or password");
       }
 
       const isPasswordValid = await verifyPassword(
-        data.password,
+        dto.password,
         user.password || "",
       );
       if (!isPasswordValid) {

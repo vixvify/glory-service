@@ -19,7 +19,7 @@ export interface User {
   awards?: string[];
 }
 
-export interface CreateUserRepositoryInput {
+export interface CreateUserInput {
   email: string;
   passwordHash: string;
   name: string;
@@ -51,14 +51,14 @@ export const registerUserBodySchema = t.Object({
   awards: t.Optional(tArrayCoerce),
 });
 
-export type RegisterUserBodyInput = Static<typeof registerUserBodySchema>;
+export type RegisterUserBodyDTO = Static<typeof registerUserBodySchema>;
 
 export const loginUserBodySchema = t.Object({
   email: t.String(),
   password: t.String({ minLength: 6 }),
 });
 
-export type LoginUserBodyInput = Static<typeof loginUserBodySchema>;
+export type LoginUserBodyDTO = Static<typeof loginUserBodySchema>;
 
 export const AuthUserSelect = {
   id: true,

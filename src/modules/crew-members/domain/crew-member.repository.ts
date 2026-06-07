@@ -1,19 +1,19 @@
 import { CrewMember as PrismaCrewMember } from "@prisma/client";
 import {
-  CrewFilterParams,
-  CreateCrewMemberRepositoryInput,
-  UpdateCrewMemberRepositoryInput,
+  CrewFilterInput,
+  CreateCrewMemberInput,
+  UpdateCrewMemberInput,
   CrewMemberWithRelations,
 } from "./crew-member";
 
 export interface CrewMemberRepository {
-  find(params?: CrewFilterParams): Promise<CrewMemberWithRelations[]>;
+  find(input?: CrewFilterInput): Promise<CrewMemberWithRelations[]>;
   findById(id: string): Promise<CrewMemberWithRelations | null>;
   findByName(name: string): Promise<CrewMemberWithRelations | null>;
-  create(data: CreateCrewMemberRepositoryInput): Promise<PrismaCrewMember>;
+  create(input: CreateCrewMemberInput): Promise<PrismaCrewMember>;
   update(
     id: string,
-    data: UpdateCrewMemberRepositoryInput,
+    input: UpdateCrewMemberInput,
   ): Promise<PrismaCrewMember>;
   delete(id: string): Promise<PrismaCrewMember>;
   findManyByIds(ids: string[]): Promise<CrewMemberWithRelations[]>;

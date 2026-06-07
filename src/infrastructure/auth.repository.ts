@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma";
-import { CreateUserRepositoryInput } from "../modules/auth/domain/auth";
+import { CreateUserInput } from "../modules/auth/domain/auth";
 import { AuthRepository } from "../modules/auth/domain/auth.repository";
 import { User as PrismaUser } from "@prisma/client";
 import { AuthUserSelect } from "../modules/auth/domain/auth";
@@ -25,8 +25,8 @@ export class AuthRepositoryImpl implements AuthRepository {
     });
   }
 
-  async create(data: CreateUserRepositoryInput): Promise<PrismaUser> {
-    const { passwordHash, ...dbData } = data;
+  async create(input: CreateUserInput): Promise<PrismaUser> {
+    const { passwordHash, ...dbData } = input;
 
     return prisma.user.create({
       data: {

@@ -31,12 +31,12 @@ export const createCrewMemberSchema = t.Object({
   name: t.String({ minLength: 1 }),
   email: t.Optional(t.Union([t.String(), t.Null()])),
 });
-export type CreateCrewMemberInput = Static<typeof createCrewMemberSchema>;
+export type CreateCrewMemberDTO = Static<typeof createCrewMemberSchema>;
 
 export const updateCrewMemberParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type UpdateCrewMemberParamsInput = Static<
+export type UpdateCrewMemberParamsDTO = Static<
   typeof updateCrewMemberParamsSchema
 >;
 
@@ -45,28 +45,28 @@ export const updateCrewMemberBodySchema = t.Object({
   email: t.Optional(t.Union([t.String(), t.Null()])),
 });
 
-export type UpdateCrewMemberBodyInput = Static<
+export type UpdateCrewMemberBodyDTO = Static<
   typeof updateCrewMemberBodySchema
 >;
 
 export const getCrewMemberByIdParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type GetCrewMemberByIdParamsInput = Static<
+export type GetCrewMemberByIdParamsDTO = Static<
   typeof getCrewMemberByIdParamsSchema
 >;
 
 export const deleteCrewMemberParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
-export type DeleteCrewMemberParamsInput = Static<
+export type DeleteCrewMemberParamsDTO = Static<
   typeof deleteCrewMemberParamsSchema
 >;
 
 export const searchCrewMembersQuerySchema = t.Object({
   q: t.Optional(t.String()),
 });
-export type SearchCrewMembersQueryInput = Static<
+export type SearchCrewMembersQueryDTO = Static<
   typeof searchCrewMembersQuerySchema
 >;
 
@@ -78,9 +78,9 @@ export const getCrewMembersQuerySchema = t.Object({
   sort: t.Optional(t.String()),
   sortby: t.Optional(t.String()),
 });
-export type GetCrewMembersQueryInput = Static<typeof getCrewMembersQuerySchema>;
+export type GetCrewMembersQueryDTO = Static<typeof getCrewMembersQuerySchema>;
 
-export interface CrewFilterParams {
+export interface CrewFilterInput {
   search?: string;
   searchby?: string;
   page?: number;
@@ -90,14 +90,14 @@ export interface CrewFilterParams {
   createdBy?: string;
 }
 
-export interface CreateCrewMemberRepositoryInput {
+export interface CreateCrewMemberInput {
   name: string;
   email?: string | null;
   userId?: string | null;
   createdBy: string;
 }
 
-export interface UpdateCrewMemberRepositoryInput {
+export interface UpdateCrewMemberInput {
   name: string;
   email?: string | null;
   userId?: string | null;

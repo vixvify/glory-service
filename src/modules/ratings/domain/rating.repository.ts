@@ -1,16 +1,16 @@
 import {
-  AddRatingBodyInput,
-  GetRatingsQueryInput,
-  UpdateRatingBodyInput,
+  AddRatingInput,
+  GetRatingsInput,
+  UpdateRatingInput,
   RatingWithRelations,
 } from "./rating";
 
 export interface RatingRepository {
-  addRating(data: AddRatingBodyInput): Promise<void>;
+  addRating(input: AddRatingInput): Promise<void>;
   getRatingsByUserIdAndMovieId(
-    data: GetRatingsQueryInput,
+    input: GetRatingsInput,
   ): Promise<RatingWithRelations | null>;
   deleteRating(userId: string, movieId: string): Promise<void>;
   checkRating(userId: string, movieId: string): Promise<boolean>;
-  updateRating(data: UpdateRatingBodyInput): Promise<void>;
+  updateRating(input: UpdateRatingInput): Promise<void>;
 }

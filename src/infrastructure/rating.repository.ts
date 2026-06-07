@@ -2,29 +2,29 @@ import { prisma } from "../lib/prisma";
 import { RatingRepository } from "../modules/ratings/domain/rating.repository";
 import { RatingWithRelations } from "../modules/ratings/domain/rating";
 import {
-  AddRatingBodyInput,
-  GetRatingsQueryInput,
-  UpdateRatingBodyInput,
+  AddRatingInput,
+  GetRatingsInput,
+  UpdateRatingInput,
   ratingIncludes,
 } from "../modules/ratings/domain/rating";
 
 export class RatingRepositoryImpl implements RatingRepository {
-  async addRating(data: AddRatingBodyInput): Promise<void> {
+  async addRating(input: AddRatingInput): Promise<void> {
     await prisma.rating.create({
       data: {
-        userId: data.userId,
-        movieId: data.movieId,
-        stars: data.stars,
-        comment: data.comment ?? null,
+        userId: input.userId,
+        movieId: input.movieId,
+        stars: input.stars,
+        comment: input.comment ?? null,
       },
     });
   }
 
   async getRatingsByUserIdAndMovieId(
-    data: GetRatingsQueryInput,
+    input: GetRatingsInput,
   ): Promise<RatingWithRelations | null> {
     const result = await prisma.rating.findUnique({
-      where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
+      where: { userId_movieId: { userId: input.userId, movieId: input.movieId } },
       include: ratingIncludes,
     });
     return result as unknown as RatingWithRelations | null;
@@ -53,17 +53,17 @@ export class RatingRepositoryImpl implements RatingRepository {
     return !!existing;
   }
 
-  async updateRating(data: UpdateRatingBodyInput): Promise<void> {
+  async updateRating(input: UpdateRatingInput): Promise<void> {
     await prisma.rating.update({
       where: {
         userId_movieId: {
-          userId: data.userId,
-          movieId: data.movieId,
+          userId: input.userId,
+          movieId: input.movieId,
         },
       },
       data: {
-        stars: data.stars,
-        comment: data.comment !== undefined ? data.comment : undefined,
+        stars: input.stars,
+        comment: input.comment !== undefined ? input.comment : undefined,
       },
     });
   }

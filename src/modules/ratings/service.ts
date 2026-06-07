@@ -1,9 +1,12 @@
 import { AppError, BadRequestError, ConflictError } from "../../core/error";
 import {
-  AddRatingBodyInput,
+  AddRatingDTO,
   Rating,
-  GetRatingsQueryInput,
-  UpdateRatingBodyInput,
+  GetRatingsDTO,
+  UpdateRatingDTO,
+  AddRatingInput,
+  GetRatingsInput,
+  UpdateRatingInput,
 } from "./domain/rating";
 import { RatingRepository } from "./domain/rating.repository";
 import { RatingFactory } from "./factory";
@@ -11,13 +14,19 @@ import { RatingFactory } from "./factory";
 export class RatingService {
   constructor(private repo: RatingRepository) {}
 
-  async addRating(data: AddRatingBodyInput): Promise<void> {
+  async addRating(dto: AddRatingDTO): Promise<void> {
     try {
-      const existing = await this.repo.checkRating(data.userId, data.movieId);
+      const existing = await this.repo.checkRating(dto.userId, dto.movieId);
       if (existing) {
         throw new ConflictError("You have already rated this movie. Use update instead.");
       }
-      return await this.repo.addRating(data);
+      const input: AddRatingInput = {
+        userId: dto.userId,
+        movieId: dto.movieId,
+        stars: dto.stars,
+        comment: dto.comment,
+      };
+      return await this.repo.addRating(input);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -27,10 +36,14 @@ export class RatingService {
   }
 
   async getRatingsByUserIdAndMovieId(
-    data: GetRatingsQueryInput,
+    dto: GetRatingsDTO,
   ): Promise<Rating | null> {
     try {
-      const rating = await this.repo.getRatingsByUserIdAndMovieId(data);
+      const input: GetRatingsInput = {
+        userId: dto.userId,
+        movieId: dto.movieId,
+      };
+      const rating = await this.repo.getRatingsByUserIdAndMovieId(input);
       if (!rating) return null;
       return RatingFactory.toDomain(rating);
     } catch (error: unknown) {
@@ -63,9 +76,15 @@ export class RatingService {
     }
   }
 
-  async updateRating(data: UpdateRatingBodyInput): Promise<void> {
+  async updateRating(dto: UpdateRatingDTO): Promise<void> {
     try {
-      return await this.repo.updateRating(data);
+      const input: UpdateRatingInput = {
+        userId: dto.userId,
+        movieId: dto.movieId,
+        stars: dto.stars,
+        comment: dto.comment,
+      };
+      return await this.repo.updateRating(input);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

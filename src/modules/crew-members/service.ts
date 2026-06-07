@@ -7,9 +7,12 @@ import {
 } from "../../core/error";
 import {
   CrewMember,
-  GetCrewMembersQueryInput,
+  GetCrewMembersQueryDTO,
+  CreateCrewMemberDTO,
+  UpdateCrewMemberBodyDTO,
+  CrewFilterInput,
   CreateCrewMemberInput,
-  UpdateCrewMemberBodyInput,
+  UpdateCrewMemberInput,
 } from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
@@ -23,27 +26,29 @@ export class CrewMemberService {
   ) {}
 
   async getCrewMembers(
-    params?: GetCrewMembersQueryInput,
+    dto?: GetCrewMembersQueryDTO,
   ): Promise<CrewMember[]> {
     try {
-      if (isDefaultQuery(params)) {
+      if (isDefaultQuery(dto)) {
         const results = await this.repo.find();
         return CrewMemberFactory.toDomainList(results);
       }
 
-      const { search, searchby, page, pagesize, sort, sortby } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby } = dto || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
 
-      const results = await this.repo.find({
+      const input: CrewFilterInput = {
         search: search || undefined,
         searchby: searchby || undefined,
         page: pageNum,
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
-      });
+      };
+
+      const results = await this.repo.find(input);
       return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -80,9 +85,9 @@ export class CrewMemberService {
     }
   }
 
-  async createCrewMember(data: CreateCrewMemberInput, creatorId: string): Promise<CrewMember> {
+  async createCrewMember(dto: CreateCrewMemberDTO, creatorId: string): Promise<CrewMember> {
     try {
-      const { name, email } = data;
+      const { name, email } = dto;
       const trimmedName = name.trim();
       const trimmedEmail = email?.trim() || undefined;
 
@@ -101,12 +106,14 @@ export class CrewMemberService {
         }
       }
 
-      const created = await this.repo.create({
+      const input: CreateCrewMemberInput = {
         name: trimmedName,
         email: trimmedEmail,
         userId,
         createdBy: creatorId,
-      });
+      };
+
+      const created = await this.repo.create(input);
       return CrewMemberFactory.toDomain(created);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -118,12 +125,12 @@ export class CrewMemberService {
 
   async updateCrewMember(
     id: string,
-    data: UpdateCrewMemberBodyInput,
+    dto: UpdateCrewMemberBodyDTO,
     userId: string,
     role: string,
   ): Promise<CrewMember> {
     try {
-      const { name, email } = data;
+      const { name, email } = dto;
       const existingById = await this.repo.findById(id);
       if (!existingById) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
@@ -160,11 +167,13 @@ export class CrewMemberService {
         }
       }
 
-      const updated = await this.repo.update(id, {
+      const input: UpdateCrewMemberInput = {
         name: trimmedName,
         email: trimmedEmail,
         userId: linkedUserId,
-      });
+      };
+
+      const updated = await this.repo.update(id, input);
       return CrewMemberFactory.toDomain(updated);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;

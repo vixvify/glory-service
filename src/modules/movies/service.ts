@@ -2,9 +2,12 @@ import { AppError, NotFoundError, BadRequestError, ForbiddenError } from "../../
 import { ColorType } from "@prisma/client";
 import {
   Movie,
-  CreateMovieBodyInput,
-  UpdateMovieBodyInput,
-  GetMoviesQueryInput,
+  CreateMovieBodyDTO,
+  UpdateMovieBodyDTO,
+  GetMoviesQueryDTO,
+  MovieFilterInput,
+  CreateMovieInput,
+  UpdateMovieInput,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
 import { MovieFactory, PrismaMovieWithRelations } from "./factory";
@@ -17,24 +20,27 @@ export class MovieService {
     private repo: MovieRepository,
   ) {}
 
-  async getMovies(params?: GetMoviesQueryInput): Promise<Movie[]> {
+  async getMovies(dto?: GetMoviesQueryDTO): Promise<Movie[]> {
     try {
-      if (isDefaultQuery(params)) {
+      if (isDefaultQuery(dto)) {
         const movies = await this.repo.find();
         return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
       }
-      const { search, searchby, page, pagesize, sort, sortby } = params || {};
+      const { search, searchby, page, pagesize, sort, sortby } = dto || {};
 
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
-      const movies = await this.repo.find({
+
+      const input: MovieFilterInput = {
         search: search || undefined,
         searchby: searchby || undefined,
         page: pageNum,
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
-      });
+      };
+
+      const movies = await this.repo.find(input);
       return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -111,45 +117,47 @@ export class MovieService {
     }
   }
 
-  async createMovie(data: CreateMovieBodyInput, userId: string): Promise<Movie> {
+  async createMovie(dto: CreateMovieBodyDTO, userId: string): Promise<Movie> {
     try {
       let thumbnailUrl = "";
-      if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToR2(data.thumbnail);
+      if (dto.thumbnail instanceof File) {
+        thumbnailUrl = await uploadToR2(dto.thumbnail);
       } else {
-        thumbnailUrl = data.thumbnail;
+        thumbnailUrl = dto.thumbnail;
       }
 
-      const directors = data.director || [];
-      const producers = data.producer || [];
-      const writers = data.writer || [];
-      const cast = data.cast || [];
-      const dops = data.dop || [];
-      const editors = data.editor || [];
-      const btsVideo = data.btsVideo || [];
+      const directors = dto.director || [];
+      const producers = dto.producer || [];
+      const writers = dto.writer || [];
+      const cast = dto.cast || [];
+      const dops = dto.dop || [];
+      const editors = dto.editor || [];
+      const btsVideo = dto.btsVideo || [];
 
-      const movieRecord = await this.repo.create({
-        title: data.title,
-        description: data.description,
+      const input: CreateMovieInput = {
+        title: dto.title,
+        description: dto.description,
         thumbnail: thumbnailUrl,
-        youtubeUrl: data.youtubeUrl,
-        trailerUrl: data.trailerUrl || null,
-        categoryId: data.categoryId,
-        year: Number(data.year),
-        duration: Number(data.duration),
+        youtubeUrl: dto.youtubeUrl,
+        trailerUrl: dto.trailerUrl || null,
+        categoryId: dto.categoryId,
+        year: Number(dto.year),
+        duration: Number(dto.duration),
         matchRate: 100,
-        aspectRatio: data.aspectRatio,
-        ageRatingId: data.ageRatingId,
-        universityId: data.universityId || null,
-        languageId: data.languageId || null,
-        targetGroupId: data.targetGroupId || null,
-        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
-        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
-        colorType: (data.colorType as ColorType) || "color",
-        studio: data.studio || null,
+        aspectRatio: dto.aspectRatio,
+        ageRatingId: dto.ageRatingId,
+        universityId: dto.universityId || null,
+        languageId: dto.languageId || null,
+        targetGroupId: dto.targetGroupId || null,
+        hasProfanity: String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
+        hasDrugs: String(dto.hasDrugs) === "true" || dto.hasDrugs === true,
+        colorType: (dto.colorType as ColorType) || "color",
+        studio: dto.studio || null,
         createdBy: userId,
         btsVideos: btsVideo,
-      });
+      };
+
+      const movieRecord = await this.repo.create(input);
 
       await associateCrewBulk({
         movieId: movieRecord.id,
@@ -176,7 +184,7 @@ export class MovieService {
 
   async updateMovie(
     id: string,
-    data: UpdateMovieBodyInput,
+    dto: UpdateMovieBodyDTO,
     userId: string,
     role: string,
   ): Promise<Movie> {
@@ -191,41 +199,43 @@ export class MovieService {
       }
 
       let thumbnailUrl = existing.thumbnail;
-      if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToR2(data.thumbnail);
-      } else if (typeof data.thumbnail === "string") {
-        thumbnailUrl = data.thumbnail;
+      if (dto.thumbnail instanceof File) {
+        thumbnailUrl = await uploadToR2(dto.thumbnail);
+      } else if (typeof dto.thumbnail === "string") {
+        thumbnailUrl = dto.thumbnail;
       }
 
-      const directors = data.director || [];
-      const producers = data.producer || [];
-      const writers = data.writer || [];
-      const cast = data.cast || [];
-      const dops = data.dop || [];
-      const editors = data.editor || [];
-      const btsVideo = data.btsVideo || [];
+      const directors = dto.director || [];
+      const producers = dto.producer || [];
+      const writers = dto.writer || [];
+      const cast = dto.cast || [];
+      const dops = dto.dop || [];
+      const editors = dto.editor || [];
+      const btsVideo = dto.btsVideo || [];
 
-      await this.repo.update(id, {
-        title: data.title,
-        description: data.description,
+      const input: UpdateMovieInput = {
+        title: dto.title,
+        description: dto.description,
         thumbnail: thumbnailUrl,
-        youtubeUrl: data.youtubeUrl,
-        trailerUrl: data.trailerUrl || null,
-        categoryId: data.categoryId,
-        year: Number(data.year),
-        duration: Number(data.duration),
+        youtubeUrl: dto.youtubeUrl,
+        trailerUrl: dto.trailerUrl || null,
+        categoryId: dto.categoryId,
+        year: Number(dto.year),
+        duration: Number(dto.duration),
         matchRate: existing.matchRate,
-        aspectRatio: data.aspectRatio,
-        ageRatingId: data.ageRatingId,
-        universityId: data.universityId || null,
-        languageId: data.languageId || null,
-        targetGroupId: data.targetGroupId || null,
-        hasProfanity: String(data.hasProfanity) === "true" || data.hasProfanity === true,
-        hasDrugs: String(data.hasDrugs) === "true" || data.hasDrugs === true,
-        colorType: (data.colorType as ColorType) || "color",
-        studio: data.studio || null,
+        aspectRatio: dto.aspectRatio,
+        ageRatingId: dto.ageRatingId,
+        universityId: dto.universityId || null,
+        languageId: dto.languageId || null,
+        targetGroupId: dto.targetGroupId || null,
+        hasProfanity: String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
+        hasDrugs: String(dto.hasDrugs) === "true" || dto.hasDrugs === true,
+        colorType: (dto.colorType as ColorType) || "color",
+        studio: dto.studio || null,
         btsVideos: btsVideo,
-      });
+      };
+
+      await this.repo.update(id, input);
 
       await associateCrewBulk({
         movieId: id,

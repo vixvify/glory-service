@@ -14,12 +14,12 @@ export interface FavoriteMovie {
 export const addFavoriteBodySchema = t.Object({
   movieId: t.String(),
 });
-export type AddFavoriteBodyInput = Static<typeof addFavoriteBodySchema>;
+export type AddFavoriteBodyDTO = Static<typeof addFavoriteBodySchema>;
 
 export const removeFavoriteParamsSchema = t.Object({
   movieId: t.String({ format: "uuid" }),
 });
-export type RemoveFavoriteParamsInput = Static<
+export type RemoveFavoriteParamsDTO = Static<
   typeof removeFavoriteParamsSchema
 >;
 

@@ -12,15 +12,7 @@ export async function associateCrewBulk(
   input: AssociateCrewBulkInput,
   createdBy: string,
 ): Promise<void> {
-  const {
-    movieId,
-    directors,
-    producers,
-    writers,
-    cast,
-    dops,
-    editors,
-  } = input;
+  const { movieId, directors, producers, writers, cast, dops, editors } = input;
 
   const items: Array<{ value: string; role: string }> = [];
 
@@ -82,9 +74,10 @@ export async function associateCrewBulk(
     }
   }
 
-  // Fetch all crew roles to map names to IDs
   const dbCrewRoles = await prisma.crewRole.findMany();
-  const crewRoleMap = new Map(dbCrewRoles.map((cr) => [cr.name.toUpperCase(), cr.id]));
+  const crewRoleMap = new Map(
+    dbCrewRoles.map((cr) => [cr.name.toUpperCase(), cr.id]),
+  );
 
   const movieCrewsData = items.map((item) => {
     const crewMemberId = crewIdMap.get(item.value);
