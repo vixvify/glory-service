@@ -30,6 +30,11 @@ export interface MovieCrew {
   updatedAt: Date;
 }
 
+export enum AspectRatio {
+  LANDSCAPE = "แนวนอน",
+  PORTRAIT = "แนวตั้ง",
+}
+
 export interface Movie {
   id: string;
   title: string;
