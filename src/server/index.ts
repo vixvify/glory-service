@@ -3,14 +3,18 @@ import { cors } from "@elysiajs/cors";
 import { AppError } from "../core/error";
 import { formatError } from "../core/interceptor";
 import { apiRouter } from "../routes";
+import { rateLimitPlugin } from "../core/plugin/rate-limit";
 
 export const server = new Elysia()
-  .use(cors({
-    origin: true,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }))
+  .use(rateLimitPlugin)
+  .use(
+    cors({
+      origin: true,
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }),
+  )
   .error({
     APP_ERROR: AppError,
   })

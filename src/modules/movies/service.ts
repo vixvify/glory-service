@@ -1,4 +1,9 @@
-import { AppError, NotFoundError, BadRequestError, ForbiddenError } from "../../core/error";
+import {
+  AppError,
+  NotFoundError,
+  BadRequestError,
+  ForbiddenError,
+} from "../../core/error";
 import { ColorType } from "@prisma/client";
 import {
   Movie,
@@ -14,17 +19,29 @@ import { MovieFactory, PrismaMovieWithRelations } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
 import { associateCrewBulk } from "../../lib/crew";
+import { redis } from "../../lib/redis";
+import { CacheKeys } from "../../core/utils/cache-key";
+import { invalidateCache } from "../../core/utils/invalidate-cache";
 
 export class MovieService {
-  constructor(
-    private repo: MovieRepository,
-  ) {}
+  constructor(private repo: MovieRepository) {}
 
   async getMovies(dto?: GetMoviesQueryDTO): Promise<Movie[]> {
     try {
       if (isDefaultQuery(dto)) {
+        const cachedMovies = await redis.get("movies");
+
+        if (cachedMovies) {
+          return MovieFactory.toDomainList(
+            JSON.parse(cachedMovies) as unknown as PrismaMovieWithRelations[],
+          );
+        }
+
         const movies = await this.repo.find();
-        return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+        await redis.set("movies", JSON.stringify(movies), { EX: 3600 });
+        return MovieFactory.toDomainList(
+          movies as unknown as PrismaMovieWithRelations[],
+        );
       }
       const { search, searchby, page, pagesize, sort, sortby } = dto || {};
 
@@ -39,9 +56,20 @@ export class MovieService {
         sort: sort || undefined,
         sortby: sortby || undefined,
       };
+      const key = CacheKeys.movieList(input);
 
+      const cached = await redis.get(key);
+
+      if (cached) {
+        return MovieFactory.toDomainList(
+          JSON.parse(cached) as unknown as PrismaMovieWithRelations[],
+        );
+      }
       const movies = await this.repo.find(input);
-      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+      await redis.set(key, JSON.stringify(movies), { EX: 3600 });
+      return MovieFactory.toDomainList(
+        movies as unknown as PrismaMovieWithRelations[],
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -53,7 +81,9 @@ export class MovieService {
   async getMyMovies(userId: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.find({ createdBy: userId });
-      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+      return MovieFactory.toDomainList(
+        movies as unknown as PrismaMovieWithRelations[],
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -65,11 +95,15 @@ export class MovieService {
   async getContributedMovies(userId: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findContributed(userId);
-      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+      return MovieFactory.toDomainList(
+        movies as unknown as PrismaMovieWithRelations[],
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
-        error instanceof Error ? error.message : "Failed to get contributed movies";
+        error instanceof Error
+          ? error.message
+          : "Failed to get contributed movies";
       throw new BadRequestError(message, error);
     }
   }
@@ -77,7 +111,9 @@ export class MovieService {
   async getMoviesByCategory(category: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findByCategory(category);
-      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+      return MovieFactory.toDomainList(
+        movies as unknown as PrismaMovieWithRelations[],
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -91,7 +127,9 @@ export class MovieService {
   async getMoviesByUniversity(university: string): Promise<Movie[]> {
     try {
       const movies = await this.repo.findByUniversity(university);
-      return MovieFactory.toDomainList(movies as unknown as PrismaMovieWithRelations[]);
+      return MovieFactory.toDomainList(
+        movies as unknown as PrismaMovieWithRelations[],
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -104,11 +142,22 @@ export class MovieService {
 
   async getMovieById(id: string): Promise<Movie> {
     try {
+      const key = CacheKeys.movieDetail(id);
+
+      const cached = await redis.get(key);
+
+      if (cached) {
+        return MovieFactory.toDomain(
+          JSON.parse(cached) as PrismaMovieWithRelations,
+        );
+      }
       const movie = await this.repo.findById(id);
       if (!movie) {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
-      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
+      return MovieFactory.toDomain(
+        movie as unknown as PrismaMovieWithRelations,
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -149,7 +198,8 @@ export class MovieService {
         universityId: dto.universityId || null,
         languageId: dto.languageId || null,
         targetGroupId: dto.targetGroupId || null,
-        hasProfanity: String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
+        hasProfanity:
+          String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
         hasDrugs: String(dto.hasDrugs) === "true" || dto.hasDrugs === true,
         colorType: (dto.colorType as ColorType) || "color",
         studio: dto.studio || null,
@@ -159,21 +209,29 @@ export class MovieService {
 
       const movieRecord = await this.repo.create(input);
 
-      await associateCrewBulk({
-        movieId: movieRecord.id,
-        directors,
-        producers,
-        writers,
-        cast,
-        dops,
-        editors,
-      }, userId);
+      await associateCrewBulk(
+        {
+          movieId: movieRecord.id,
+          directors,
+          producers,
+          writers,
+          cast,
+          dops,
+          editors,
+        },
+        userId,
+      );
 
       const movie = await this.repo.findById(movieRecord.id);
       if (!movie) {
         throw new Error("Failed to retrieve created movie");
       }
-      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
+
+      await invalidateCache(["movies", "movie:list:*"]);
+
+      return MovieFactory.toDomain(
+        movie as unknown as PrismaMovieWithRelations,
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -195,7 +253,9 @@ export class MovieService {
       }
 
       if (existing.createdBy !== userId && role !== "admin") {
-        throw new ForbiddenError("You do not have permission to update this movie");
+        throw new ForbiddenError(
+          "You do not have permission to update this movie",
+        );
       }
 
       let thumbnailUrl = existing.thumbnail;
@@ -228,7 +288,8 @@ export class MovieService {
         universityId: dto.universityId || null,
         languageId: dto.languageId || null,
         targetGroupId: dto.targetGroupId || null,
-        hasProfanity: String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
+        hasProfanity:
+          String(dto.hasProfanity) === "true" || dto.hasProfanity === true,
         hasDrugs: String(dto.hasDrugs) === "true" || dto.hasDrugs === true,
         colorType: (dto.colorType as ColorType) || "color",
         studio: dto.studio || null,
@@ -237,21 +298,29 @@ export class MovieService {
 
       await this.repo.update(id, input);
 
-      await associateCrewBulk({
-        movieId: id,
-        directors,
-        producers,
-        writers,
-        cast,
-        dops,
-        editors,
-      }, userId);
+      await associateCrewBulk(
+        {
+          movieId: id,
+          directors,
+          producers,
+          writers,
+          cast,
+          dops,
+          editors,
+        },
+        userId,
+      );
 
       const movie = await this.repo.findById(id);
       if (!movie) {
         throw new Error("Failed to retrieve updated movie");
       }
-      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
+
+      await invalidateCache(["movies", "movie:list:*", `movie:${id}`]);
+
+      return MovieFactory.toDomain(
+        movie as unknown as PrismaMovieWithRelations,
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
@@ -268,13 +337,20 @@ export class MovieService {
       }
 
       if (existing.createdBy !== userId && role !== "admin") {
-        throw new ForbiddenError("You do not have permission to delete this movie");
+        throw new ForbiddenError(
+          "You do not have permission to delete this movie",
+        );
       }
       const movie = await this.repo.delete(id);
       if (movie.thumbnail) {
         await deleteFromR2(movie.thumbnail);
       }
-      return MovieFactory.toDomain(movie as unknown as PrismaMovieWithRelations);
+
+      await invalidateCache(["movies", "movie:list:*", `movie:${id}`]);
+
+      return MovieFactory.toDomain(
+        movie as unknown as PrismaMovieWithRelations,
+      );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
