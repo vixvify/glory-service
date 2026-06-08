@@ -114,7 +114,7 @@ export const createMovieBodySchema = t.Object({
   trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
-  aspectRatio: t.String({ pattern: "^\\d+:\\d+$" }),
+  aspectRatio: t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")]),
   ageRatingId: t.String({ format: "uuid" }),
   universityId: t.Optional(t.String({ format: "uuid" })),
   languageId: t.Optional(t.String({ format: "uuid" })),

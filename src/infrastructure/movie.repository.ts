@@ -32,6 +32,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       ...(search &&
         searchby !== "year" &&
         searchby !== "category" &&
+        searchby !== "aspectRatio" &&
         searchby !== "university" && {
           [searchby || "title"]: {
             contains: search,
@@ -54,6 +55,12 @@ export class MovieRepositoryImpl implements MovieRepository {
               contains: search,
               mode: "insensitive",
             },
+          },
+        }),
+      ...(search &&
+        searchby === "aspectRatio" && {
+          aspectRatio: {
+            equals: search,
           },
         }),
       ...(createdBy && { createdBy }),
@@ -122,10 +129,7 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async update(
-    id: string,
-    input: UpdateMovieInput,
-  ): Promise<PrismaMovie> {
+  async update(id: string, input: UpdateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.update({
       where: { id },
       data: input,
