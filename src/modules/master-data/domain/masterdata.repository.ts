@@ -8,4 +8,5 @@ export interface MasterDataRepository {
   getTargetGroups(): Promise<TargetGroup[]>;
   getCrewRoles(): Promise<CrewRole[]>;
   countCategories(): Promise<number>;
+  getMostActiveUniversity(): Promise<string | null>;
 }

@@ -13,11 +13,12 @@ export class AdminService {
 
   async getStats(): Promise<AdminStats> {
     try {
-      const [totalMovies, totalCategories, totalCrew, totalViews] = await Promise.all([
+      const [totalMovies, totalCategories, totalCrew, totalViews, mostActiveUniversity] = await Promise.all([
         this.movieRepo.count(),
         this.masterDataRepo.countCategories(),
         this.crewMemberRepo.count(),
         this.movieRepo.sumViews(),
+        this.masterDataRepo.getMostActiveUniversity(),
       ]);
 
       return {
@@ -25,6 +26,7 @@ export class AdminService {
         totalCategories,
         totalViews,
         totalCrew,
+        mostActiveUniversity,
       };
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;

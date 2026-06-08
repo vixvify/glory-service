@@ -49,4 +49,28 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
   async countCategories(): Promise<number> {
     return prisma.category.count();
   }
+
+  async getMostActiveUniversity(): Promise<string | null> {
+    const result = await prisma.university.findFirst({
+      select: {
+        name: true,
+        _count: {
+          select: {
+            movies: true,
+          },
+        },
+      },
+      orderBy: {
+        movies: {
+          _count: "desc",
+        },
+      },
+    });
+
+    if (!result || result._count.movies === 0) {
+      return null;
+    }
+
+    return result.name;
+  }
 }
