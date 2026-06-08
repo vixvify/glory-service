@@ -1,10 +1,21 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
-import { tArrayCoerce, tCrewArrayCoerce, MovieCrewInputItem } from "../../../core/utils/parser";
+import {
+  tArrayCoerce,
+  tCrewArrayCoerce,
+  MovieCrewInputItem,
+} from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
 import { ColorType, Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
-import { Category, AgeRating, University, Language, TargetGroup, CrewRole } from "../../master-data/domain/masterdata";
+import {
+  Category,
+  AgeRating,
+  University,
+  Language,
+  TargetGroup,
+  CrewRole,
+} from "../../master-data/domain/masterdata";
 
 export interface MovieCrew {
   id: string;
@@ -48,7 +59,6 @@ export interface Movie {
   createdAt: Date;
   updatedAt: Date;
 }
-
 
 export interface CreateMovieInput {
   title: string;
@@ -137,7 +147,7 @@ export const updateMovieBodySchema = t.Object({
   trailerUrl: t.Optional(t.String()),
   year: t.Numeric(),
   duration: t.Numeric(),
-  aspectRatio: t.String({ pattern: "^\\d+:\\d+$" }),
+  aspectRatio: t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")]),
   ageRatingId: t.String({ format: "uuid" }),
   universityId: t.Optional(t.String({ format: "uuid" })),
   languageId: t.Optional(t.String({ format: "uuid" })),

@@ -69,26 +69,38 @@ async function main() {
 
   console.log("Retrieving master data mappings...");
   const dbCategories = await prisma.category.findMany();
-  const categoryMap = new Map(dbCategories.map((c) => [c.name.toLowerCase(), c.id]));
+  const categoryMap = new Map(
+    dbCategories.map((c) => [c.name.toLowerCase(), c.id]),
+  );
 
   const dbAgeRatings = await prisma.ageRating.findMany();
-  const ageRatingMap = new Map(dbAgeRatings.map((ar) => [ar.name.toLowerCase(), ar.id]));
+  const ageRatingMap = new Map(
+    dbAgeRatings.map((ar) => [ar.name.toLowerCase(), ar.id]),
+  );
 
   const dbUniversities = await prisma.university.findMany();
-  const universityMap = new Map(dbUniversities.map((u) => [u.name.toLowerCase(), u.id]));
+  const universityMap = new Map(
+    dbUniversities.map((u) => [u.name.toLowerCase(), u.id]),
+  );
 
   const dbLanguages = await prisma.language.findMany();
-  const languageMap = new Map(dbLanguages.map((l) => [l.name.toLowerCase(), l.id]));
+  const languageMap = new Map(
+    dbLanguages.map((l) => [l.name.toLowerCase(), l.id]),
+  );
 
   const dbTargetGroups = await prisma.targetGroup.findMany();
-  const targetGroupMap = new Map(dbTargetGroups.map((tg) => [tg.name.toLowerCase(), tg.id]));
+  const targetGroupMap = new Map(
+    dbTargetGroups.map((tg) => [tg.name.toLowerCase(), tg.id]),
+  );
 
   const dbCrewRoles = await prisma.crewRole.findMany();
-  const crewRoleMap = new Map(dbCrewRoles.map((cr) => [cr.name.toLowerCase(), cr.id]));
+  const crewRoleMap = new Map(
+    dbCrewRoles.map((cr) => [cr.name.toLowerCase(), cr.id]),
+  );
 
   console.log("Gathering unique crew members...");
   const uniqueCrew = new Set<string>();
- 
+
   const processCrew = (
     input:
       | SeedCrewMember
@@ -109,7 +121,7 @@ async function main() {
       uniqueCrew.add(input.name.trim());
     }
   };
- 
+
   for (const movie of seedMovies) {
     const oldCrew = movie.crew?.create;
     if (oldCrew) {
@@ -119,7 +131,7 @@ async function main() {
       processCrew(oldCrew.cast);
     }
   }
- 
+
   console.log(
     `Found ${uniqueCrew.size} unique crew members. Syncing with database in bulk...`,
   );
@@ -127,7 +139,7 @@ async function main() {
   const crewData = Array.from(uniqueCrew).map((name) => {
     let emailPrefix = name.toLowerCase().replace(/[^a-z0-9]/g, "");
     if (!emailPrefix) emailPrefix = "crew";
-    
+
     let email = `${emailPrefix}@thaiflix.com`;
     let counter = 1;
     while (seenEmails.has(email)) {
@@ -142,7 +154,7 @@ async function main() {
       createdBy: defaultUserId,
     };
   });
- 
+
   await prisma.crewMember.createMany({
     data: crewData,
     skipDuplicates: true,
@@ -219,9 +231,15 @@ async function main() {
     const ageRatingId = ageRatingMap.get(ageRatingStr.toLowerCase());
     if (!ageRatingId) throw new Error(`Age rating not found: ${ageRatingStr}`);
 
-    const universityId = movie.university ? universityMap.get(movie.university.toLowerCase()) || null : null;
-    const languageId = movie.language ? languageMap.get(movie.language.toLowerCase()) || null : null;
-    const targetGroupId = movie.targetGroup ? targetGroupMap.get(movie.targetGroup.toLowerCase()) || null : null;
+    const universityId = movie.university
+      ? universityMap.get(movie.university.toLowerCase()) || null
+      : null;
+    const languageId = movie.language
+      ? languageMap.get(movie.language.toLowerCase()) || null
+      : null;
+    const targetGroupId = movie.targetGroup
+      ? targetGroupMap.get(movie.targetGroup.toLowerCase()) || null
+      : null;
 
     const oldCrew = movie.crew?.create;
     const btsVideos = oldCrew?.btsVideo ? [oldCrew.btsVideo] : [];
@@ -238,7 +256,7 @@ async function main() {
       duration: movie.duration,
       views: movie.views || 0,
       matchRate: movie.matchRate || 100,
-      aspectRatio: "16:9",
+      aspectRatio: idx < 40 && idx >= 30 ? "แนวตั้ง" : "แนวนอน",
       ageRatingId,
       universityId,
       languageId,
