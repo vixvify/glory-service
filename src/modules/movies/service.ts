@@ -20,7 +20,7 @@ import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
 import { associateCrewBulk } from "../../lib/crew";
-import { redis } from "../../lib/redis";
+import { getCachedOrFetch } from "../../core/utils/cache";
 import { CacheKeys } from "../../core/utils/cache-key";
 import { invalidateCache } from "../../core/utils/invalidate-cache";
 import { toBoolean } from "../../core/utils/coerce";
@@ -35,26 +35,14 @@ export class MovieService {
     private authRepo: AuthRepository,
   ) {}
 
-  private async getCachedOrFetch(
-    key: string,
-    fetchFn: () => Promise<PrismaMovieWithRelations[]>,
-  ): Promise<Movie[]> {
-    const cached = await redis.get(key);
-    if (cached) {
-      return MovieFactory.toDomainList(JSON.parse(cached) as PrismaMovieWithRelations[]);
-    }
-    const movies = await fetchFn();
-    await redis.set(key, JSON.stringify(movies), { EX: 3600 });
-    return MovieFactory.toDomainList(movies);
-  }
-
   async getMovies(dto?: GetMoviesQueryDTO): Promise<Movie[]> {
     try {
       if (isDefaultQuery(dto)) {
-        return this.getCachedOrFetch(
+        const rawMovies = await getCachedOrFetch(
           CacheKeys.movieListDefault(),
           () => this.repo.find(),
         );
+        return MovieFactory.toDomainList(rawMovies);
       }
 
       const { search, searchby, page, pagesize, sort, sortby } = dto || {};
@@ -70,10 +58,11 @@ export class MovieService {
         sortby: sortby || undefined,
       };
 
-      return this.getCachedOrFetch(
+      const rawMovies = await getCachedOrFetch(
         CacheKeys.movieList(input),
         () => this.repo.find(input),
       );
+      return MovieFactory.toDomainList(rawMovies);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to get movies");
     }
@@ -117,19 +106,17 @@ export class MovieService {
 
   async getMovieById(id: string): Promise<Movie> {
     try {
-      const key = CacheKeys.movieDetail(id);
-      const cached = await redis.get(key);
-      if (cached) {
-        return MovieFactory.toDomain(JSON.parse(cached) as PrismaMovieWithRelations);
-      }
-
-      const movie = await this.repo.findById(id);
-      if (!movie) {
-        throw new NotFoundError(`Movie with id ${id} not found`);
-      }
-
-      await redis.set(key, JSON.stringify(movie), { EX: 3600 });
-      return MovieFactory.toDomain(movie);
+      const rawMovie = await getCachedOrFetch(
+        CacheKeys.movieDetail(id),
+        async () => {
+          const m = await this.repo.findById(id);
+          if (!m) {
+            throw new NotFoundError(`Movie with id ${id} not found`);
+          }
+          return m;
+        },
+      );
+      return MovieFactory.toDomain(rawMovie);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to get movie");
     }
