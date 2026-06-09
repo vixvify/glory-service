@@ -6,7 +6,7 @@ import {
   MovieCrewInputItem,
 } from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
-import { ColorType, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import {
   Category,
@@ -33,6 +33,12 @@ export interface MovieCrew {
 export enum AspectRatio {
   LANDSCAPE = "แนวนอน",
   PORTRAIT = "แนวตั้ง",
+}
+
+export enum ColorType {
+  COLOR = "color",
+  BLACK_AND_WHITE = "black_and_white",
+  COLOR_AND_BLACK_AND_WHITE = "color_and_black_and_white",
 }
 
 export interface Movie {
@@ -126,7 +132,11 @@ export const createMovieBodySchema = t.Object({
   targetGroupId: t.Optional(t.String({ format: "uuid" })),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
-  colorType: t.Union([t.Literal("color"), t.Literal("black_and_white")]),
+  colorType: t.Union([
+    t.Literal("color"),
+    t.Literal("black_and_white"),
+    t.Literal("color_and_black_and_white"),
+  ]),
   studio: t.Optional(t.String()),
   director: t.Optional(tCrewArrayCoerce),
   producer: t.Optional(tCrewArrayCoerce),
@@ -159,7 +169,11 @@ export const updateMovieBodySchema = t.Object({
   targetGroupId: t.Optional(t.String({ format: "uuid" })),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
-  colorType: t.Union([t.Literal("color"), t.Literal("black_and_white")]),
+  colorType: t.Union([
+    t.Literal("color"),
+    t.Literal("black_and_white"),
+    t.Literal("color_and_black_and_white"),
+  ]),
   studio: t.Optional(t.String()),
   director: t.Optional(tCrewArrayCoerce),
   producer: t.Optional(tCrewArrayCoerce),
