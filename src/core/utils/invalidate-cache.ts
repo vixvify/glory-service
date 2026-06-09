@@ -7,10 +7,17 @@ export async function invalidateCache(patterns: string[]) {
       continue;
     }
 
-    const keys = await redis.keys(pattern);
+    let cursor = "0";
+    do {
+      const result = await redis.scan(cursor, {
+        MATCH: pattern,
+        COUNT: 100,
+      });
+      cursor = result.cursor;
 
-    if (keys.length) {
-      await Promise.all(keys.map((key) => redis.del(key)));
-    }
+      if (result.keys.length) {
+        await redis.del(result.keys);
+      }
+    } while (cursor !== "0");
   }
 }

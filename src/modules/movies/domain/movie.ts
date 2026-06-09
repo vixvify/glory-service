@@ -202,11 +202,30 @@ export type SearchMoviesQueryDTO = Static<typeof searchMoviesQuerySchema>;
 
 export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),
-  searchby: t.Optional(t.String()),
+  searchby: t.Optional(
+    t.Union([
+      t.Literal("title"),
+      t.Literal("description"),
+      t.Literal("year"),
+      t.Literal("category"),
+      t.Literal("aspectRatio"),
+      t.Literal("university"),
+      t.Literal("studio"),
+    ]),
+  ),
   page: t.Optional(t.String()),
   pagesize: t.Optional(t.String()),
-  sort: t.Optional(t.String()),
-  sortby: t.Optional(t.String()),
+  sort: t.Optional(t.Union([t.Literal("asc"), t.Literal("desc")])),
+  sortby: t.Optional(
+    t.Union([
+      t.Literal("createdAt"),
+      t.Literal("title"),
+      t.Literal("year"),
+      t.Literal("duration"),
+      t.Literal("views"),
+      t.Literal("matchRate"),
+    ]),
+  ),
 });
 export type GetMoviesQueryDTO = Static<typeof getMoviesQuerySchema>;
 
@@ -283,3 +302,7 @@ export const movieIncludes = {
     },
   },
 } satisfies Prisma.MovieInclude;
+
+export type PrismaMovieWithRelations = Prisma.MovieGetPayload<{
+  include: typeof movieIncludes;
+}>;

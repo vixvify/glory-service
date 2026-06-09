@@ -1,17 +1,18 @@
-FROM node:22-alpine
+FROM oven/bun:1-alpine
 
 WORKDIR /app
+ENV PORT=8000
 
-COPY package*.json ./
+COPY package.json bun.lock ./
 
-RUN npm install
+RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN npx prisma generate
+RUN bunx prisma generate
 
-RUN npm run build
+RUN bun run build
 
 EXPOSE 8000
 
-CMD ["npm", "start"]
+CMD ["bun", "run", "start"]

@@ -3,15 +3,7 @@ import { User } from "../../auth/domain/auth";
 import { MovieCrew } from "../../movies/domain/movie";
 import {
   CrewMember as PrismaCrewMember,
-  Movie as PrismaMovie,
-  MovieCrew as PrismaMovieCrew,
   User as PrismaUser,
-  CrewRole as PrismaCrewRole,
-  Category as PrismaCategory,
-  AgeRating as PrismaAgeRating,
-  University as PrismaUniversity,
-  Language as PrismaLanguage,
-  TargetGroup as PrismaTargetGroup,
   Prisma,
 } from "@prisma/client";
 
@@ -72,11 +64,11 @@ export type SearchCrewMembersQueryDTO = Static<
 
 export const getCrewMembersQuerySchema = t.Object({
   search: t.Optional(t.String()),
-  searchby: t.Optional(t.String()),
+  searchby: t.Optional(t.Union([t.Literal("name"), t.Literal("email"), t.Literal("role")])),
   page: t.Optional(t.String()),
   pagesize: t.Optional(t.String()),
-  sort: t.Optional(t.String()),
-  sortby: t.Optional(t.String()),
+  sort: t.Optional(t.Union([t.Literal("asc"), t.Literal("desc")])),
+  sortby: t.Optional(t.Union([t.Literal("name"), t.Literal("email"), t.Literal("createdAt")])),
 });
 export type GetCrewMembersQueryDTO = Static<typeof getCrewMembersQuerySchema>;
 
@@ -140,20 +132,6 @@ export type CrewMemberUserSelected = Pick<
   | "awards"
 >;
 
-export type CrewMemberWithRelations = PrismaCrewMember & {
-  user: CrewMemberUserSelected | null;
-  movies: (PrismaMovieCrew & {
-    movie: PrismaMovie & {
-      category: PrismaCategory;
-      ageRating: PrismaAgeRating;
-      university: PrismaUniversity | null;
-      language: PrismaLanguage | null;
-      targetGroup: PrismaTargetGroup | null;
-    };
-    crewRole: PrismaCrewRole;
-  })[];
-};
-
 export const crewMemberIncludes = {
   movies: {
     include: {
@@ -173,3 +151,7 @@ export const crewMemberIncludes = {
     select: CrewMemberUserSelect,
   },
 } satisfies Prisma.CrewMemberInclude;
+
+export type CrewMemberWithRelations = Prisma.CrewMemberGetPayload<{
+  include: typeof crewMemberIncludes;
+}>;

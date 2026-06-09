@@ -27,7 +27,7 @@ export class RatingRepositoryImpl implements RatingRepository {
       where: { userId_movieId: { userId: input.userId, movieId: input.movieId } },
       include: ratingIncludes,
     });
-    return result as unknown as RatingWithRelations | null;
+    return result;
   }
 
   async deleteRating(userId: string, movieId: string): Promise<void> {

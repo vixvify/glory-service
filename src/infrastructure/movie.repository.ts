@@ -7,10 +7,11 @@ import {
   CreateMovieInput,
   UpdateMovieInput,
   movieIncludes,
+  PrismaMovieWithRelations,
 } from "../modules/movies/domain/movie";
 
 export class MovieRepositoryImpl implements MovieRepository {
-  async find(input?: MovieFilterInput): Promise<PrismaMovie[]> {
+  async find(input?: MovieFilterInput): Promise<PrismaMovieWithRelations[]> {
     if (!input) {
       return prisma.movie.findMany({
         include: movieIncludes,
@@ -76,7 +77,7 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async findByCategory(category: string): Promise<PrismaMovie[]> {
+  async findByCategory(category: string): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
         category: {
@@ -88,7 +89,7 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async findByUniversity(university: string): Promise<PrismaMovie[]> {
+  async findByUniversity(university: string): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
         university: {
@@ -100,7 +101,7 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async findContributed(userId: string): Promise<PrismaMovie[]> {
+  async findContributed(userId: string): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
         crew: {
@@ -116,7 +117,7 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async findById(id: string): Promise<PrismaMovie | null> {
+  async findById(id: string): Promise<PrismaMovieWithRelations | null> {
     return prisma.movie.findUnique({
       where: { id },
       include: movieIncludes,
@@ -136,9 +137,10 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async delete(id: string): Promise<PrismaMovie> {
+  async delete(id: string): Promise<PrismaMovieWithRelations> {
     return prisma.movie.delete({
       where: { id },
+      include: movieIncludes,
     });
   }
 

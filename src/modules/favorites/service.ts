@@ -1,7 +1,7 @@
 import { AppError, NotFoundError, BadRequestError } from "../../core/error";
 import { FavoriteRepository } from "./domain/favorite.repository";
 import { MovieRepository } from "../movies/domain/movie.repository";
-import { MovieFactory, PrismaMovieWithRelations } from "../movies/factory";
+import { MovieFactory } from "../movies/factory";
 import { Movie } from "../movies/domain/movie";
 
 export class FavoriteService {
@@ -13,7 +13,7 @@ export class FavoriteService {
   async getUserFavorites(userId: string): Promise<Movie[]> {
     try {
       const favorites = await this.repo.getFavorites(userId);
-      return MovieFactory.toDomainList(favorites as unknown as PrismaMovieWithRelations[]);
+      return MovieFactory.toDomainList(favorites);
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =

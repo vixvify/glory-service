@@ -15,7 +15,8 @@ import {
   UpdateMovieInput,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
-import { MovieFactory, PrismaMovieWithRelations } from "./factory";
+import { MovieFactory } from "./factory";
+import { PrismaMovieWithRelations } from "./domain/movie";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
 import { associateCrewBulk } from "../../lib/crew";
@@ -33,14 +34,14 @@ export class MovieService {
 
         if (cachedMovies) {
           return MovieFactory.toDomainList(
-            JSON.parse(cachedMovies) as unknown as PrismaMovieWithRelations[],
+            JSON.parse(cachedMovies) as PrismaMovieWithRelations[],
           );
         }
 
         const movies = await this.repo.find();
         await redis.set("movies", JSON.stringify(movies), { EX: 3600 });
         return MovieFactory.toDomainList(
-          movies as unknown as PrismaMovieWithRelations[],
+          movies,
         );
       }
       const { search, searchby, page, pagesize, sort, sortby } = dto || {};
@@ -62,13 +63,13 @@ export class MovieService {
 
       if (cached) {
         return MovieFactory.toDomainList(
-          JSON.parse(cached) as unknown as PrismaMovieWithRelations[],
+          JSON.parse(cached) as PrismaMovieWithRelations[],
         );
       }
       const movies = await this.repo.find(input);
       await redis.set(key, JSON.stringify(movies), { EX: 3600 });
       return MovieFactory.toDomainList(
-        movies as unknown as PrismaMovieWithRelations[],
+        movies,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -82,7 +83,7 @@ export class MovieService {
     try {
       const movies = await this.repo.find({ createdBy: userId });
       return MovieFactory.toDomainList(
-        movies as unknown as PrismaMovieWithRelations[],
+        movies,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -96,7 +97,7 @@ export class MovieService {
     try {
       const movies = await this.repo.findContributed(userId);
       return MovieFactory.toDomainList(
-        movies as unknown as PrismaMovieWithRelations[],
+        movies,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -112,7 +113,7 @@ export class MovieService {
     try {
       const movies = await this.repo.findByCategory(category);
       return MovieFactory.toDomainList(
-        movies as unknown as PrismaMovieWithRelations[],
+        movies,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -128,7 +129,7 @@ export class MovieService {
     try {
       const movies = await this.repo.findByUniversity(university);
       return MovieFactory.toDomainList(
-        movies as unknown as PrismaMovieWithRelations[],
+        movies,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -155,8 +156,11 @@ export class MovieService {
       if (!movie) {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
+
+      await redis.set(key, JSON.stringify(movie), { EX: 3600 });
+
       return MovieFactory.toDomain(
-        movie as unknown as PrismaMovieWithRelations,
+        movie,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -230,7 +234,7 @@ export class MovieService {
       await invalidateCache(["movies", "movie:list:*"]);
 
       return MovieFactory.toDomain(
-        movie as unknown as PrismaMovieWithRelations,
+        movie,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -319,7 +323,7 @@ export class MovieService {
       await invalidateCache(["movies", "movie:list:*", `movie:${id}`]);
 
       return MovieFactory.toDomain(
-        movie as unknown as PrismaMovieWithRelations,
+        movie,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
@@ -349,7 +353,7 @@ export class MovieService {
       await invalidateCache(["movies", "movie:list:*", `movie:${id}`]);
 
       return MovieFactory.toDomain(
-        movie as unknown as PrismaMovieWithRelations,
+        movie,
       );
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;

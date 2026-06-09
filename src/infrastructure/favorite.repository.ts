@@ -1,10 +1,12 @@
 import { prisma } from "../lib/prisma";
 import { FavoriteRepository } from "../modules/favorites/domain/favorite.repository";
-import { Movie as PrismaMovie } from "@prisma/client";
-import { movieIncludes } from "../modules/movies/domain/movie";
+import {
+  movieIncludes,
+  PrismaMovieWithRelations,
+} from "../modules/movies/domain/movie";
 
 export class FavoriteRepositoryImpl implements FavoriteRepository {
-  async getFavorites(userId: string): Promise<PrismaMovie[]> {
+  async getFavorites(userId: string): Promise<PrismaMovieWithRelations[]> {
     const favorites = await prisma.favorite.findMany({
       where: { userId },
       include: {
@@ -13,7 +15,7 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
         },
       },
     });
-    return favorites.map((fav) => fav.movie) as unknown as PrismaMovie[];
+    return favorites.map((fav) => fav.movie);
   }
 
   async checkFavorite(userId: string, movieId: string): Promise<boolean> {

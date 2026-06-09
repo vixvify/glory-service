@@ -20,4 +20,7 @@ redis.on("end", () => {
   console.log("Redis disconnected");
 });
 
-await redis.connect();
+export const redisReady = redis.connect().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error("Redis connection failed:", message);
+});
