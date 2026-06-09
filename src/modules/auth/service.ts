@@ -5,11 +5,8 @@ import {
   verifyJWT,
 } from "../../core/utils/security";
 import {
-  AppError,
   ConflictError,
   UnauthorizedError,
-  BadRequestError,
-  InternalServerError,
 } from "../../core/error";
 import {
   User,
@@ -21,6 +18,7 @@ import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
 import { uploadToR2 } from "../../lib/r2";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class AuthService {
   constructor(
@@ -77,10 +75,7 @@ export class AuthService {
 
       return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to register user";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to register user");
     }
   }
 
@@ -93,10 +88,11 @@ export class AuthService {
         throw new UnauthorizedError("Invalid email or password");
       }
 
-      const isPasswordValid = await verifyPassword(
-        dto.password,
-        user.password || "",
-      );
+      if (!user.password) {
+        throw new UnauthorizedError("Invalid email or password");
+      }
+
+      const isPasswordValid = await verifyPassword(dto.password, user.password);
       if (!isPasswordValid) {
         throw new UnauthorizedError("Invalid email or password");
       }
@@ -110,10 +106,7 @@ export class AuthService {
 
       return AuthFactory.toSafeUserDTO(user, token);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to login";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to login");
     }
   }
 
@@ -123,12 +116,7 @@ export class AuthService {
       if (!user) return null;
       return AuthFactory.toDomainUser(user);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to retrieve user profile";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to retrieve user profile");
     }
   }
 

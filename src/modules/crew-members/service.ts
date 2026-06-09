@@ -1,10 +1,4 @@
-import {
-  AppError,
-  NotFoundError,
-  BadRequestError,
-  ConflictError,
-  ForbiddenError,
-} from "../../core/error";
+import { NotFoundError, ConflictError } from "../../core/error";
 import {
   CrewMember,
   GetCrewMembersQueryDTO,
@@ -18,6 +12,7 @@ import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { isDefaultQuery } from "../../core/utils/query";
 import { CrewMemberFactory } from "./factory";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class CrewMemberService {
   constructor(
@@ -49,10 +44,7 @@ export class CrewMemberService {
       const results = await this.repo.find(input);
       return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get crew members";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get crew members");
     }
   }
 
@@ -61,12 +53,7 @@ export class CrewMemberService {
       const results = await this.repo.find({ createdBy: userId });
       return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to get my crew members";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get my crew members");
     }
   }
 
@@ -78,10 +65,7 @@ export class CrewMemberService {
       }
       return CrewMemberFactory.toDomain(crewMember);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get crew member";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get crew member");
     }
   }
 
@@ -119,10 +103,7 @@ export class CrewMemberService {
       const created = await this.repo.create(input);
       return CrewMemberFactory.toDomain(created);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to create crew member";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to create crew member");
     }
   }
 
@@ -156,11 +137,7 @@ export class CrewMemberService {
           linkedUserId = null;
         } else {
           const user = await this.authRepo.findByEmail(trimmedEmail);
-          if (user) {
-            linkedUserId = user.id;
-          } else {
-            linkedUserId = null;
-          }
+          linkedUserId = user?.id ?? null;
         }
       }
 
@@ -173,10 +150,7 @@ export class CrewMemberService {
       const updated = await this.repo.update(id, input);
       return CrewMemberFactory.toDomain(updated);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to update crew member";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to update crew member");
     }
   }
 
@@ -189,10 +163,7 @@ export class CrewMemberService {
       const deleted = await this.repo.delete(id);
       return CrewMemberFactory.toDomain(deleted);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to delete crew member";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to delete crew member");
     }
   }
 }

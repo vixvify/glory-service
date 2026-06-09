@@ -1,29 +1,9 @@
 import { Elysia } from "elysia";
-import { AuthRepositoryImpl } from "../infrastructure/auth.repository";
-import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
-import { AuthService } from "../modules/auth/service";
+import { authService, movieService, crewMemberService } from "../lib/container";
 import { UnauthorizedError, ForbiddenError } from "../core/error";
 import { User } from "../modules/auth/domain/auth";
-import { MovieService } from "../modules/movies/service";
-import { MovieRepositoryImpl } from "../infrastructure/movie.repository";
-import { CrewMemberService } from "../modules/crew-members/service";
 
-const repo = new AuthRepositoryImpl();
-const crewMemberRepo = new CrewMemberRepositoryImpl();
-const service = new AuthService(repo, crewMemberRepo);
-const movieService = new MovieService(new MovieRepositoryImpl());
-const crewMemberService = new CrewMemberService(crewMemberRepo, repo);
 type Role = "admin" | "user";
-
-const hasRole = (userRole: Role, requiredRoles?: Role | Role[]) => {
-  if (!requiredRoles) return true;
-
-  if (Array.isArray(requiredRoles)) {
-    return requiredRoles.includes(userRole);
-  }
-
-  return userRole === requiredRoles;
-};
 
 export const authMiddleware = new Elysia({ name: "auth-middleware" })
   .derive({ as: "global" }, async ({ request, cookie: { auth_token } }) => {
@@ -41,9 +21,9 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
     }
 
     try {
-      const user = await service.verifyToken(token);
+      const user = await authService.verifyToken(token);
       return { user };
-    } catch (error) {
+    } catch {
       return { user: null };
     }
   })
@@ -65,14 +45,12 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
         }
 
         const roles = Array.isArray(role) ? role : [role];
-
-        if (!roles.includes(user.role as Role)) {
+        if (!roles.includes(user.role)) {
           throw new ForbiddenError("Forbidden");
         }
       });
     },
-  }))
-  .macro(({ onBeforeHandle }) => ({
+
     requireMovieOwner() {
       onBeforeHandle(
         async ({
@@ -96,8 +74,7 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
         },
       );
     },
-  }))
-  .macro(({ onBeforeHandle }) => ({
+
     requireCrewMemberOwner() {
       onBeforeHandle(
         async ({

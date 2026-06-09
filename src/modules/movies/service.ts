@@ -1,7 +1,5 @@
 import {
-  AppError,
   NotFoundError,
-  BadRequestError,
   InternalServerError,
 } from "../../core/error";
 import {
@@ -15,6 +13,9 @@ import {
   PrismaMovieWithRelations,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
+import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
+import { MovieCrewRepository } from "./domain/movie-crew.repository";
+import { AuthRepository } from "../auth/domain/auth.repository";
 import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/query";
@@ -24,28 +25,39 @@ import { CacheKeys } from "../../core/utils/cache-key";
 import { invalidateCache } from "../../core/utils/invalidate-cache";
 import { toBoolean } from "../../core/utils/coerce";
 import { extractCrewInput } from "../../core/utils/movie-crew";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class MovieService {
-  constructor(private repo: MovieRepository) {}
+  constructor(
+    private repo: MovieRepository,
+    private crewMemberRepo: CrewMemberRepository,
+    private movieCrewRepo: MovieCrewRepository,
+    private authRepo: AuthRepository,
+  ) {}
+
+  private async getCachedOrFetch(
+    key: string,
+    fetchFn: () => Promise<PrismaMovieWithRelations[]>,
+  ): Promise<Movie[]> {
+    const cached = await redis.get(key);
+    if (cached) {
+      return MovieFactory.toDomainList(JSON.parse(cached) as PrismaMovieWithRelations[]);
+    }
+    const movies = await fetchFn();
+    await redis.set(key, JSON.stringify(movies), { EX: 3600 });
+    return MovieFactory.toDomainList(movies);
+  }
 
   async getMovies(dto?: GetMoviesQueryDTO): Promise<Movie[]> {
     try {
       if (isDefaultQuery(dto)) {
-        const defaultKey = CacheKeys.movieListDefault();
-        const cachedMovies = await redis.get(defaultKey);
-
-        if (cachedMovies) {
-          return MovieFactory.toDomainList(
-            JSON.parse(cachedMovies) as PrismaMovieWithRelations[],
-          );
-        }
-
-        const movies = await this.repo.find();
-        await redis.set(defaultKey, JSON.stringify(movies), { EX: 3600 });
-        return MovieFactory.toDomainList(movies);
+        return this.getCachedOrFetch(
+          CacheKeys.movieListDefault(),
+          () => this.repo.find(),
+        );
       }
-      const { search, searchby, page, pagesize, sort, sortby } = dto || {};
 
+      const { search, searchby, page, pagesize, sort, sortby } = dto || {};
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
 
@@ -57,23 +69,13 @@ export class MovieService {
         sort: sort || undefined,
         sortby: sortby || undefined,
       };
-      const key = CacheKeys.movieList(input);
 
-      const cached = await redis.get(key);
-
-      if (cached) {
-        return MovieFactory.toDomainList(
-          JSON.parse(cached) as PrismaMovieWithRelations[],
-        );
-      }
-      const movies = await this.repo.find(input);
-      await redis.set(key, JSON.stringify(movies), { EX: 3600 });
-      return MovieFactory.toDomainList(movies);
+      return this.getCachedOrFetch(
+        CacheKeys.movieList(input),
+        () => this.repo.find(input),
+      );
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get movies";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get movies");
     }
   }
 
@@ -82,10 +84,7 @@ export class MovieService {
       const movies = await this.repo.find({ createdBy: userId });
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get my movies";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get my movies");
     }
   }
 
@@ -94,12 +93,7 @@ export class MovieService {
       const movies = await this.repo.findContributed(userId);
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to get contributed movies";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get contributed movies");
     }
   }
 
@@ -108,12 +102,7 @@ export class MovieService {
       const movies = await this.repo.findByCategory(category);
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to get movies by category";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get movies by category");
     }
   }
 
@@ -122,39 +111,27 @@ export class MovieService {
       const movies = await this.repo.findByUniversity(university);
       return MovieFactory.toDomainList(movies);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to get movies by university";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get movies by university");
     }
   }
 
   async getMovieById(id: string): Promise<Movie> {
     try {
       const key = CacheKeys.movieDetail(id);
-
       const cached = await redis.get(key);
-
       if (cached) {
-        return MovieFactory.toDomain(
-          JSON.parse(cached) as PrismaMovieWithRelations,
-        );
+        return MovieFactory.toDomain(JSON.parse(cached) as PrismaMovieWithRelations);
       }
+
       const movie = await this.repo.findById(id);
       if (!movie) {
         throw new NotFoundError(`Movie with id ${id} not found`);
       }
 
       await redis.set(key, JSON.stringify(movie), { EX: 3600 });
-
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get movie";
-      throw new InternalServerError(message);
+      handleServiceError(error, "Failed to get movie");
     }
   }
 
@@ -196,16 +173,9 @@ export class MovieService {
       const movieRecord = await this.repo.create(input);
 
       await associateCrewBulk(
-        {
-          movieId: movieRecord.id,
-          directors,
-          producers,
-          writers,
-          cast,
-          dops,
-          editors,
-        },
+        { movieId: movieRecord.id, directors, producers, writers, cast, dops, editors },
         userId,
+        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
       );
 
       const movie = await this.repo.findById(movieRecord.id);
@@ -213,14 +183,10 @@ export class MovieService {
         throw new InternalServerError("Failed to retrieve created movie");
       }
 
-      await invalidateCache([CacheKeys.movieListDefault(), "movie:list:*"]);
-
+      await invalidateCache([CacheKeys.movieListDefault(), CacheKeys.movieListWildcard()]);
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to create movie";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to create movie");
     }
   }
 
@@ -270,16 +236,9 @@ export class MovieService {
       await this.repo.update(id, input);
 
       await associateCrewBulk(
-        {
-          movieId: id,
-          directors,
-          producers,
-          writers,
-          cast,
-          dops,
-          editors,
-        },
+        { movieId: id, directors, producers, writers, cast, dops, editors },
         userId,
+        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
       );
 
       const movie = await this.repo.findById(id);
@@ -289,16 +248,12 @@ export class MovieService {
 
       await invalidateCache([
         CacheKeys.movieListDefault(),
-        "movie:list:*",
-        `movie:${id}`,
+        CacheKeys.movieListWildcard(),
+        CacheKeys.movieDetail(id),
       ]);
-
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to update movie";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to update movie");
     }
   }
 
@@ -311,16 +266,13 @@ export class MovieService {
 
       await invalidateCache([
         CacheKeys.movieListDefault(),
-        "movie:list:*",
-        `movie:${id}`,
+        CacheKeys.movieListWildcard(),
+        CacheKeys.movieDetail(id),
       ]);
 
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to delete movie";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to delete movie");
     }
   }
 }

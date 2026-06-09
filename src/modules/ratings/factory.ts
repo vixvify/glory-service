@@ -14,7 +14,7 @@ export class RatingFactory {
         id: rating.user.id,
         name: rating.user.name || "Unknown User",
         email: rating.user.email,
-        role: rating.user.role as "user" | "admin",
+        role: rating.user.role,
       },
       movie: {
         id: rating.movie.id,

@@ -1,35 +1,31 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { MasterDataRepositoryImpl } from "../../infrastructure/masterdata.repository";
-import { MasterDataService } from "./service";
+import { masterDataService } from "../../lib/container";
 import { formatSuccess } from "../../core/interceptor";
-
-const repo = new MasterDataRepositoryImpl();
-const service = new MasterDataService(repo);
 
 export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
   .use(authMiddleware)
   .get("/categories", async () => {
-    const categories = await service.getCategories();
+    const categories = await masterDataService.getCategories();
     return formatSuccess(categories);
   })
   .get("/universities", async () => {
-    const universities = await service.getUniversities();
+    const universities = await masterDataService.getUniversities();
     return formatSuccess(universities);
   })
-  .get("/ratings", async () => {
-    const ratings = await service.getAgeRatings();
+  .get("/age-ratings", async () => {
+    const ratings = await masterDataService.getAgeRatings();
     return formatSuccess(ratings);
   })
   .get("/languages", async () => {
-    const languages = await service.getLanguages();
+    const languages = await masterDataService.getLanguages();
     return formatSuccess(languages);
   })
   .get("/target-groups", async () => {
-    const targetGroups = await service.getTargetGroups();
+    const targetGroups = await masterDataService.getTargetGroups();
     return formatSuccess(targetGroups);
   })
   .get("/crew-roles", async () => {
-    const crewRoles = await service.getCrewRoles();
+    const crewRoles = await masterDataService.getCrewRoles();
     return formatSuccess(crewRoles);
   });

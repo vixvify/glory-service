@@ -2,7 +2,6 @@ import { t, Static } from "elysia";
 import { User } from "../../auth/domain/auth";
 import { MovieCrew } from "../../movies/domain/movie";
 import {
-  CrewMember as PrismaCrewMember,
   User as PrismaUser,
   Prisma,
 } from "@prisma/client";

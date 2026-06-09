@@ -5,6 +5,10 @@ export class CacheKeys {
     return "movie:list:default";
   }
 
+  static movieListWildcard() {
+    return "movie:list:*";
+  }
+
   static movieList(input: MovieFilterInput) {
     return [
       "movie:list",

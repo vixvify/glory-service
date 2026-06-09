@@ -131,6 +131,14 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     return results;
   }
 
+  async findManyByEmails(emails: string[]): Promise<CrewMemberWithRelations[]> {
+    const results = await prisma.crewMember.findMany({
+      where: { email: { in: emails } },
+      include: crewMemberIncludes,
+    });
+    return results;
+  }
+
   async createMany(names: string[], createdBy: string): Promise<void> {
     await prisma.crewMember.createMany({
       data: names.map((name) => ({ name, createdBy })),

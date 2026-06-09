@@ -54,31 +54,31 @@ model Movie {
   thumbnail    String
   youtubeUrl   String
   trailerUrl   String?
-  
+
   categoryId   String      @db.Uuid
   category     Category    @relation(fields: [categoryId], references: [id])
-  
+
   year         Int
   duration     Int
   views        Int         @default(0)
   matchRate    Int         @default(100)
   aspectRatio  String      @default("16:9")
-  
+
   ageRatingId  String      @db.Uuid
   ageRating    AgeRating   @relation(fields: [ageRatingId], references: [id])
-  
+
   universityId String?     @db.Uuid
   university   University? @relation(fields: [universityId], references: [id])
-  
+
   languageId   String?     @db.Uuid
   language     Language?   @relation(fields: [languageId], references: [id])
-  
+
   targetGroupId String?    @db.Uuid
   targetGroup  TargetGroup? @relation(fields: [targetGroupId], references: [id])
-  
+
   hasProfanity Boolean     @default(false)
   hasDrugs     Boolean     @default(false)
-  colorType    ColorType   @default(color)
+  colorType    ColorType
   studio       String?
 
   createdBy    String      @db.Uuid
@@ -145,7 +145,7 @@ model Favorite {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  
+
   @@id([userId, movieId])
   @@index([movieId])
   @@map("favorites")
@@ -160,7 +160,7 @@ model Rating {
   updatedAt DateTime @updatedAt
   movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@id([userId, movieId])
   @@index([movieId])
   @@map("ratings")

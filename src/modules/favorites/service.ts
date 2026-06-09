@@ -1,8 +1,9 @@
-import { AppError, NotFoundError, BadRequestError } from "../../core/error";
+import { NotFoundError } from "../../core/error";
 import { FavoriteRepository } from "./domain/favorite.repository";
 import { MovieRepository } from "../movies/domain/movie.repository";
 import { MovieFactory } from "../movies/factory";
 import { Movie } from "../movies/domain/movie";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class FavoriteService {
   constructor(
@@ -15,10 +16,7 @@ export class FavoriteService {
       const favorites = await this.repo.getFavorites(userId);
       return MovieFactory.toDomainList(favorites);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get user favorites";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get user favorites");
     }
   }
 
@@ -34,12 +32,7 @@ export class FavoriteService {
         await this.repo.addFavorite(userId, movieId);
       }
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to add movie to favorites";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to add movie to favorites");
     }
   }
 
@@ -50,12 +43,7 @@ export class FavoriteService {
     try {
       await this.repo.removeFavorite(userId, movieId);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to remove movie from favorites";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to remove movie from favorites");
     }
   }
 }

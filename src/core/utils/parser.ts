@@ -28,7 +28,6 @@ export function coerceArray(value: unknown): string[] {
         return parsed.map((item) => String(item).trim()).filter(Boolean);
       }
     } catch {
-      // ignore and fall through
     }
   }
   return str
@@ -70,7 +69,6 @@ function parseCrewItem(item: unknown): MovieCrewInputItem | null {
           email: typeof parsed.email === "string" ? parsed.email : null,
         };
       } catch {
-        // Fall through
       }
     }
     return {
@@ -102,7 +100,6 @@ export function coerceCrewArray(value: unknown): MovieCrewInputItem[] {
             .filter((item): item is MovieCrewInputItem => item !== null);
         }
       } catch {
-        // ignore
       }
     }
     const parsedSingle = parseCrewItem(str);

@@ -6,7 +6,7 @@ import {
   MovieCrewInputItem,
 } from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
-import { ColorType, Prisma } from "@prisma/client";
+import { Prisma, ColorType } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import {
   Category,
@@ -16,6 +16,7 @@ import {
   TargetGroup,
   CrewRole,
 } from "../../master-data/domain/masterdata";
+export { ColorType } from "@prisma/client";
 
 export interface MovieCrew {
   id: string;
@@ -82,7 +83,7 @@ export interface CreateMovieInput {
   targetGroupId?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType?: ColorType;
+  colorType: ColorType;
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
@@ -105,7 +106,7 @@ export interface UpdateMovieInput {
   targetGroupId?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType?: ColorType;
+  colorType: ColorType;
   studio?: string | null;
   btsVideos?: string[];
 }
@@ -126,7 +127,11 @@ export const createMovieBodySchema = t.Object({
   targetGroupId: t.Optional(t.String({ format: "uuid" })),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
-  colorType: t.Union([t.Literal("color"), t.Literal("black_and_white")]),
+  colorType: t.Union([
+    t.Literal("color"),
+    t.Literal("black_and_white"),
+    t.Literal("color_and_black_and_white"),
+  ]),
   studio: t.Optional(t.String()),
   director: t.Optional(tCrewArrayCoerce),
   producer: t.Optional(tCrewArrayCoerce),
@@ -159,7 +164,11 @@ export const updateMovieBodySchema = t.Object({
   targetGroupId: t.Optional(t.String({ format: "uuid" })),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
-  colorType: t.Union([t.Literal("color"), t.Literal("black_and_white")]),
+  colorType: t.Union([
+    t.Literal("color"),
+    t.Literal("black_and_white"),
+    t.Literal("color_and_black_and_white"),
+  ]),
   studio: t.Optional(t.String()),
   director: t.Optional(tCrewArrayCoerce),
   producer: t.Optional(tCrewArrayCoerce),
@@ -195,10 +204,6 @@ export const deleteMovieParamsSchema = t.Object({
 });
 export type DeleteMovieParamsDTO = Static<typeof deleteMovieParamsSchema>;
 
-export const searchMoviesQuerySchema = t.Object({
-  q: t.Optional(t.String()),
-});
-export type SearchMoviesQueryDTO = Static<typeof searchMoviesQuerySchema>;
 
 export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),

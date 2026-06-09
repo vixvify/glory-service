@@ -1,22 +1,16 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { AuthRepositoryImpl } from "../../infrastructure/auth.repository";
-import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
-import { AuthService } from "./service";
+import { authService } from "../../lib/container";
 import { formatSuccess } from "../../core/interceptor";
 import { registerUserBodySchema, loginUserBodySchema } from "./domain/auth";
 import { config } from "../../core/config";
-
-const repo = new AuthRepositoryImpl();
-const crewMemberRepo = new CrewMemberRepositoryImpl();
-const service = new AuthService(repo, crewMemberRepo);
 
 export const authRouter = new Elysia({ prefix: "/auth" })
   .use(authMiddleware)
   .post(
     "/register",
     async ({ body }) => {
-      const user = await service.register(body);
+      const user = await authService.register(body);
       return formatSuccess(user);
     },
     {
@@ -26,7 +20,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
   .post(
     "/login",
     async ({ body, cookie: { auth_token } }) => {
-      const { token, ...safeUser } = await service.login(body);
+      const { token, ...safeUser } = await authService.login(body);
 
       const prod = config.env === "production";
       auth_token.set({
@@ -51,7 +45,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
   .get(
     "/me",
     async ({ user }) => {
-      const fullUser = await service.me(user!.id);
+      const fullUser = await authService.me(user!.id);
       return formatSuccess(fullUser);
     },
     {

@@ -20,7 +20,7 @@ export class CrewMemberFactory {
             id: member.user.id,
             email: member.user.email || "",
             name: member.user.name || "",
-            role: (member.user.role as "admin" | "user") || "user",
+            role: member.user.role,
             photoUrl: member.user.photoUrl,
             motto: member.user.motto,
             bio: member.user.bio,

@@ -1,7 +1,6 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { RatingRepositoryImpl } from "../../infrastructure/rating.repository";
-import { RatingService } from "./service";
+import { ratingService } from "../../lib/container";
 import { formatSuccess } from "../../core/interceptor";
 import {
   addRatingBodySchema,
@@ -11,16 +10,13 @@ import {
   updateRatingBodySchema,
 } from "./domain/rating";
 
-const repo = new RatingRepositoryImpl();
-const service = new RatingService(repo);
-
 export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .use(authMiddleware)
   .post(
     "/",
     async ({ body, user }) => {
       const { movieId, stars, comment } = body;
-      await service.addRating({
+      await ratingService.addRating({
         userId: user!.id,
         movieId,
         stars,
@@ -36,7 +32,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .get(
     "/",
     async ({ query, user }) => {
-      const rating = await service.getRatingsByUserIdAndMovieId({
+      const rating = await ratingService.getRatingsByUserIdAndMovieId({
         userId: user!.id,
         movieId: query.movieId,
       });
@@ -51,7 +47,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
     "/",
     async ({ body, user }) => {
       const { movieId } = body;
-      await service.deleteRating(user!.id, movieId);
+      await ratingService.deleteRating(user!.id, movieId);
       return formatSuccess(null);
     },
     {
@@ -63,7 +59,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
     "/check",
     async ({ query, user }) => {
       const { movieId } = query;
-      const rating = await service.checkRating(user!.id, movieId);
+      const rating = await ratingService.checkRating(user!.id, movieId);
       return formatSuccess(rating);
     },
     {
@@ -75,7 +71,7 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
     "/",
     async ({ body, user }) => {
       const { movieId, stars, comment } = body;
-      await service.updateRating({
+      await ratingService.updateRating({
         userId: user!.id,
         movieId,
         stars,

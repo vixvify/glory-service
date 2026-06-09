@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { rateLimiter } from "../../middleware/rate-limit";
+import { rateLimiter } from "../../lib/rate-limiter";
 
 export const rateLimitPlugin = new Elysia().onBeforeHandle(
   async ({ request, set }) => {
@@ -11,7 +11,10 @@ export const rateLimitPlugin = new Elysia().onBeforeHandle(
       set.status = 429;
 
       return {
-        message: "Too Many Requests",
+        data: null,
+        error: "Too Many Requests",
+        status: 429,
+        statusCode: "TOO_MANY_REQUESTS",
       };
     }
   },
