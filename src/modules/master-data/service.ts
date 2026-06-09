@@ -1,6 +1,13 @@
 import { AppError, BadRequestError } from "../../core/error";
 import { MasterDataRepository } from "./domain/masterdata.repository";
-import { Category, University, AgeRating, Language, TargetGroup, CrewRole } from "./domain/masterdata";
+import {
+  Category,
+  University,
+  AgeRating,
+  Language,
+  TargetGroup,
+  CrewRole,
+} from "./domain/masterdata";
 
 export class MasterDataService {
   constructor(private repo: MasterDataRepository) {}

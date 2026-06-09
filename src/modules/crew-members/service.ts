@@ -25,9 +25,7 @@ export class CrewMemberService {
     private authRepo?: AuthRepository,
   ) {}
 
-  async getCrewMembers(
-    dto?: GetCrewMembersQueryDTO,
-  ): Promise<CrewMember[]> {
+  async getCrewMembers(dto?: GetCrewMembersQueryDTO): Promise<CrewMember[]> {
     try {
       if (isDefaultQuery(dto)) {
         const results = await this.repo.find();
@@ -65,7 +63,9 @@ export class CrewMemberService {
     } catch (error: unknown) {
       if (error instanceof AppError) throw error;
       const message =
-        error instanceof Error ? error.message : "Failed to get my crew members";
+        error instanceof Error
+          ? error.message
+          : "Failed to get my crew members";
       throw new BadRequestError(message, error);
     }
   }
@@ -85,7 +85,10 @@ export class CrewMemberService {
     }
   }
 
-  async createCrewMember(dto: CreateCrewMemberDTO, creatorId: string): Promise<CrewMember> {
+  async createCrewMember(
+    dto: CreateCrewMemberDTO,
+    creatorId: string,
+  ): Promise<CrewMember> {
     try {
       const { name, email } = dto;
       const trimmedName = name.trim();
@@ -126,18 +129,12 @@ export class CrewMemberService {
   async updateCrewMember(
     id: string,
     dto: UpdateCrewMemberBodyDTO,
-    userId: string,
-    role: string,
   ): Promise<CrewMember> {
     try {
       const { name, email } = dto;
       const existingById = await this.repo.findById(id);
       if (!existingById) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
-      }
-
-      if (existingById.createdBy !== userId && role !== "admin") {
-        throw new ForbiddenError("You do not have permission to update this crew member");
       }
 
       const trimmedName = name.trim();
@@ -183,15 +180,11 @@ export class CrewMemberService {
     }
   }
 
-  async deleteCrewMember(id: string, userId: string, role: string): Promise<CrewMember> {
+  async deleteCrewMember(id: string): Promise<CrewMember> {
     try {
       const existing = await this.repo.findById(id);
       if (!existing) {
         throw new NotFoundError(`Crew member with id ${id} not found`);
-      }
-
-      if (existing.createdBy !== userId && role !== "admin") {
-        throw new ForbiddenError("You do not have permission to delete this crew member");
       }
       const deleted = await this.repo.delete(id);
       return CrewMemberFactory.toDomain(deleted);
@@ -203,4 +196,3 @@ export class CrewMemberService {
     }
   }
 }
-

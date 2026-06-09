@@ -38,11 +38,6 @@ export class MovieFactory {
                 id: movie.id,
                 title: movie.title,
                 description: movie.description,
-                category: {
-                  id: movie.category.id,
-                  name: movie.category.name,
-                  createdAt: movie.category.createdAt,
-                },
                 thumbnail: movie.thumbnail,
                 youtubeUrl: movie.youtubeUrl || "",
                 trailerUrl: movie.trailerUrl || "",
@@ -50,38 +45,31 @@ export class MovieFactory {
                 year: movie.year,
                 matchRate: movie.matchRate,
                 aspectRatio: movie.aspectRatio,
-                ageRating: {
-                  id: movie.ageRating.id,
-                  name: movie.ageRating.name,
-                  createdAt: movie.ageRating.createdAt,
-                },
                 duration: movie.duration,
-                university: movie.university
-                  ? {
-                      id: movie.university.id,
-                      name: movie.university.name,
-                      createdAt: movie.university.createdAt,
-                    }
-                  : null,
-                language: movie.language
-                  ? {
-                      id: movie.language.id,
-                      name: movie.language.name,
-                      createdAt: movie.language.createdAt,
-                    }
-                  : null,
-                targetGroup: movie.targetGroup
-                  ? {
-                      id: movie.targetGroup.id,
-                      name: movie.targetGroup.name,
-                      createdAt: movie.targetGroup.createdAt,
-                    }
-                  : null,
                 hasProfanity: movie.hasProfanity,
                 hasDrugs: movie.hasDrugs,
                 colorType: movie.colorType,
                 studio: movie.studio,
                 createdBy: movie.createdBy,
+                category: {
+                  id: movie.category.id,
+                  name: movie.category.name,
+                  createdAt: movie.category.createdAt,
+                },
+                ageRating: {
+                  id: movie.ageRating.id,
+                  name: movie.ageRating.name,
+                  createdAt: movie.ageRating.createdAt,
+                },
+                university: movie.university
+                  ? { id: movie.university.id, name: movie.university.name, createdAt: movie.university.createdAt }
+                  : null,
+                language: movie.language
+                  ? { id: movie.language.id, name: movie.language.name, createdAt: movie.language.createdAt }
+                  : null,
+                targetGroup: movie.targetGroup
+                  ? { id: movie.targetGroup.id, name: movie.targetGroup.name, createdAt: movie.targetGroup.createdAt }
+                  : null,
                 crew: [],
                 btsVideos: [],
                 createdAt: movie.createdAt,

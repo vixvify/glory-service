@@ -9,8 +9,14 @@ import {
   ConflictError,
   UnauthorizedError,
   BadRequestError,
+  InternalServerError,
 } from "../../core/error";
-import { User, RegisterUserBodyDTO, LoginUserBodyDTO, CreateUserInput } from "./domain/auth";
+import {
+  User,
+  RegisterUserBodyDTO,
+  LoginUserBodyDTO,
+  CreateUserInput,
+} from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
@@ -48,20 +54,16 @@ export class AuthService {
       const passwordHash = await hashPassword(dto.password);
 
       const {
-        password,
-        photo,
+        password: _pw,
+        photo: _ph,
         positions: _p,
         awards: _a,
         birthday: _b,
         ...rest
       } = dto;
 
-      const profileFields = Object.fromEntries(Object.entries(rest));
-
       const input: CreateUserInput = {
-        ...profileFields,
-        email: dto.email,
-        name: dto.name,
+        ...rest,
         passwordHash,
         photoUrl,
         positions,
@@ -82,7 +84,9 @@ export class AuthService {
     }
   }
 
-  async login(dto: LoginUserBodyDTO): Promise<Omit<User, "id" | "role"> & { token?: string }> {
+  async login(
+    dto: LoginUserBodyDTO,
+  ): Promise<Omit<User, "id" | "role"> & { token?: string }> {
     try {
       const user = await this.repo.findByEmailWithPassword(dto.email);
       if (!user) {

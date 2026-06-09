@@ -3,6 +3,7 @@ import { authMiddleware } from "../../middleware/auth";
 import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
 import { MovieService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
+import { ForbiddenError } from "../../core/error";
 import {
   createMovieBodySchema,
   updateMovieParamsSchema,
@@ -85,9 +86,10 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
   )
   .post(
     "/",
-    async ({ body, user }) => {
+    async ({ body, user, set }) => {
+      set.status = 201;
       const movie = await service.createMovie(body, user!.id);
-      return formatSuccess(movie);
+      return formatSuccess(movie, "CREATED", 201);
     },
     {
       body: createMovieBodySchema,
@@ -98,29 +100,27 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     "/:id",
     async ({ params, body, user }) => {
       const { id } = params;
-      const payload = {
-        ...body,
-        year: Number(body.year),
-        duration: Number(body.duration),
-      };
-      const movie = await service.updateMovie(id, payload, user!.id, user!.role);
+      const movie = await service.updateMovie(id, body, user!.id);
       return formatSuccess(movie);
     },
     {
       params: updateMovieParamsSchema,
       body: updateMovieBodySchema,
       requireAuth: true,
+      requireMovieOwner: true,
     },
   )
   .delete(
     "/:id",
-    async ({ params, user }) => {
+    async ({ params }) => {
       const { id } = params;
-      const movie = await service.deleteMovie(id, user!.id, user!.role);
+
+      const movie = await service.deleteMovie(id);
       return formatSuccess(movie);
     },
     {
       params: deleteMovieParamsSchema,
       requireAuth: true,
+      requireMovieOwner: true,
     },
   );
