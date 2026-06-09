@@ -1,7 +1,4 @@
-import {
-  NotFoundError,
-  InternalServerError,
-} from "../../core/error";
+import { NotFoundError, InternalServerError } from "../../core/error";
 import {
   Movie,
   CreateMovieBodyDTO,
@@ -58,9 +55,8 @@ export class MovieService {
         sortby: sortby || undefined,
       };
 
-      const rawMovies = await getCachedOrFetch(
-        CacheKeys.movieList(input),
-        () => this.repo.find(input),
+      const rawMovies = await getCachedOrFetch(CacheKeys.movieList(input), () =>
+        this.repo.find(input),
       );
       return MovieFactory.toDomainList(rawMovies);
     } catch (error: unknown) {
@@ -135,24 +131,11 @@ export class MovieService {
         extractCrewInput(dto);
 
       const input: CreateMovieInput = {
-        title: dto.title,
-        description: dto.description,
+        ...dto,
         thumbnail: thumbnailUrl,
-        youtubeUrl: dto.youtubeUrl,
-        trailerUrl: dto.trailerUrl || null,
-        categoryId: dto.categoryId,
-        year: dto.year,
-        duration: dto.duration,
         matchRate: 100,
-        aspectRatio: dto.aspectRatio,
-        ageRatingId: dto.ageRatingId,
-        universityId: dto.universityId || null,
-        languageId: dto.languageId || null,
-        targetGroupId: dto.targetGroupId || null,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        colorType: dto.colorType,
-        studio: dto.studio || null,
         createdBy: userId,
         btsVideos,
       };
@@ -160,9 +143,21 @@ export class MovieService {
       const movieRecord = await this.repo.create(input);
 
       await associateCrewBulk(
-        { movieId: movieRecord.id, directors, producers, writers, cast, dops, editors },
+        {
+          movieId: movieRecord.id,
+          directors,
+          producers,
+          writers,
+          cast,
+          dops,
+          editors,
+        },
         userId,
-        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
+        {
+          crewMemberRepo: this.crewMemberRepo,
+          movieCrewRepo: this.movieCrewRepo,
+          authRepo: this.authRepo,
+        },
       );
 
       const movie = await this.repo.findById(movieRecord.id);
@@ -170,7 +165,10 @@ export class MovieService {
         throw new InternalServerError("Failed to retrieve created movie");
       }
 
-      await invalidateCache([CacheKeys.movieListDefault(), CacheKeys.movieListWildcard()]);
+      await invalidateCache([
+        CacheKeys.movieListDefault(),
+        CacheKeys.movieListWildcard(),
+      ]);
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to create movie");
@@ -199,25 +197,12 @@ export class MovieService {
         extractCrewInput(dto);
 
       const input: UpdateMovieInput = {
-        title: dto.title,
-        description: dto.description,
+        ...dto,
         thumbnail: thumbnailUrl,
-        youtubeUrl: dto.youtubeUrl,
-        trailerUrl: dto.trailerUrl || null,
-        categoryId: dto.categoryId,
-        year: dto.year,
-        duration: dto.duration,
-        matchRate: existing.matchRate,
-        aspectRatio: dto.aspectRatio,
-        ageRatingId: dto.ageRatingId,
-        universityId: dto.universityId || null,
-        languageId: dto.languageId || null,
-        targetGroupId: dto.targetGroupId || null,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        colorType: dto.colorType,
-        studio: dto.studio || null,
         btsVideos,
+        matchRate: existing.matchRate,
       };
 
       await this.repo.update(id, input);
@@ -225,7 +210,11 @@ export class MovieService {
       await associateCrewBulk(
         { movieId: id, directors, producers, writers, cast, dops, editors },
         userId,
-        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
+        {
+          crewMemberRepo: this.crewMemberRepo,
+          movieCrewRepo: this.movieCrewRepo,
+          authRepo: this.authRepo,
+        },
       );
 
       const movie = await this.repo.findById(id);
