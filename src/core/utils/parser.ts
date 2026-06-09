@@ -113,7 +113,9 @@ export function coerceCrewArray(value: unknown): MovieCrewInputItem[] {
 }
 
 export const tCrewArrayCoerce = t
-  .Transform(t.Any())
+  .Transform(
+    t.Union([t.String(), t.Array(t.Unknown()), t.Record(t.String(), t.Unknown()), t.Null()]),
+  )
   .Decode((value) => coerceCrewArray(value))
   .Encode((value) => value);
 

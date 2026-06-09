@@ -9,6 +9,7 @@ type Params = {
 
 export const isDefaultQuery = (params?: Params): boolean => {
   const search = params?.search?.trim();
+  const searchby = params?.searchby?.trim();
   const page = params?.page?.trim();
   const pagesize = params?.pagesize?.trim();
   const sort = params?.sort?.trim();
@@ -16,6 +17,7 @@ export const isDefaultQuery = (params?: Params): boolean => {
 
   return (
     !search &&
+    !searchby &&
     (!page || page === "1") &&
     !pagesize &&
     (!sort || sort === "desc") &&

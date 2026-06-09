@@ -4,11 +4,7 @@ import { AuthRepositoryImpl } from "../../infrastructure/auth.repository";
 import { CrewMemberRepositoryImpl } from "../../infrastructure/crew-member.repository";
 import { AuthService } from "./service";
 import { formatSuccess } from "../../core/interceptor";
-import {
-  registerUserBodySchema,
-  loginUserBodySchema,
-  User,
-} from "./domain/auth";
+import { registerUserBodySchema, loginUserBodySchema } from "./domain/auth";
 import { config } from "../../core/config";
 
 const repo = new AuthRepositoryImpl();
@@ -32,13 +28,13 @@ export const authRouter = new Elysia({ prefix: "/auth" })
     async ({ body, cookie: { auth_token } }) => {
       const { token, ...safeUser } = await service.login(body);
 
-      const isProd = config.env === "production";
+      const prod = config.env === "production";
       auth_token.set({
         value: token,
         httpOnly: true,
         path: "/",
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
+        secure: prod,
+        sameSite: prod ? "none" : "lax",
         maxAge: 86400,
       });
 

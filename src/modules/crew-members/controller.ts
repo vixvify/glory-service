@@ -63,26 +63,28 @@ export const crewMemberRouter = new Elysia({ prefix: "/crew-members" })
   )
   .put(
     "/:id",
-    async ({ params, body, user }) => {
+    async ({ params, body }) => {
       const { id } = params;
-      const crewMember = await service.updateCrewMember(id, body, user!.id, user!.role);
+      const crewMember = await service.updateCrewMember(id, body);
       return formatSuccess(crewMember);
     },
     {
       params: updateCrewMemberParamsSchema,
       body: updateCrewMemberBodySchema,
       requireAuth: true,
+      requireCrewMemberOwner: true,
     },
   )
   .delete(
     "/:id",
-    async ({ params, user }) => {
+    async ({ params }) => {
       const { id } = params;
-      const crewMember = await service.deleteCrewMember(id, user!.id, user!.role);
+      const crewMember = await service.deleteCrewMember(id);
       return formatSuccess(crewMember);
     },
     {
       params: deleteCrewMemberParamsSchema,
       requireAuth: true,
+      requireCrewMemberOwner: true,
     },
   );

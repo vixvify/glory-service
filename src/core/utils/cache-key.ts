@@ -1,6 +1,10 @@
 import { MovieFilterInput } from "../../modules/movies/domain/movie";
 
 export class CacheKeys {
+  static movieListDefault() {
+    return "movie:list:default";
+  }
+
   static movieList(input: MovieFilterInput) {
     return [
       "movie:list",

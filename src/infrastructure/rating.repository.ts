@@ -63,7 +63,7 @@ export class RatingRepositoryImpl implements RatingRepository {
       },
       data: {
         stars: input.stars,
-        comment: input.comment !== undefined ? input.comment : undefined,
+        ...(input.comment !== undefined && { comment: input.comment }),
       },
     });
   }

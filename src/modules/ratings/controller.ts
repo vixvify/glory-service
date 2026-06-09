@@ -19,11 +19,12 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .post(
     "/",
     async ({ body, user }) => {
+      const { movieId, stars, comment } = body;
       await service.addRating({
         userId: user!.id,
-        movieId: body.movieId,
-        stars: body.stars,
-        comment: body.comment,
+        movieId,
+        stars,
+        comment,
       });
       return formatSuccess(null);
     },
@@ -49,7 +50,8 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .delete(
     "/",
     async ({ body, user }) => {
-      await service.deleteRating(user!.id, body.movieId);
+      const { movieId } = body;
+      await service.deleteRating(user!.id, movieId);
       return formatSuccess(null);
     },
     {
@@ -72,11 +74,12 @@ export const ratingRouter = new Elysia({ prefix: "/movie/ratings" })
   .put(
     "/",
     async ({ body, user }) => {
+      const { movieId, stars, comment } = body;
       await service.updateRating({
         userId: user!.id,
-        movieId: body.movieId,
-        stars: body.stars,
-        comment: body.comment,
+        movieId,
+        stars,
+        comment,
       });
       return formatSuccess(null);
     },

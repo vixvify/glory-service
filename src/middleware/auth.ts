@@ -4,11 +4,15 @@ import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.reposito
 import { AuthService } from "../modules/auth/service";
 import { UnauthorizedError, ForbiddenError } from "../core/error";
 import { User } from "../modules/auth/domain/auth";
+import { MovieService } from "../modules/movies/service";
+import { MovieRepositoryImpl } from "../infrastructure/movie.repository";
+import { CrewMemberService } from "../modules/crew-members/service";
 
 const repo = new AuthRepositoryImpl();
 const crewMemberRepo = new CrewMemberRepositoryImpl();
 const service = new AuthService(repo, crewMemberRepo);
-
+const movieService = new MovieService(new MovieRepositoryImpl());
+const crewMemberService = new CrewMemberService(crewMemberRepo, repo);
 type Role = "admin" | "user";
 
 const hasRole = (userRole: Role, requiredRoles?: Role | Role[]) => {
@@ -66,5 +70,55 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
           throw new ForbiddenError("Forbidden");
         }
       });
+    },
+  }))
+  .macro(({ onBeforeHandle }) => ({
+    requireMovieOwner() {
+      onBeforeHandle(
+        async ({
+          params,
+          user,
+        }: {
+          params: { id: string };
+          user?: User | null;
+        }) => {
+          if (!user) {
+            throw new UnauthorizedError("Unauthorized");
+          }
+
+          const movie = await movieService.getMovieById(
+            (params as { id: string }).id,
+          );
+
+          if (movie.createdBy !== user.id && user.role !== "admin") {
+            throw new ForbiddenError("You do not have permission");
+          }
+        },
+      );
+    },
+  }))
+  .macro(({ onBeforeHandle }) => ({
+    requireCrewMemberOwner() {
+      onBeforeHandle(
+        async ({
+          params,
+          user,
+        }: {
+          params: { id: string };
+          user?: User | null;
+        }) => {
+          if (!user) {
+            throw new UnauthorizedError("Unauthorized");
+          }
+
+          const crewMember = await crewMemberService.getCrewMemberById(
+            (params as { id: string }).id,
+          );
+
+          if (crewMember.createdBy !== user.id && user.role !== "admin") {
+            throw new ForbiddenError("You do not have permission");
+          }
+        },
+      );
     },
   }));
