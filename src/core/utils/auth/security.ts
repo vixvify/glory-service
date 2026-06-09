@@ -1,4 +1,4 @@
-import { config } from "../config";
+import { config } from "../../config";
 
 export interface JWTPayload {
   id: string;
@@ -10,7 +10,10 @@ export async function hashPassword(password: string): Promise<string> {
   return Bun.password.hash(password);
 }
 
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+export async function verifyPassword(
+  password: string,
+  hash: string,
+): Promise<boolean> {
   return Bun.password.verify(password, hash);
 }
 
@@ -29,7 +32,7 @@ function str2ab(str: string): Uint8Array {
 export async function signJWT(
   payload: JWTPayload,
   secret: string = config.jwtSecret,
-  expiresInSeconds = 86400
+  expiresInSeconds = 86400,
 ): Promise<string> {
   const header = { alg: "HS256", typ: "JWT" };
   const exp = Math.floor(Date.now() / 1000) + expiresInSeconds;
@@ -42,12 +45,12 @@ export async function signJWT(
     str2ab(secret).buffer as ArrayBuffer,
     { name: "HMAC", hash: { name: "SHA-256" } },
     false,
-    ["sign"]
+    ["sign"],
   );
   const signatureBuffer = await crypto.subtle.sign(
     "HMAC",
     key,
-    str2ab(dataToSign).buffer as ArrayBuffer
+    str2ab(dataToSign).buffer as ArrayBuffer,
   );
   const signatureBytes = new Uint8Array(signatureBuffer);
   const encodedSignature = Buffer.from(signatureBytes).toString("base64url");
@@ -56,7 +59,7 @@ export async function signJWT(
 
 export async function verifyJWT(
   token: string,
-  secret: string = config.jwtSecret
+  secret: string = config.jwtSecret,
 ): Promise<JWTPayload> {
   const parts = token.split(".");
   if (parts.length !== 3) {
@@ -69,14 +72,16 @@ export async function verifyJWT(
     str2ab(secret).buffer as ArrayBuffer,
     { name: "HMAC", hash: { name: "SHA-256" } },
     false,
-    ["verify"]
+    ["verify"],
   );
-  const signatureBytes = new Uint8Array(Buffer.from(encodedSignature, "base64url"));
+  const signatureBytes = new Uint8Array(
+    Buffer.from(encodedSignature, "base64url"),
+  );
   const isValid = await crypto.subtle.verify(
     "HMAC",
     key,
     signatureBytes.buffer as ArrayBuffer,
-    str2ab(dataToSign).buffer as ArrayBuffer
+    str2ab(dataToSign).buffer as ArrayBuffer,
   );
   if (!isValid) {
     throw new Error("Invalid signature");

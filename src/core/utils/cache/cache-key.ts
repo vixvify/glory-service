@@ -1,4 +1,4 @@
-import { MovieFilterInput } from "../../modules/movies/domain/movie";
+import { MovieFilterInput } from "../../../modules/movies/domain/movie";
 
 export class CacheKeys {
   static movieListDefault() {

@@ -8,7 +8,7 @@ import {
   CrewMemberWithRelations,
   crewMemberIncludes,
 } from "../modules/crew-members/domain/crew-member";
-import calculatePagination from "../core/utils/pagination";
+import calculatePagination from "../core/utils/calculation/pagination";
 
 export class CrewMemberRepositoryImpl implements CrewMemberRepository {
   async find(input?: CrewFilterInput): Promise<CrewMemberWithRelations[]> {
@@ -86,9 +86,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
     return result;
   }
 
-  async create(
-    input: CreateCrewMemberInput,
-  ): Promise<PrismaCrewMember> {
+  async create(input: CreateCrewMemberInput): Promise<PrismaCrewMember> {
     return prisma.crewMember.create({
       data: input,
     });

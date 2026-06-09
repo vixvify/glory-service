@@ -7,7 +7,6 @@ import {
   MovieFilterInput,
   CreateMovieInput,
   UpdateMovieInput,
-  PrismaMovieWithRelations,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
@@ -15,14 +14,14 @@ import { MovieCrewRepository } from "./domain/movie-crew.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
-import { isDefaultQuery } from "../../core/utils/query";
+import { isDefaultQuery } from "../../core/utils/db/query";
 import { associateCrewBulk } from "../../lib/crew";
-import { getCachedOrFetch } from "../../core/utils/cache";
-import { CacheKeys } from "../../core/utils/cache-key";
-import { invalidateCache } from "../../core/utils/invalidate-cache";
-import { toBoolean } from "../../core/utils/coerce";
-import { extractCrewInput } from "../../core/utils/movie-crew";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { getCachedOrFetch } from "../../core/utils/cache/cache";
+import { CacheKeys } from "../../core/utils/cache/cache-key";
+import { invalidateCache } from "../../core/utils/cache/invalidate-cache";
+import { toBoolean } from "../../core/utils/transform/coerce";
+import { extractCrewInput } from "../../core/utils/movie/movie-crew";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class MovieService {
   constructor(

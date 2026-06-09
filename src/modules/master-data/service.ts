@@ -7,7 +7,7 @@ import {
   TargetGroup,
   CrewRole,
 } from "./domain/masterdata";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class MasterDataService {
   constructor(private repo: MasterDataRepository) {}

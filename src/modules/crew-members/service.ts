@@ -10,9 +10,9 @@ import {
 } from "./domain/crew-member";
 import { CrewMemberRepository } from "./domain/crew-member.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
-import { isDefaultQuery } from "../../core/utils/query";
+import { isDefaultQuery } from "../../core/utils/db/query";
 import { CrewMemberFactory } from "./factory";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class CrewMemberService {
   constructor(

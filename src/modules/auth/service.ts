@@ -3,11 +3,8 @@ import {
   verifyPassword,
   signJWT,
   verifyJWT,
-} from "../../core/utils/security";
-import {
-  ConflictError,
-  UnauthorizedError,
-} from "../../core/error";
+} from "../../core/utils//auth/security";
+import { ConflictError, UnauthorizedError } from "../../core/error";
 import {
   User,
   RegisterUserBodyDTO,
@@ -18,7 +15,7 @@ import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
 import { uploadToR2 } from "../../lib/r2";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class AuthService {
   constructor(
