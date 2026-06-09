@@ -1,38 +1,8 @@
-import { Movie as DtoMovie } from "./domain/movie";
 import {
-  Movie as PrismaMovie,
-  Rating as PrismaRating,
-  User as PrismaUser,
-  MovieCrew as PrismaMovieCrew,
-  CrewMember as PrismaCrewMember,
-  CrewRole as PrismaCrewRole,
-  Category as PrismaCategory,
-  AgeRating as PrismaAgeRating,
-  University as PrismaUniversity,
-  Language as PrismaLanguage,
-  TargetGroup as PrismaTargetGroup,
-} from "@prisma/client";
+  Movie as DtoMovie,
+  PrismaMovieWithRelations,
+} from "./domain/movie";
 import { Rating } from "../ratings/domain/rating";
-
-export interface PrismaMovieWithRelations extends PrismaMovie {
-  category: PrismaCategory;
-  ageRating: PrismaAgeRating;
-  university: PrismaUniversity | null;
-  language: PrismaLanguage | null;
-  targetGroup: PrismaTargetGroup | null;
-  creator: PrismaUser;
-
-  ratings?: Array<PrismaRating & {
-    user?: PrismaUser | null;
-  }> | null;
-
-  crew?: Array<PrismaMovieCrew & {
-    crewRole: PrismaCrewRole;
-    crewMember?: (PrismaCrewMember & {
-      user?: PrismaUser | null;
-    }) | null;
-  }> | null;
-}
 
 export class MovieFactory {
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {

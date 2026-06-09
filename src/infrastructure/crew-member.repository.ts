@@ -17,7 +17,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         orderBy: { name: "asc" },
         include: crewMemberIncludes,
       });
-      return results as unknown as CrewMemberWithRelations[];
+      return results;
     }
 
     const {
@@ -43,7 +43,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
         }),
       ...(search &&
         searchby !== "role" && {
-          name: {
+          [searchby || "name"]: {
             contains: search,
             mode: "insensitive",
           },
@@ -59,7 +59,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       include: crewMemberIncludes,
       ...calculatePagination(page, pagesize),
     });
-    return results as unknown as CrewMemberWithRelations[];
+    return results;
   }
 
   async findById(id: string): Promise<CrewMemberWithRelations | null> {
@@ -67,7 +67,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { id },
       include: crewMemberIncludes,
     });
-    return result as unknown as CrewMemberWithRelations | null;
+    return result;
   }
 
   async findByEmail(email: string): Promise<CrewMemberWithRelations | null> {
@@ -75,7 +75,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { email },
       include: crewMemberIncludes,
     });
-    return result as unknown as CrewMemberWithRelations | null;
+    return result;
   }
 
   async findByName(name: string): Promise<CrewMemberWithRelations | null> {
@@ -83,7 +83,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { name },
       include: crewMemberIncludes,
     });
-    return result as unknown as CrewMemberWithRelations | null;
+    return result;
   }
 
   async create(
@@ -120,7 +120,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { id: { in: ids } },
       include: crewMemberIncludes,
     });
-    return results as unknown as CrewMemberWithRelations[];
+    return results;
   }
 
   async findManyByNames(names: string[]): Promise<CrewMemberWithRelations[]> {
@@ -128,7 +128,7 @@ export class CrewMemberRepositoryImpl implements CrewMemberRepository {
       where: { name: { in: names } },
       include: crewMemberIncludes,
     });
-    return results as unknown as CrewMemberWithRelations[];
+    return results;
   }
 
   async createMany(names: string[], createdBy: string): Promise<void> {

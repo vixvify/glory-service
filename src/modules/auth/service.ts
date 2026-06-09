@@ -131,15 +131,22 @@ export class AuthService {
   async verifyToken(token: string): Promise<User | null> {
     try {
       const payload = await verifyJWT(token);
-      if (!payload || !payload.id) {
+
+      if (
+        typeof payload.id !== "string" ||
+        typeof payload.email !== "string" ||
+        typeof payload.name !== "string" ||
+        (payload.role !== "admin" && payload.role !== "user")
+      ) {
         return null;
       }
+
       return {
-        id: payload.id as string,
-        name: payload.name as string,
-        email: payload.email as string,
-        role: payload.role as "admin" | "user",
-      } as any;
+        id: payload.id,
+        name: payload.name,
+        email: payload.email,
+        role: payload.role,
+      };
     } catch {
       return null;
     }

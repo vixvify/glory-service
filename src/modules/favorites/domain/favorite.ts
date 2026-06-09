@@ -12,7 +12,7 @@ export interface FavoriteMovie {
 }
 
 export const addFavoriteBodySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
 });
 export type AddFavoriteBodyDTO = Static<typeof addFavoriteBodySchema>;
 

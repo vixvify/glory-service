@@ -1,8 +1,7 @@
 import { User } from "../../auth/domain/auth";
 import { Movie } from "../../movies/domain/movie";
 import { t, Static } from "elysia";
-import { Movie as PrismaMovie, User as PrismaUser, Rating as PrismaRating, Prisma } from "@prisma/client";
-import { Category, AgeRating, University, Language, TargetGroup } from "../../master-data/domain/masterdata";
+import { Prisma } from "@prisma/client";
 
 type RatingMovie = Omit<Movie, "ratings">;
 
@@ -18,7 +17,7 @@ export interface Rating {
 }
 
 export const addRatingBodySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
   stars: t.Number(),
   comment: t.Optional(t.Union([t.String(), t.Null()])),
 });
@@ -39,7 +38,7 @@ export interface AddRatingInput {
 }
 
 export const getRatingsQuerySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
 });
 export type GetRatingsQueryDTO = Static<typeof getRatingsQuerySchema>;
 
@@ -54,17 +53,17 @@ export interface GetRatingsInput {
 }
 
 export const deleteRatingBodySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
 });
 export type DeleteRatingBodyDTO = Static<typeof deleteRatingBodySchema>;
 
 export const checkRatingQuerySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
 });
 export type CheckRatingQueryDTO = Static<typeof checkRatingQuerySchema>;
 
 export const updateRatingBodySchema = t.Object({
-  movieId: t.String(),
+  movieId: t.String({ format: "uuid" }),
   stars: t.Number(),
   comment: t.Optional(t.Union([t.String(), t.Null()])),
 });
@@ -102,17 +101,6 @@ export const RatingUserSelect = {
   awards: true,
 } as const;
 
-export type RatingWithRelations = PrismaRating & {
-  movie: PrismaMovie & {
-    category: Category;
-    ageRating: AgeRating;
-    university: University | null;
-    language: Language | null;
-    targetGroup: TargetGroup | null;
-  };
-  user: Pick<PrismaUser, "id" | "email" | "name" | "role">;
-};
-
 export const ratingIncludes = {
   movie: {
     include: {
@@ -127,3 +115,7 @@ export const ratingIncludes = {
     select: RatingUserSelect,
   },
 } satisfies Prisma.RatingInclude;
+
+export type RatingWithRelations = Prisma.RatingGetPayload<{
+  include: typeof ratingIncludes;
+}>;

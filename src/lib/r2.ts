@@ -3,6 +3,10 @@ import { config } from "../core/config";
 
 const { accountId, accessKeyId, secretAccessKey, bucketName, publicUrl } = config.r2;
 
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 let s3Client: S3Client | null = null;
 if (accountId && accessKeyId && secretAccessKey) {
   try {
@@ -52,8 +56,8 @@ export async function uploadToR2(file: File, folder: string = "movies"): Promise
 
     const basePublicUrl = publicUrl.endsWith("/") ? publicUrl.slice(0, -1) : publicUrl;
     return `${basePublicUrl}/${fileName}`;
-  } catch (error: any) {
-    throw new Error(`Failed to upload to Cloudflare R2: ${error.message}`);
+  } catch (error: unknown) {
+    throw new Error(`Failed to upload to Cloudflare R2: ${getErrorMessage(error)}`);
   }
 }
 
@@ -120,7 +124,7 @@ export async function deleteFromR2(fileUrl: string): Promise<void> {
     });
 
     await s3Client.send(command);
-  } catch (error: any) {
-    console.error(`Failed to delete object from Cloudflare R2: ${error.message}`);
+  } catch (error: unknown) {
+    console.error(`Failed to delete object from Cloudflare R2: ${getErrorMessage(error)}`);
   }
 }
