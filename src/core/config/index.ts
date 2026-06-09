@@ -9,6 +9,7 @@ export const config = {
   port: parseInt(process.env.PORT || "3000", 10),
   databaseUrl: process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/glory_db?schema=public",
   jwtSecret: jwtSecret || "development-only-glory-secret",
+  redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   env,
   r2: {
     accountId: process.env.R2_ACCOUNT_ID || "",

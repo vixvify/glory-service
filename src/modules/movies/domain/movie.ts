@@ -6,7 +6,7 @@ import {
   MovieCrewInputItem,
 } from "../../../core/utils/parser";
 import { User } from "../../auth/domain/auth";
-import { Prisma } from "@prisma/client";
+import { Prisma, ColorType } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import {
   Category,
@@ -16,6 +16,7 @@ import {
   TargetGroup,
   CrewRole,
 } from "../../master-data/domain/masterdata";
+export { ColorType } from "@prisma/client";
 
 export interface MovieCrew {
   id: string;
@@ -33,12 +34,6 @@ export interface MovieCrew {
 export enum AspectRatio {
   LANDSCAPE = "แนวนอน",
   PORTRAIT = "แนวตั้ง",
-}
-
-export enum ColorType {
-  COLOR = "color",
-  BLACK_AND_WHITE = "black_and_white",
-  COLOR_AND_BLACK_AND_WHITE = "color_and_black_and_white",
 }
 
 export interface Movie {
@@ -88,7 +83,7 @@ export interface CreateMovieInput {
   targetGroupId?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType?: ColorType;
+  colorType: ColorType;
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
@@ -111,7 +106,7 @@ export interface UpdateMovieInput {
   targetGroupId?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType?: ColorType;
+  colorType: ColorType;
   studio?: string | null;
   btsVideos?: string[];
 }
@@ -209,10 +204,6 @@ export const deleteMovieParamsSchema = t.Object({
 });
 export type DeleteMovieParamsDTO = Static<typeof deleteMovieParamsSchema>;
 
-export const searchMoviesQuerySchema = t.Object({
-  q: t.Optional(t.String()),
-});
-export type SearchMoviesQueryDTO = Static<typeof searchMoviesQuerySchema>;
 
 export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),

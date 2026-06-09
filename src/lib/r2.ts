@@ -1,10 +1,22 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { config } from "../core/config";
+import path from "path";
 
 const { accountId, accessKeyId, secretAccessKey, bucketName, publicUrl } = config.r2;
 
+const ALLOWED_EXTENSIONS = new Set([
+  "jpg", "jpeg", "png", "gif", "webp", "svg",
+  "mp4", "mov", "avi", "mkv", "webm",
+  "pdf", "doc", "docx",
+]);
+
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+function getSafeExtension(filename: string): string {
+  const ext = path.extname(filename).replace(".", "").toLowerCase();
+  return ALLOWED_EXTENSIONS.has(ext) ? ext : "bin";
 }
 
 let s3Client: S3Client | null = null;
@@ -26,7 +38,7 @@ if (accountId && accessKeyId && secretAccessKey) {
 export async function uploadToR2(file: File, folder: string = "movies"): Promise<string> {
   if (!s3Client) {
     throw new Error(
-      "Cloudflare R2 is not configured. Please check your R2 environment variables (R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY)."
+      "Cloudflare R2 is not configured. Please check your R2 environment variables (R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY).",
     );
   }
 
@@ -41,7 +53,7 @@ export async function uploadToR2(file: File, folder: string = "movies"): Promise
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  const ext = file.name.split(".").pop() || "jpg";
+  const ext = getSafeExtension(file.name);
   const fileName = `${folder}/${crypto.randomUUID()}.${ext}`;
 
   try {
@@ -61,38 +73,6 @@ export async function uploadToR2(file: File, folder: string = "movies"): Promise
   }
 }
 
-export async function resolveUploadedFiles(
-  input: File | File[] | string | string[] | undefined | null,
-  folder: string = "movies"
-): Promise<string | undefined> {
-  if (!input) {
-    return undefined;
-  }
-
-  if (input instanceof File) {
-    return await uploadToR2(input, folder);
-  }
-
-  if (typeof input === "string") {
-    return input;
-  }
-
-  if (Array.isArray(input)) {
-    const uploadPromises = input.map(async (item) => {
-      if (item instanceof File) {
-        return uploadToR2(item, folder);
-      } else if (typeof item === "string") {
-        return item;
-      }
-      return "";
-    });
-    const urls = await Promise.all(uploadPromises);
-    return urls.filter(Boolean).join(",");
-  }
-
-  return undefined;
-}
-
 export async function deleteFromR2(fileUrl: string): Promise<void> {
   if (!s3Client) {
     return;
@@ -106,12 +86,9 @@ export async function deleteFromR2(fileUrl: string): Promise<void> {
     throw new Error("R2_PUBLIC_URL is not configured.");
   }
 
-  // Extract the object key from the file URL.
-  // The fileUrl should start with the configured publicUrl.
   const basePublicUrl = publicUrl.endsWith("/") ? publicUrl : `${publicUrl}/`;
 
   if (!fileUrl.startsWith(basePublicUrl)) {
-    // URL does not belong to our R2 bucket (e.g. YouTube URL, external link), ignore deletion
     return;
   }
 

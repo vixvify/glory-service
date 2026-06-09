@@ -1,24 +1,18 @@
 import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
-import { FavoriteRepositoryImpl } from "../../infrastructure/favorite.repository";
-import { MovieRepositoryImpl } from "../../infrastructure/movie.repository";
-import { FavoriteService } from "./service";
+import { favoriteService } from "../../lib/container";
 import { formatSuccess } from "../../core/interceptor";
 import {
   addFavoriteBodySchema,
   removeFavoriteParamsSchema,
 } from "./domain/favorite";
 
-const repo = new FavoriteRepositoryImpl();
-const movieRepo = new MovieRepositoryImpl();
-const service = new FavoriteService(repo, movieRepo);
-
 export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
   .use(authMiddleware)
   .get(
     "/",
     async ({ user }) => {
-      const favoriteMovies = await service.getUserFavorites(user!.id);
+      const favoriteMovies = await favoriteService.getUserFavorites(user!.id);
       return formatSuccess(favoriteMovies);
     },
     {
@@ -29,7 +23,7 @@ export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
     "/",
     async ({ user, body }) => {
       const { movieId } = body;
-      await service.addMovieToFavorites(user!.id, movieId);
+      await favoriteService.addMovieToFavorites(user!.id, movieId);
       return formatSuccess(null);
     },
     {
@@ -41,7 +35,7 @@ export const favoriteRouter = new Elysia({ prefix: "/movie/favorites" })
     "/:movieId",
     async ({ user, params }) => {
       const { movieId } = params;
-      await service.removeMovieFromFavorites(user!.id, movieId);
+      await favoriteService.removeMovieFromFavorites(user!.id, movieId);
       return formatSuccess(null);
     },
     {

@@ -1,4 +1,3 @@
-import { AppError, BadRequestError } from "../../core/error";
 import { MasterDataRepository } from "./domain/masterdata.repository";
 import {
   Category,
@@ -8,6 +7,7 @@ import {
   TargetGroup,
   CrewRole,
 } from "./domain/masterdata";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class MasterDataService {
   constructor(private repo: MasterDataRepository) {}
@@ -16,10 +16,7 @@ export class MasterDataService {
     try {
       return await this.repo.getCategories();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get categories";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get categories");
     }
   }
 
@@ -27,10 +24,7 @@ export class MasterDataService {
     try {
       return await this.repo.getUniversities();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get universities";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get universities");
     }
   }
 
@@ -38,10 +32,7 @@ export class MasterDataService {
     try {
       return await this.repo.getAgeRatings();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get age ratings";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get age ratings");
     }
   }
 
@@ -49,10 +40,7 @@ export class MasterDataService {
     try {
       return await this.repo.getLanguages();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get languages";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get languages");
     }
   }
 
@@ -60,10 +48,7 @@ export class MasterDataService {
     try {
       return await this.repo.getTargetGroups();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get target groups";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get target groups");
     }
   }
 
@@ -71,10 +56,7 @@ export class MasterDataService {
     try {
       return await this.repo.getCrewRoles();
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get crew roles";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get crew roles");
     }
   }
 }

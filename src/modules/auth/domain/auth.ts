@@ -1,11 +1,9 @@
 import { t, Static } from "elysia";
 import { tArrayCoerce } from "../../../core/utils/parser";
-
 export interface User {
   id: string;
   name: string;
   email: string;
-  password?: string;
   role: "admin" | "user";
   photoUrl?: string | null;
   motto?: string | null;
@@ -37,7 +35,7 @@ export interface CreateUserInput {
 
 export const registerUserBodySchema = t.Object({
   name: t.String({ minLength: 2 }),
-  email: t.String(),
+  email: t.String({ format: "email" }),
   password: t.String({ minLength: 6 }),
   photo: t.Optional(t.File()),
   motto: t.Optional(t.String()),
@@ -54,7 +52,7 @@ export const registerUserBodySchema = t.Object({
 export type RegisterUserBodyDTO = Static<typeof registerUserBodySchema>;
 
 export const loginUserBodySchema = t.Object({
-  email: t.String(),
+  email: t.String({ format: "email" }),
   password: t.String({ minLength: 6 }),
 });
 

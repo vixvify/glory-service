@@ -1,4 +1,4 @@
-import { AppError, BadRequestError, ConflictError } from "../../core/error";
+import { ConflictError } from "../../core/error";
 import {
   AddRatingDTO,
   Rating,
@@ -10,6 +10,7 @@ import {
 } from "./domain/rating";
 import { RatingRepository } from "./domain/rating.repository";
 import { RatingFactory } from "./factory";
+import { handleServiceError } from "../../core/utils/handle-error";
 
 export class RatingService {
   constructor(private repo: RatingRepository) {}
@@ -28,10 +29,7 @@ export class RatingService {
       };
       return await this.repo.addRating(input);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to add rating";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to add rating");
     }
   }
 
@@ -47,10 +45,7 @@ export class RatingService {
       if (!rating) return null;
       return RatingFactory.toDomain(rating);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to get ratings";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to get ratings");
     }
   }
 
@@ -58,10 +53,7 @@ export class RatingService {
     try {
       await this.repo.deleteRating(userId, movieId);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to delete rating";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to delete rating");
     }
   }
 
@@ -69,10 +61,7 @@ export class RatingService {
     try {
       return await this.repo.checkRating(userId, movieId);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to check rating";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to check rating");
     }
   }
 
@@ -86,10 +75,7 @@ export class RatingService {
       };
       return await this.repo.updateRating(input);
     } catch (error: unknown) {
-      if (error instanceof AppError) throw error;
-      const message =
-        error instanceof Error ? error.message : "Failed to update rating";
-      throw new BadRequestError(message, error);
+      handleServiceError(error, "Failed to update rating");
     }
   }
 }

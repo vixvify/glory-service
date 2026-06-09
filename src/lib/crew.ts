@@ -1,20 +1,24 @@
 import { NotFoundError } from "../core/error";
-import { CrewMemberRepositoryImpl } from "../infrastructure/crew-member.repository";
-import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
-import { AuthRepositoryImpl } from "../infrastructure/auth.repository";
+import { CrewMemberRepository } from "../modules/crew-members/domain/crew-member.repository";
+import { MovieCrewRepository } from "../modules/movies/domain/movie-crew.repository";
+import { AuthRepository } from "../modules/auth/domain/auth.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
 import { MovieCrewInputItem } from "../core/utils/parser";
 import { prisma } from "./prisma";
 
-const crewMemberRepo = new CrewMemberRepositoryImpl();
-const movieCrewRepo = new MovieCrewRepositoryImpl();
-const authRepo = new AuthRepositoryImpl();
+export interface CrewAssociateDeps {
+  crewMemberRepo: CrewMemberRepository;
+  movieCrewRepo: MovieCrewRepository;
+  authRepo: AuthRepository;
+}
 
 export async function associateCrewBulk(
   input: AssociateCrewBulkInput,
   createdBy: string,
+  deps: CrewAssociateDeps,
 ): Promise<void> {
   const { movieId, directors, producers, writers, cast, dops, editors } = input;
+  const { crewMemberRepo, movieCrewRepo, authRepo } = deps;
 
   const items: Array<{ item: MovieCrewInputItem; role: string }> = [];
 
@@ -37,7 +41,6 @@ export async function associateCrewBulk(
 
   const crewIdMap = new Map<string, string>();
 
-  // 1. First, validate and collect all explicitly provided IDs
   const explicitIds = Array.from(
     new Set(
       items.map((x) => x.item.crewMemberId).filter((id): id is string => !!id),
@@ -58,62 +61,100 @@ export async function associateCrewBulk(
     }
   }
 
-  // 2. Resolve items that do not have crewMemberId
-  for (const { item } of items) {
-    if (item.crewMemberId) {
-      continue;
-    }
+  const itemsToResolve = items.filter((i) => !i.item.crewMemberId);
 
-    const email = item.email?.trim() || "";
-    const name = item.name?.trim() || "";
+  if (itemsToResolve.length > 0) {
+    const uniqueEmails = [
+      ...new Set(
+        itemsToResolve
+          .map((i) => i.item.email?.trim().toLowerCase())
+          .filter((e): e is string => !!e),
+      ),
+    ];
+    const uniqueNames = [
+      ...new Set(
+        itemsToResolve
+          .map((i) => i.item.name?.trim())
+          .filter((n): n is string => !!n),
+      ),
+    ];
 
-    if (!name) continue;
+    const [byEmailBatch, byNameBatch] = await Promise.all([
+      uniqueEmails.length > 0 ? crewMemberRepo.findManyByEmails(uniqueEmails) : [],
+      uniqueNames.length > 0 ? crewMemberRepo.findManyByNames(uniqueNames) : [],
+    ]);
 
-    let memberId = "";
+    const emailMap = new Map(byEmailBatch.map((m) => [m.email?.toLowerCase() ?? "", m]));
+    const nameMap = new Map(byNameBatch.map((m) => [m.name, m]));
 
-    // A. Look up by email if provided
-    if (email) {
-      const byEmail = await crewMemberRepo.findByEmail(email);
-      if (byEmail) {
-        memberId = byEmail.id;
-      }
-    }
+    const emailsNeedingUserLink = byEmailBatch
+      .filter((m) => !m.email || !m.userId)
+      .map((m) => m.email?.toLowerCase() ?? "")
+      .filter(Boolean);
 
-    // B. Look up by name if not found by email or email was not provided
-    if (!memberId) {
-      const byName = await crewMemberRepo.findByName(name);
-      if (byName) {
-        memberId = byName.id;
-        if (!byName.email && email) {
+    const allEmailsForUserLookup = [...new Set([...uniqueEmails, ...emailsNeedingUserLink])];
+    const usersByEmail = new Map<string, string>();
+    if (allEmailsForUserLookup.length > 0) {
+      await Promise.all(
+        allEmailsForUserLookup.map(async (email) => {
           const user = await authRepo.findByEmail(email);
-          await crewMemberRepo.update(byName.id, {
-            name: byName.name,
-            email,
-            userId: user?.id || null,
-          });
+          if (user) usersByEmail.set(email, user.id);
+        }),
+      );
+    }
+
+    for (const { item } of itemsToResolve) {
+      const email = item.email?.trim().toLowerCase() || "";
+      const name = item.name?.trim() || "";
+
+      if (!name) continue;
+
+      let memberId = "";
+
+      if (email) {
+        const byEmail = emailMap.get(email);
+        if (byEmail) {
+          memberId = byEmail.id;
+          if (!byEmail.email && email) {
+            const userId = usersByEmail.get(email) ?? null;
+            await crewMemberRepo.update(byEmail.id, {
+              name: byEmail.name,
+              email,
+              userId,
+            });
+          }
         }
       }
-    }
 
-    // C. If still not found, create new CrewMember
-    if (!memberId) {
-      let userId: string | null = null;
-      if (email) {
-        const user = await authRepo.findByEmail(email);
-        userId = user?.id || null;
+      if (!memberId) {
+        const byName = nameMap.get(name);
+        if (byName) {
+          memberId = byName.id;
+          if (!byName.email && email) {
+            const userId = usersByEmail.get(email) ?? null;
+            await crewMemberRepo.update(byName.id, {
+              name: byName.name,
+              email,
+              userId,
+            });
+          }
+        }
       }
 
-      const created = await crewMemberRepo.create({
-        name,
-        email: email || null,
-        userId,
-        createdBy,
-      });
-      memberId = created.id;
-    }
+      if (!memberId) {
+        const userId = email ? (usersByEmail.get(email) ?? null) : null;
+        const created = await crewMemberRepo.create({
+          name,
+          email: email || null,
+          userId,
+          createdBy,
+        });
+        memberId = created.id;
+      }
 
-    const itemKey = email ? `email:${email.toLowerCase()}` : `name:${name}`;
-    crewIdMap.set(itemKey, memberId);
+      const itemKey = email ? `email:${email}` : `name:${name}`;
+      crewIdMap.set(itemKey, memberId);
+    }
   }
 
   const dbCrewRoles = await prisma.crewRole.findMany();
@@ -126,9 +167,9 @@ export async function associateCrewBulk(
     if (item.item.crewMemberId) {
       itemKey = item.item.crewMemberId;
     } else {
-      const email = item.item.email?.trim() || "";
+      const email = item.item.email?.trim().toLowerCase() || "";
       const name = item.item.name?.trim() || "";
-      itemKey = email ? `email:${email.toLowerCase()}` : `name:${name}`;
+      itemKey = email ? `email:${email}` : `name:${name}`;
     }
 
     const crewMemberId = crewIdMap.get(itemKey);
@@ -139,11 +180,7 @@ export async function associateCrewBulk(
     if (!roleId) {
       throw new Error(`Role ID not found for role: ${item.role}`);
     }
-    return {
-      movieId,
-      crewMemberId,
-      roleId,
-    };
+    return { movieId, crewMemberId, roleId };
   });
 
   const existing = await movieCrewRepo.findByMovieId(movieId);
@@ -153,10 +190,9 @@ export async function associateCrewBulk(
     existingMap.set(`${ext.crewMemberId}-${ext.roleId}`, ext.id);
   }
 
-  const targetKeys = new Set<string>();
-  for (const target of movieCrewsData) {
-    targetKeys.add(`${target.crewMemberId}-${target.roleId}`);
-  }
+  const targetKeys = new Set<string>(
+    movieCrewsData.map((t) => `${t.crewMemberId}-${t.roleId}`),
+  );
 
   const toDelete: string[] = [];
   for (const ext of existing) {
