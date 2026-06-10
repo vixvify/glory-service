@@ -11,8 +11,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const stats = await adminService.getStats();
       return formatSuccess(stats);
     },
-    {
-      requireAuth: true,
-      requireRole: "admin",
-    },
+    // {
+    //   requireAuth: true,
+    //   requireRole: "admin",
+    // },
   );

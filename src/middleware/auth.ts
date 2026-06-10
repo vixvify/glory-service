@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { authService, movieService, crewMemberService } from "../lib/container";
-import { UnauthorizedError, ForbiddenError } from "../core/error";
+import { UnauthorizedError, ForbiddenError, BadRequestError } from "../core/error";
 import { User } from "../modules/auth/domain/auth";
 
 type Role = "admin" | "user";
@@ -27,75 +27,83 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
       return { user: null };
     }
   })
-  .macro(({ onBeforeHandle }) => ({
+  .macro({
     requireAuth(required = true) {
-      if (!required) return;
-
-      onBeforeHandle(({ user }: { user?: User | null }) => {
-        if (!user) {
-          throw new UnauthorizedError("Unauthorized");
+      return {
+        beforeHandle({ user }: { user?: User | null }) {
+          if (required && !user) {
+            throw new UnauthorizedError("Unauthorized");
+          }
         }
-      });
+      };
     },
 
     requireRole(role: Role | Role[]) {
-      onBeforeHandle(({ user }: { user?: User | null }) => {
-        if (!user) {
-          throw new UnauthorizedError("Unauthorized");
-        }
-
-        const roles = Array.isArray(role) ? role : [role];
-        if (!roles.includes(user.role)) {
-          throw new ForbiddenError("Forbidden");
-        }
-      });
-    },
-
-    requireMovieOwner() {
-      onBeforeHandle(
-        async ({
-          params,
-          user,
-        }: {
-          params: { id: string };
-          user?: User | null;
-        }) => {
+      return {
+        beforeHandle({ user }: { user?: User | null }) {
           if (!user) {
             throw new UnauthorizedError("Unauthorized");
           }
 
-          const movie = await movieService.getMovieById(
-            (params as { id: string }).id,
-          );
+          const roles = Array.isArray(role) ? role : [role];
+          if (!roles.includes(user.role)) {
+            throw new ForbiddenError("Forbidden");
+          }
+        }
+      };
+    },
+
+    requireMovieOwner() {
+      return {
+        async beforeHandle({
+          params,
+          user,
+        }: {
+          params: Record<string, string | undefined>;
+          user?: User | null;
+        }) {
+          if (!user) {
+            throw new UnauthorizedError("Unauthorized");
+          }
+
+          const id = params.id;
+          if (!id) {
+            throw new BadRequestError("Invalid movie ID");
+          }
+
+          const movie = await movieService.getMovieById(id);
 
           if (movie.createdBy !== user.id && user.role !== "admin") {
             throw new ForbiddenError("You do not have permission");
           }
-        },
-      );
+        }
+      };
     },
 
     requireCrewMemberOwner() {
-      onBeforeHandle(
-        async ({
+      return {
+        async beforeHandle({
           params,
           user,
         }: {
-          params: { id: string };
+          params: Record<string, string | undefined>;
           user?: User | null;
-        }) => {
+        }) {
           if (!user) {
             throw new UnauthorizedError("Unauthorized");
           }
 
-          const crewMember = await crewMemberService.getCrewMemberById(
-            (params as { id: string }).id,
-          );
+          const id = params.id;
+          if (!id) {
+            throw new BadRequestError("Invalid crew member ID");
+          }
+
+          const crewMember = await crewMemberService.getCrewMemberById(id);
 
           if (crewMember.createdBy !== user.id && user.role !== "admin") {
             throw new ForbiddenError("You do not have permission");
           }
-        },
-      );
+        }
+      };
     },
-  }));
+  });
