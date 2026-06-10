@@ -1,7 +1,7 @@
 import {
   CreateMovieBodyDTO,
   UpdateMovieBodyDTO,
-} from "../../modules/movies/domain/movie";
+} from "../../../modules/movies/domain/movie";
 
 export function extractCrewInput(dto: CreateMovieBodyDTO | UpdateMovieBodyDTO) {
   return {

@@ -3,7 +3,7 @@ import { FavoriteRepository } from "./domain/favorite.repository";
 import { MovieRepository } from "../movies/domain/movie.repository";
 import { MovieFactory } from "../movies/factory";
 import { Movie } from "../movies/domain/movie";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class FavoriteService {
   constructor(

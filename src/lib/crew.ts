@@ -3,7 +3,7 @@ import { CrewMemberRepository } from "../modules/crew-members/domain/crew-member
 import { MovieCrewRepository } from "../modules/movies/domain/movie-crew.repository";
 import { AuthRepository } from "../modules/auth/domain/auth.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
-import { MovieCrewInputItem } from "../core/utils/parser";
+import { MovieCrewInputItem } from "../core/utils/transform/parser";
 import { prisma } from "./prisma";
 
 export interface CrewAssociateDeps {
@@ -80,11 +80,15 @@ export async function associateCrewBulk(
     ];
 
     const [byEmailBatch, byNameBatch] = await Promise.all([
-      uniqueEmails.length > 0 ? crewMemberRepo.findManyByEmails(uniqueEmails) : [],
+      uniqueEmails.length > 0
+        ? crewMemberRepo.findManyByEmails(uniqueEmails)
+        : [],
       uniqueNames.length > 0 ? crewMemberRepo.findManyByNames(uniqueNames) : [],
     ]);
 
-    const emailMap = new Map(byEmailBatch.map((m) => [m.email?.toLowerCase() ?? "", m]));
+    const emailMap = new Map(
+      byEmailBatch.map((m) => [m.email?.toLowerCase() ?? "", m]),
+    );
     const nameMap = new Map(byNameBatch.map((m) => [m.name, m]));
 
     const emailsNeedingUserLink = byEmailBatch
@@ -92,7 +96,9 @@ export async function associateCrewBulk(
       .map((m) => m.email?.toLowerCase() ?? "")
       .filter(Boolean);
 
-    const allEmailsForUserLookup = [...new Set([...uniqueEmails, ...emailsNeedingUserLink])];
+    const allEmailsForUserLookup = [
+      ...new Set([...uniqueEmails, ...emailsNeedingUserLink]),
+    ];
     const usersByEmail = new Map<string, string>();
     if (allEmailsForUserLookup.length > 0) {
       await Promise.all(

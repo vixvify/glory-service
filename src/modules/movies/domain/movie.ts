@@ -4,7 +4,7 @@ import {
   tArrayCoerce,
   tCrewArrayCoerce,
   MovieCrewInputItem,
-} from "../../../core/utils/parser";
+} from "../../../core/utils/transform/parser";
 import { User } from "../../auth/domain/auth";
 import { Prisma, ColorType } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
@@ -203,7 +203,6 @@ export const deleteMovieParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });
 export type DeleteMovieParamsDTO = Static<typeof deleteMovieParamsSchema>;
-
 
 export const getMoviesQuerySchema = t.Object({
   search: t.Optional(t.String()),

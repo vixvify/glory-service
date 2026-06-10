@@ -1,4 +1,4 @@
-import { redis } from "../../lib/redis";
+import { redis } from "../../../lib/redis";
 
 export async function invalidateCache(patterns: string[]) {
   for (const pattern of patterns) {

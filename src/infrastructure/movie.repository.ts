@@ -2,7 +2,7 @@ import { prisma } from "../lib/prisma";
 import { MovieRepository } from "../modules/movies/domain/movie.repository";
 import { Movie as PrismaMovie, Prisma } from "@prisma/client";
 import { MovieFilterInput } from "../modules/movies/domain/movie";
-import calculatePagination from "../core/utils/pagination";
+import calculatePagination from "../core/utils/calculation/pagination";
 import {
   CreateMovieInput,
   UpdateMovieInput,
@@ -89,7 +89,9 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
-  async findByUniversity(university: string): Promise<PrismaMovieWithRelations[]> {
+  async findByUniversity(
+    university: string,
+  ): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
         university: {

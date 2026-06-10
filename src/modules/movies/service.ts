@@ -1,7 +1,4 @@
-import {
-  NotFoundError,
-  InternalServerError,
-} from "../../core/error";
+import { NotFoundError, InternalServerError } from "../../core/error";
 import {
   Movie,
   CreateMovieBodyDTO,
@@ -10,7 +7,6 @@ import {
   MovieFilterInput,
   CreateMovieInput,
   UpdateMovieInput,
-  PrismaMovieWithRelations,
 } from "./domain/movie";
 import { MovieRepository } from "./domain/movie.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
@@ -18,14 +14,14 @@ import { MovieCrewRepository } from "./domain/movie-crew.repository";
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
-import { isDefaultQuery } from "../../core/utils/query";
+import { isDefaultQuery } from "../../core/utils/db/query";
 import { associateCrewBulk } from "../../lib/crew";
-import { getCachedOrFetch } from "../../core/utils/cache";
-import { CacheKeys } from "../../core/utils/cache-key";
-import { invalidateCache } from "../../core/utils/invalidate-cache";
-import { toBoolean } from "../../core/utils/coerce";
-import { extractCrewInput } from "../../core/utils/movie-crew";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { getCachedOrFetch } from "../../core/utils/cache/cache";
+import { CacheKeys } from "../../core/utils/cache/cache-key";
+import { invalidateCache } from "../../core/utils/cache/invalidate-cache";
+import { toBoolean } from "../../core/utils/transform/coerce";
+import { extractCrewInput } from "../../core/utils/movie/movie-crew";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class MovieService {
   constructor(
@@ -58,9 +54,8 @@ export class MovieService {
         sortby: sortby || undefined,
       };
 
-      const rawMovies = await getCachedOrFetch(
-        CacheKeys.movieList(input),
-        () => this.repo.find(input),
+      const rawMovies = await getCachedOrFetch(CacheKeys.movieList(input), () =>
+        this.repo.find(input),
       );
       return MovieFactory.toDomainList(rawMovies);
     } catch (error: unknown) {
@@ -135,24 +130,11 @@ export class MovieService {
         extractCrewInput(dto);
 
       const input: CreateMovieInput = {
-        title: dto.title,
-        description: dto.description,
+        ...dto,
         thumbnail: thumbnailUrl,
-        youtubeUrl: dto.youtubeUrl,
-        trailerUrl: dto.trailerUrl || null,
-        categoryId: dto.categoryId,
-        year: dto.year,
-        duration: dto.duration,
         matchRate: 100,
-        aspectRatio: dto.aspectRatio,
-        ageRatingId: dto.ageRatingId,
-        universityId: dto.universityId || null,
-        languageId: dto.languageId || null,
-        targetGroupId: dto.targetGroupId || null,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        colorType: dto.colorType,
-        studio: dto.studio || null,
         createdBy: userId,
         btsVideos,
       };
@@ -160,9 +142,21 @@ export class MovieService {
       const movieRecord = await this.repo.create(input);
 
       await associateCrewBulk(
-        { movieId: movieRecord.id, directors, producers, writers, cast, dops, editors },
+        {
+          movieId: movieRecord.id,
+          directors,
+          producers,
+          writers,
+          cast,
+          dops,
+          editors,
+        },
         userId,
-        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
+        {
+          crewMemberRepo: this.crewMemberRepo,
+          movieCrewRepo: this.movieCrewRepo,
+          authRepo: this.authRepo,
+        },
       );
 
       const movie = await this.repo.findById(movieRecord.id);
@@ -170,7 +164,10 @@ export class MovieService {
         throw new InternalServerError("Failed to retrieve created movie");
       }
 
-      await invalidateCache([CacheKeys.movieListDefault(), CacheKeys.movieListWildcard()]);
+      await invalidateCache([
+        CacheKeys.movieListDefault(),
+        CacheKeys.movieListWildcard(),
+      ]);
       return MovieFactory.toDomain(movie);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to create movie");
@@ -199,25 +196,12 @@ export class MovieService {
         extractCrewInput(dto);
 
       const input: UpdateMovieInput = {
-        title: dto.title,
-        description: dto.description,
+        ...dto,
         thumbnail: thumbnailUrl,
-        youtubeUrl: dto.youtubeUrl,
-        trailerUrl: dto.trailerUrl || null,
-        categoryId: dto.categoryId,
-        year: dto.year,
-        duration: dto.duration,
-        matchRate: existing.matchRate,
-        aspectRatio: dto.aspectRatio,
-        ageRatingId: dto.ageRatingId,
-        universityId: dto.universityId || null,
-        languageId: dto.languageId || null,
-        targetGroupId: dto.targetGroupId || null,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        colorType: dto.colorType,
-        studio: dto.studio || null,
         btsVideos,
+        matchRate: existing.matchRate,
       };
 
       await this.repo.update(id, input);
@@ -225,7 +209,11 @@ export class MovieService {
       await associateCrewBulk(
         { movieId: id, directors, producers, writers, cast, dops, editors },
         userId,
-        { crewMemberRepo: this.crewMemberRepo, movieCrewRepo: this.movieCrewRepo, authRepo: this.authRepo },
+        {
+          crewMemberRepo: this.crewMemberRepo,
+          movieCrewRepo: this.movieCrewRepo,
+          authRepo: this.authRepo,
+        },
       );
 
       const movie = await this.repo.findById(id);

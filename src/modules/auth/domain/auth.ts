@@ -1,5 +1,5 @@
 import { t, Static } from "elysia";
-import { tArrayCoerce } from "../../../core/utils/parser";
+import { tArrayCoerce } from "../../../core/utils/transform/parser";
 export interface User {
   id: string;
   name: string;

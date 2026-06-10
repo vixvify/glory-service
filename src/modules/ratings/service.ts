@@ -10,7 +10,7 @@ import {
 } from "./domain/rating";
 import { RatingRepository } from "./domain/rating.repository";
 import { RatingFactory } from "./factory";
-import { handleServiceError } from "../../core/utils/handle-error";
+import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class RatingService {
   constructor(private repo: RatingRepository) {}
@@ -19,7 +19,9 @@ export class RatingService {
     try {
       const existing = await this.repo.checkRating(dto.userId, dto.movieId);
       if (existing) {
-        throw new ConflictError("You have already rated this movie. Use update instead.");
+        throw new ConflictError(
+          "You have already rated this movie. Use update instead.",
+        );
       }
       const input: AddRatingInput = {
         userId: dto.userId,
