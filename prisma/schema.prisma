@@ -62,7 +62,7 @@ model Movie {
   duration     Int
   views        Int         @default(0)
   matchRate    Int         @default(100)
-  aspectRatio  String      @default("16:9")
+  aspectRatio  String      @default("แนวนอน")
 
   ageRatingId  String      @db.Uuid
   ageRating    AgeRating   @relation(fields: [ageRatingId], references: [id])

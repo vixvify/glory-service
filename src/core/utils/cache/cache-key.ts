@@ -18,6 +18,7 @@ export class CacheKeys {
       input.pagesize ?? "",
       input.sort ?? "",
       input.sortby ?? "",
+      input.aspectRatio ?? "",
     ].join(":");
   }
 

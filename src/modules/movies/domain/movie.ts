@@ -230,6 +230,7 @@ export const getMoviesQuerySchema = t.Object({
       t.Literal("matchRate"),
     ]),
   ),
+  aspectRatio: t.Optional(t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")])),
 });
 export type GetMoviesQueryDTO = Static<typeof getMoviesQuerySchema>;
 
@@ -241,6 +242,7 @@ export interface MovieFilterInput {
   sort?: string;
   sortby?: string;
   createdBy?: string;
+  aspectRatio?: string;
 }
 
 export interface AssociateCrewBulkInput {

@@ -41,7 +41,8 @@ export class MovieService {
         return MovieFactory.toDomainList(rawMovies);
       }
 
-      const { search, searchby, page, pagesize, sort, sortby } = dto || {};
+      const { search, searchby, page, pagesize, sort, sortby, aspectRatio } =
+        dto || {};
       const pageNum = Number(page) || 1;
       const limitNum = pagesize ? Number(pagesize) : undefined;
 
@@ -52,6 +53,7 @@ export class MovieService {
         pagesize: limitNum,
         sort: sort || undefined,
         sortby: sortby || undefined,
+        aspectRatio: aspectRatio || undefined,
       };
 
       const rawMovies = await getCachedOrFetch(CacheKeys.movieList(input), () =>
