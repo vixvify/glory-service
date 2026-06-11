@@ -24,7 +24,9 @@ export class RatingRepositoryImpl implements RatingRepository {
     input: GetRatingsInput,
   ): Promise<RatingWithRelations | null> {
     const result = await prisma.rating.findUnique({
-      where: { userId_movieId: { userId: input.userId, movieId: input.movieId } },
+      where: {
+        userId_movieId: { userId: input.userId, movieId: input.movieId },
+      },
       include: ratingIncludes,
     });
     return result;
@@ -65,6 +67,17 @@ export class RatingRepositoryImpl implements RatingRepository {
         stars: input.stars,
         ...(input.comment !== undefined && { comment: input.comment }),
       },
+    });
+  }
+
+  async updateMovieAverageRating(movieId: string): Promise<void> {
+    const result = await prisma.rating.aggregate({
+      where: { movieId },
+      _avg: { stars: true },
+    });
+    await prisma.movie.update({
+      where: { id: movieId },
+      data: { averageRating: result._avg.stars ?? 0 },
     });
   }
 }

@@ -13,4 +13,5 @@ export interface RatingRepository {
   deleteRating(userId: string, movieId: string): Promise<void>;
   checkRating(userId: string, movieId: string): Promise<boolean>;
   updateRating(input: UpdateRatingInput): Promise<void>;
+  updateMovieAverageRating(movieId: string): Promise<void>;
 }

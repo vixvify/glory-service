@@ -32,6 +32,7 @@ export class RatingFactory {
         duration: rating.movie.duration,
         views: rating.movie.views,
         matchRate: rating.movie.matchRate,
+        averageRating: rating.movie.averageRating,
         aspectRatio: rating.movie.aspectRatio,
         ageRating: {
           id: rating.movie.ageRating.id,

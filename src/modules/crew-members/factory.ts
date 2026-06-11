@@ -59,6 +59,7 @@ export class CrewMemberFactory {
                   ratings: [],
                   year: mc.movie.year,
                   matchRate: mc.movie.matchRate,
+                  averageRating: mc.movie.averageRating,
                   aspectRatio: mc.movie.aspectRatio,
                   ageRating: {
                     id: mc.movie.ageRating.id,

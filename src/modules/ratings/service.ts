@@ -11,6 +11,8 @@ import {
 import { RatingRepository } from "./domain/rating.repository";
 import { RatingFactory } from "./factory";
 import { handleServiceError } from "../../core/utils/error/handle-error";
+import { invalidateCache } from "../../core/utils/cache/invalidate-cache";
+import { CacheKeys } from "../../core/utils/cache/cache-key";
 
 export class RatingService {
   constructor(private repo: RatingRepository) {}
@@ -29,7 +31,13 @@ export class RatingService {
         stars: dto.stars,
         comment: dto.comment,
       };
-      return await this.repo.addRating(input);
+      await this.repo.addRating(input);
+      await this.repo.updateMovieAverageRating(dto.movieId);
+      await invalidateCache([
+        CacheKeys.movieListDefault(),
+        CacheKeys.movieListWildcard(),
+        CacheKeys.movieDetail(dto.movieId),
+      ]);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to add rating");
     }
@@ -54,6 +62,12 @@ export class RatingService {
   async deleteRating(userId: string, movieId: string): Promise<void> {
     try {
       await this.repo.deleteRating(userId, movieId);
+      await this.repo.updateMovieAverageRating(movieId);
+      await invalidateCache([
+        CacheKeys.movieListDefault(),
+        CacheKeys.movieListWildcard(),
+        CacheKeys.movieDetail(movieId),
+      ]);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to delete rating");
     }
@@ -75,7 +89,13 @@ export class RatingService {
         stars: dto.stars,
         comment: dto.comment,
       };
-      return await this.repo.updateRating(input);
+      await this.repo.updateRating(input);
+      await this.repo.updateMovieAverageRating(dto.movieId);
+      await invalidateCache([
+        CacheKeys.movieListDefault(),
+        CacheKeys.movieListWildcard(),
+        CacheKeys.movieDetail(dto.movieId),
+      ]);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to update rating");
     }
