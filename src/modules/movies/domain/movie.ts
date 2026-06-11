@@ -48,6 +48,7 @@ export interface Movie {
   ratings: Rating[];
   year: number;
   matchRate: number;
+  averageRating: number;
   aspectRatio: string;
   ageRating: AgeRating;
   duration: number;
@@ -228,6 +229,7 @@ export const getMoviesQuerySchema = t.Object({
       t.Literal("duration"),
       t.Literal("views"),
       t.Literal("matchRate"),
+      t.Literal("averageRating"),
     ]),
   ),
   aspectRatio: t.Optional(t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")])),
