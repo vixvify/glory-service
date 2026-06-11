@@ -26,6 +26,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       sort = "desc",
       sortby = "createdAt",
       createdBy,
+      aspectRatio,
     } = input;
 
     const where: Prisma.MovieWhereInput = {
@@ -33,8 +34,8 @@ export class MovieRepositoryImpl implements MovieRepository {
       ...(search &&
         searchby !== "year" &&
         searchby !== "category" &&
-        searchby !== "aspectRatio" &&
-        searchby !== "university" && {
+        searchby !== "university" &&
+        searchby !== "aspectRatio" && {
           [searchby || "title"]: {
             contains: search,
             mode: "insensitive",
@@ -58,12 +59,7 @@ export class MovieRepositoryImpl implements MovieRepository {
             },
           },
         }),
-      ...(search &&
-        searchby === "aspectRatio" && {
-          aspectRatio: {
-            equals: search,
-          },
-        }),
+      ...(aspectRatio && { aspectRatio: aspectRatio }),
       ...(createdBy && { createdBy }),
     };
 
