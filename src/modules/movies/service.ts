@@ -131,12 +131,27 @@ export class MovieService {
       const { directors, producers, writers, cast, dops, editors, btsVideos } =
         extractCrewInput(dto);
 
+      let releaseDate = new Date();
+      if (dto.releaseDate) {
+        const parsedDate = new Date(dto.releaseDate);
+        if (!isNaN(parsedDate.getTime())) {
+          releaseDate = parsedDate;
+        }
+      }
+
+      const { director, producer, writer, cast: _cast, dop, editor, btsVideo, ...restDto } = dto;
+
       const input: CreateMovieInput = {
-        ...dto,
+        ...restDto,
         thumbnail: thumbnailUrl,
+        releaseDate,
+        duration: Number(dto.duration),
         matchRate: 100,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
+        university: dto.university || null,
+        school: dto.school || null,
+        language: dto.language || null,
         createdBy: userId,
         btsVideos,
       };
@@ -197,13 +212,28 @@ export class MovieService {
       const { directors, producers, writers, cast, dops, editors, btsVideos } =
         extractCrewInput(dto);
 
+      let releaseDate = new Date();
+      if (dto.releaseDate) {
+        const parsedDate = new Date(dto.releaseDate);
+        if (!isNaN(parsedDate.getTime())) {
+          releaseDate = parsedDate;
+        }
+      }
+
+      const { director, producer, writer, cast: _cast, dop, editor, btsVideo, ...restDto } = dto;
+
       const input: UpdateMovieInput = {
-        ...dto,
+        ...restDto,
         thumbnail: thumbnailUrl,
+        releaseDate,
+        duration: Number(dto.duration),
+        matchRate: existing.matchRate,
+        btsVideos,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        btsVideos,
-        matchRate: existing.matchRate,
+        university: dto.university || null,
+        school: dto.school || null,
+        language: dto.language || null,
       };
 
       await this.repo.update(id, input);

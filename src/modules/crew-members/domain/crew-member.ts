@@ -138,10 +138,6 @@ export const crewMemberIncludes = {
       movie: {
         include: {
           category: true,
-          ageRating: true,
-          university: true,
-          language: true,
-          targetGroup: true,
         },
       },
     },

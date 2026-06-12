@@ -13,18 +13,6 @@ export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
     const universities = await masterDataService.getUniversities();
     return formatSuccess(universities);
   })
-  .get("/age-ratings", async () => {
-    const ratings = await masterDataService.getAgeRatings();
-    return formatSuccess(ratings);
-  })
-  .get("/languages", async () => {
-    const languages = await masterDataService.getLanguages();
-    return formatSuccess(languages);
-  })
-  .get("/target-groups", async () => {
-    const targetGroups = await masterDataService.getTargetGroups();
-    return formatSuccess(targetGroups);
-  })
   .get("/crew-roles", async () => {
     const crewRoles = await masterDataService.getCrewRoles();
     return formatSuccess(crewRoles);
