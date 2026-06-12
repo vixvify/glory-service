@@ -117,7 +117,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อโจ๊กเกอร์อาชญากรสุดอันตรายสร้างความโกลาหลให้เมืองก็อตแธม แบทแมนต้องเผชิญบททดสอบทั้งร่างกายและจิตใจครั้งใหญ่ในการปกป้องความยุติธรรม",
     thumbnail:
-      "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+      "https://www.wallpaperflare.com/static/735/898/350/batman-dark-knight-poster-wallpaper.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=EXeTwQWrcwY",
     category: "Action",
     matchRate: 98,
@@ -557,8 +557,7 @@ export const seedMovies: SeedMovie[] = [
     title: "Top Gun: Maverick",
     description:
       "มาเวอริค นักบินขับไล่ระดับตำนานกลับมาฝึกสอนนักบินรุ่นใหม่เพื่อภารกิจเสี่ยงตายขั้นสุดยอด",
-    thumbnail:
-      "https://m.media-amazon.com/images/M/MV5BMDBkZDNjMWEtOTdmMi00NmExLTg5MmMtNTFlYTJlNWY5YTdmXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    thumbnail: "https://4kwallpapers.com/images/walls/thumbs_2t/8210.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=giXcoYmTfbQ",
     category: "Action",
     matchRate: 98,
