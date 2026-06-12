@@ -12,6 +12,7 @@
     "@aws-sdk/client-s3": "^3.1062.0",
     "@elysiajs/cors": "^1.4.2",
     "@prisma/client": "5",
+    "axios": "^1.17.0",
     "elysia": "latest",
     "rate-limiter-flexible": "^11.1.1",
     "redis": "^6.0.0"

@@ -6,17 +6,23 @@ import {
   MovieCrewInputItem,
 } from "../../../core/utils/transform/parser";
 import { User } from "../../auth/domain/auth";
-import { Prisma, ColorType } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
-import {
-  Category,
-  AgeRating,
-  University,
-  Language,
-  TargetGroup,
-  CrewRole,
-} from "../../master-data/domain/masterdata";
-export { ColorType } from "@prisma/client";
+import { Category, CrewRole } from "../../master-data/domain/masterdata";
+
+export enum ColorType {
+  COLOR = "color",
+  BLACK_AND_WHITE = "black_and_white",
+  COLOR_AND_BLACK_AND_WHITE = "color_and_black_and_white",
+}
+
+export enum AgeRating {
+  G = "G",
+  PG = "PG",
+  PG_13 = "PG-13",
+  NC_17 = "NC-17",
+  R = "R",
+}
 
 export interface MovieCrew {
   id: string;
@@ -32,8 +38,8 @@ export interface MovieCrew {
 }
 
 export enum AspectRatio {
-  LANDSCAPE = "แนวนอน",
-  PORTRAIT = "แนวตั้ง",
+  LANDSCAPE = "landscape",
+  PORTRAIT = "portrait",
 }
 
 export interface Movie {
@@ -46,18 +52,18 @@ export interface Movie {
   trailerUrl?: string | null;
   views: number;
   ratings: Rating[];
-  year: number;
+  releaseDate: Date;
   matchRate: number;
   averageRating: number;
   aspectRatio: string;
-  ageRating: AgeRating;
+  ageRating: string;
   duration: number;
-  university?: University | null;
-  language?: Language | null;
-  targetGroup?: TargetGroup | null;
+  university?: string | null;
+  school?: string | null;
+  language?: string | null;
   hasProfanity: boolean;
   hasDrugs: boolean;
-  colorType: ColorType;
+  colorType: string;
   studio?: string | null;
   createdBy: string;
   creator?: User;
@@ -65,6 +71,7 @@ export interface Movie {
   btsVideos: string[];
   createdAt: Date;
   updatedAt: Date;
+  awards: string[];
 }
 
 export interface CreateMovieInput {
@@ -74,20 +81,21 @@ export interface CreateMovieInput {
   youtubeUrl: string;
   trailerUrl?: string | null;
   categoryId: string;
-  year: number;
+  releaseDate: Date;
   duration: number;
   matchRate: number;
   aspectRatio: string;
-  ageRatingId: string;
-  universityId?: string | null;
-  languageId?: string | null;
-  targetGroupId?: string | null;
+  ageRating: string;
+  university?: string | null;
+  school?: string | null;
+  language?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType: ColorType;
+  colorType: string;
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
+  awards?: string[];
 }
 
 export interface UpdateMovieInput {
@@ -97,19 +105,20 @@ export interface UpdateMovieInput {
   youtubeUrl: string;
   trailerUrl?: string | null;
   categoryId: string;
-  year: number;
+  releaseDate: Date;
   duration: number;
   matchRate: number;
   aspectRatio: string;
-  ageRatingId: string;
-  universityId?: string | null;
-  languageId?: string | null;
-  targetGroupId?: string | null;
+  ageRating: string;
+  university?: string | null;
+  school?: string | null;
+  language?: string | null;
   hasProfanity?: boolean;
   hasDrugs?: boolean;
-  colorType: ColorType;
+  colorType: string;
   studio?: string | null;
   btsVideos?: string[];
+  awards?: string[];
 }
 
 export const createMovieBodySchema = t.Object({
@@ -119,13 +128,13 @@ export const createMovieBodySchema = t.Object({
   thumbnail: t.File(),
   youtubeUrl: t.String(),
   trailerUrl: t.Optional(t.String()),
-  year: t.Numeric(),
+  releaseDate: t.String(),
   duration: t.Numeric(),
-  aspectRatio: t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")]),
-  ageRatingId: t.String({ format: "uuid" }),
-  universityId: t.Optional(t.String({ format: "uuid" })),
-  languageId: t.Optional(t.String({ format: "uuid" })),
-  targetGroupId: t.Optional(t.String({ format: "uuid" })),
+  aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
+  ageRating: t.String(),
+  university: t.Optional(t.String()),
+  school: t.Optional(t.String()),
+  language: t.Optional(t.String()),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.Union([
@@ -141,6 +150,7 @@ export const createMovieBodySchema = t.Object({
   dop: t.Optional(tCrewArrayCoerce),
   editor: t.Optional(tCrewArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
+  awards: t.Optional(tArrayCoerce),
 });
 export type CreateMovieBodyDTO = Static<typeof createMovieBodySchema>;
 
@@ -156,13 +166,13 @@ export const updateMovieBodySchema = t.Object({
   thumbnail: t.Union([t.File(), t.String()]),
   youtubeUrl: t.String(),
   trailerUrl: t.Optional(t.String()),
-  year: t.Numeric(),
+  releaseDate: t.String(),
   duration: t.Numeric(),
-  aspectRatio: t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")]),
-  ageRatingId: t.String({ format: "uuid" }),
-  universityId: t.Optional(t.String({ format: "uuid" })),
-  languageId: t.Optional(t.String({ format: "uuid" })),
-  targetGroupId: t.Optional(t.String({ format: "uuid" })),
+  aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
+  ageRating: t.String(),
+  university: t.Optional(t.String()),
+  school: t.Optional(t.String()),
+  language: t.Optional(t.String()),
   hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
   hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
   colorType: t.Union([
@@ -178,6 +188,7 @@ export const updateMovieBodySchema = t.Object({
   dop: t.Optional(tCrewArrayCoerce),
   editor: t.Optional(tCrewArrayCoerce),
   btsVideo: t.Optional(tArrayCoerce),
+  awards: t.Optional(tArrayCoerce),
 });
 export type UpdateMovieBodyDTO = Static<typeof updateMovieBodySchema>;
 
@@ -211,10 +222,11 @@ export const getMoviesQuerySchema = t.Object({
     t.Union([
       t.Literal("title"),
       t.Literal("description"),
-      t.Literal("year"),
+      t.Literal("releaseDate"),
       t.Literal("category"),
       t.Literal("aspectRatio"),
       t.Literal("university"),
+      t.Literal("school"),
       t.Literal("studio"),
     ]),
   ),
@@ -225,14 +237,16 @@ export const getMoviesQuerySchema = t.Object({
     t.Union([
       t.Literal("createdAt"),
       t.Literal("title"),
-      t.Literal("year"),
+      t.Literal("releaseDate"),
       t.Literal("duration"),
       t.Literal("views"),
       t.Literal("matchRate"),
       t.Literal("averageRating"),
     ]),
   ),
-  aspectRatio: t.Optional(t.Union([t.Literal("แนวนอน"), t.Literal("แนวตั้ง")])),
+  aspectRatio: t.Optional(
+    t.Union([t.Literal("landscape"), t.Literal("portrait")]),
+  ),
 });
 export type GetMoviesQueryDTO = Static<typeof getMoviesQuerySchema>;
 
@@ -283,10 +297,6 @@ export interface CreateMovieCrewInput {
 
 export const movieIncludes = {
   category: true,
-  ageRating: true,
-  university: true,
-  language: true,
-  targetGroup: true,
   creator: {
     select: MovieUserSelect,
   },

@@ -1,5 +1,6 @@
 import { CrewMember as PrismaCrewMember } from "@prisma/client";
 import { CrewMember, CrewMemberWithRelations } from "./domain/crew-member";
+import { Role } from "../auth/domain/auth";
 
 export type CrewMemberDbResult = PrismaCrewMember &
   Partial<Omit<CrewMemberWithRelations, keyof PrismaCrewMember>>;
@@ -20,7 +21,7 @@ export class CrewMemberFactory {
             id: member.user.id,
             email: member.user.email || "",
             name: member.user.name || "",
-            role: member.user.role,
+            role: member.user.role as Role,
             photoUrl: member.user.photoUrl,
             motto: member.user.motto,
             bio: member.user.bio,
@@ -57,37 +58,15 @@ export class CrewMemberFactory {
                   },
                   views: mc.movie.views,
                   ratings: [],
-                  year: mc.movie.year,
+                  releaseDate: mc.movie.releaseDate,
                   matchRate: mc.movie.matchRate,
                   averageRating: mc.movie.averageRating,
                   aspectRatio: mc.movie.aspectRatio,
-                  ageRating: {
-                    id: mc.movie.ageRating.id,
-                    name: mc.movie.ageRating.name,
-                    createdAt: mc.movie.ageRating.createdAt,
-                  },
+                  ageRating: mc.movie.ageRating,
                   duration: mc.movie.duration,
-                  university: mc.movie.university
-                    ? {
-                        id: mc.movie.university.id,
-                        name: mc.movie.university.name,
-                        createdAt: mc.movie.university.createdAt,
-                      }
-                    : null,
-                  language: mc.movie.language
-                    ? {
-                        id: mc.movie.language.id,
-                        name: mc.movie.language.name,
-                        createdAt: mc.movie.language.createdAt,
-                      }
-                    : null,
-                  targetGroup: mc.movie.targetGroup
-                    ? {
-                        id: mc.movie.targetGroup.id,
-                        name: mc.movie.targetGroup.name,
-                        createdAt: mc.movie.targetGroup.createdAt,
-                      }
-                    : null,
+                  university: mc.movie.university,
+                  school: mc.movie.school,
+                  language: mc.movie.language,
                   hasProfanity: mc.movie.hasProfanity,
                   hasDrugs: mc.movie.hasDrugs,
                   colorType: mc.movie.colorType,
@@ -97,6 +76,7 @@ export class CrewMemberFactory {
                   btsVideos: [],
                   createdAt: mc.movie.createdAt,
                   updatedAt: mc.movie.updatedAt,
+                  awards: mc.movie.awards || [],
                 }
               : undefined,
           }))

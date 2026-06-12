@@ -30,11 +30,9 @@ export class MovieRepositoryImpl implements MovieRepository {
     } = input;
 
     const where: Prisma.MovieWhereInput = {
-      ...(search && searchby === "year" && { year: parseInt(search, 10) }),
       ...(search &&
-        searchby !== "year" &&
+        searchby !== "releaseDate" &&
         searchby !== "category" &&
-        searchby !== "university" &&
         searchby !== "aspectRatio" && {
           [searchby || "title"]: {
             contains: search,
@@ -51,12 +49,13 @@ export class MovieRepositoryImpl implements MovieRepository {
           },
         }),
       ...(search &&
+        searchby === "releaseDate" && {
+          releaseDate: new Date(search),
+        }),
+      ...(search &&
         searchby === "university" && {
           university: {
-            name: {
-              contains: search,
-              mode: "insensitive",
-            },
+            equals: search,
           },
         }),
       ...(aspectRatio && { aspectRatio: aspectRatio }),
@@ -90,9 +89,7 @@ export class MovieRepositoryImpl implements MovieRepository {
   ): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
-        university: {
-          name: { equals: university, mode: "insensitive" },
-        },
+        university: { equals: university, mode: "insensitive" },
       },
       include: movieIncludes,
       orderBy: { createdAt: "desc" },

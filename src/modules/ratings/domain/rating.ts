@@ -105,10 +105,9 @@ export const ratingIncludes = {
   movie: {
     include: {
       category: true,
-      ageRating: true,
       university: true,
+      school: true,
       language: true,
-      targetGroup: true,
     },
   },
   user: {

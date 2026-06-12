@@ -1,5 +1,6 @@
 import { Rating as DomainRating } from "./domain/rating";
 import { RatingWithRelations } from "./domain/rating";
+import { Role } from "../auth/domain/auth";
 
 export class RatingFactory {
   static toDomain(rating: RatingWithRelations): DomainRating {
@@ -14,7 +15,7 @@ export class RatingFactory {
         id: rating.user.id,
         name: rating.user.name || "Unknown User",
         email: rating.user.email,
-        role: rating.user.role,
+        role: rating.user.role as Role,
       },
       movie: {
         id: rating.movie.id,
@@ -28,38 +29,16 @@ export class RatingFactory {
           name: rating.movie.category.name,
           createdAt: rating.movie.category.createdAt,
         },
-        year: rating.movie.year,
+        releaseDate: rating.movie.releaseDate,
         duration: rating.movie.duration,
         views: rating.movie.views,
         matchRate: rating.movie.matchRate,
         averageRating: rating.movie.averageRating,
         aspectRatio: rating.movie.aspectRatio,
-        ageRating: {
-          id: rating.movie.ageRating.id,
-          name: rating.movie.ageRating.name,
-          createdAt: rating.movie.ageRating.createdAt,
-        },
-        university: rating.movie.university
-          ? {
-              id: rating.movie.university.id,
-              name: rating.movie.university.name,
-              createdAt: rating.movie.university.createdAt,
-            }
-          : null,
-        language: rating.movie.language
-          ? {
-              id: rating.movie.language.id,
-              name: rating.movie.language.name,
-              createdAt: rating.movie.language.createdAt,
-            }
-          : null,
-        targetGroup: rating.movie.targetGroup
-          ? {
-              id: rating.movie.targetGroup.id,
-              name: rating.movie.targetGroup.name,
-              createdAt: rating.movie.targetGroup.createdAt,
-            }
-          : null,
+        ageRating: rating.movie.ageRating,
+        university: rating.movie.university,
+        school: rating.movie.school,
+        language: rating.movie.language,
         hasProfanity: rating.movie.hasProfanity,
         hasDrugs: rating.movie.hasDrugs,
         colorType: rating.movie.colorType,
@@ -69,6 +48,7 @@ export class RatingFactory {
         btsVideos: [],
         createdAt: rating.movie.createdAt,
         updatedAt: rating.movie.updatedAt,
+        awards: rating.movie.awards || [],
       },
     };
   }

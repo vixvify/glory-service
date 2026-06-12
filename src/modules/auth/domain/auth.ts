@@ -1,10 +1,16 @@
 import { t, Static } from "elysia";
 import { tArrayCoerce } from "../../../core/utils/transform/parser";
+
+export enum Role {
+  ADMIN = "admin",
+  USER = "user",
+}
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "user";
+  role: Role | "admin" | "user";
   photoUrl?: string | null;
   motto?: string | null;
   bio?: string | null;

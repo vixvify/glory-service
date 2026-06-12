@@ -2,10 +2,9 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import {
   seedMovies,
   categories,
-  ageRatings,
   universities,
   languages,
-  targetGroups,
+  schools,
   SeedCrewMember,
 } from "./movies.data";
 
@@ -19,10 +18,6 @@ async function main() {
   await prisma.crewMember.deleteMany();
   await prisma.crewRole.deleteMany();
   await prisma.category.deleteMany();
-  await prisma.university.deleteMany();
-  await prisma.ageRating.deleteMany();
-  await prisma.language.deleteMany();
-  await prisma.targetGroup.deleteMany();
 
   console.log("Syncing default user...");
   let defaultUser = await prisma.user.findFirst({
@@ -41,26 +36,11 @@ async function main() {
   }
   const defaultUserId = defaultUser.id;
 
-  console.log("Seeding master data...");
   await prisma.category.createMany({
     data: categories.map((name) => ({ name })),
   });
 
-  await prisma.ageRating.createMany({
-    data: ageRatings.map((name) => ({ name })),
-  });
-
-  await prisma.university.createMany({
-    data: universities.map((name) => ({ name })),
-  });
-
-  await prisma.language.createMany({
-    data: languages.map((name) => ({ name })),
-  });
-
-  await prisma.targetGroup.createMany({
-    data: targetGroups.map((name) => ({ name })),
-  });
+  // Category, CrewRole setup only
 
   const roles = ["DIRECTOR", "PRODUCER", "WRITER", "CAST", "DOP", "EDITOR"];
   await prisma.crewRole.createMany({
@@ -73,25 +53,7 @@ async function main() {
     dbCategories.map((c) => [c.name.toLowerCase(), c.id]),
   );
 
-  const dbAgeRatings = await prisma.ageRating.findMany();
-  const ageRatingMap = new Map(
-    dbAgeRatings.map((ar) => [ar.name.toLowerCase(), ar.id]),
-  );
-
-  const dbUniversities = await prisma.university.findMany();
-  const universityMap = new Map(
-    dbUniversities.map((u) => [u.name.toLowerCase(), u.id]),
-  );
-
-  const dbLanguages = await prisma.language.findMany();
-  const languageMap = new Map(
-    dbLanguages.map((l) => [l.name.toLowerCase(), l.id]),
-  );
-
-  const dbTargetGroups = await prisma.targetGroup.findMany();
-  const targetGroupMap = new Map(
-    dbTargetGroups.map((tg) => [tg.name.toLowerCase(), tg.id]),
-  );
+  // Category map setup only
 
   const dbCrewRoles = await prisma.crewRole.findMany();
   const crewRoleMap = new Map(
@@ -213,7 +175,7 @@ async function main() {
     const hasDrugs = idx % 3 === 2;
 
     const colorTypes = ["COLOR", "BLACK_AND_WHITE", "COLOR_AND_BW"];
-    const colorType = getColorType(colorTypes[idx % colorTypes.length]);
+    const colorType = colorTypes[idx % colorTypes.length].toLowerCase();
 
     const studios = [
       "Glory Original",
@@ -227,22 +189,16 @@ async function main() {
     const categoryId = categoryMap.get(movie.category.toLowerCase());
     if (!categoryId) throw new Error(`Category not found: ${movie.category}`);
 
-    const ageRatingStr = movie.ageRating || "PG-13";
-    const ageRatingId = ageRatingMap.get(ageRatingStr.toLowerCase());
-    if (!ageRatingId) throw new Error(`Age rating not found: ${ageRatingStr}`);
+    const ageRating = movie.ageRating || "PG-13";
 
-    const universityId = movie.university
-      ? universityMap.get(movie.university.toLowerCase()) || null
-      : null;
-    const languageId = movie.language
-      ? languageMap.get(movie.language.toLowerCase()) || null
-      : null;
-    const targetGroupId = movie.targetGroup
-      ? targetGroupMap.get(movie.targetGroup.toLowerCase()) || null
-      : null;
+    const university = movie.university || null;
+    const language = movie.language || "ไทย";
+    const school = idx % 2 === 0 ? schools[idx % schools.length] : null;
 
     const oldCrew = movie.crew?.create;
     const btsVideos = oldCrew?.btsVideo ? [oldCrew.btsVideo] : [];
+
+    const awards = idx % 4 === 0 ? ["Best Short Film", "Best Student Director"] : [];
 
     moviesToInsert.push({
       id: movieId,
@@ -252,21 +208,22 @@ async function main() {
       youtubeUrl: movie.youtubeUrl,
       trailerUrl: movie.trailerUrl || movie.youtubeUrl,
       categoryId,
-      year: movie.year,
+      releaseDate: new Date(`${movie.year}-01-01T00:00:00.000Z`),
       duration: movie.duration,
       views: movie.views || 0,
       matchRate: movie.matchRate || 100,
-      aspectRatio: idx < 40 && idx >= 30 ? "แนวตั้ง" : "แนวนอน",
-      ageRatingId,
-      universityId,
-      languageId,
-      targetGroupId,
+      aspectRatio: idx < 40 && idx >= 30 ? "portrait" : "landscape",
+      ageRating,
+      university,
+      language,
+      school,
       hasProfanity,
       hasDrugs,
       colorType,
       studio,
       createdBy: defaultUserId,
       btsVideos,
+      awards,
     });
 
     if (oldCrew) {

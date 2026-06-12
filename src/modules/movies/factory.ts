@@ -4,6 +4,7 @@ import {
   PrismaMovieWithRelations,
 } from "./domain/movie";
 import { Rating } from "../ratings/domain/rating";
+import { Role } from "../auth/domain/auth";
 
 export class MovieFactory {
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {
@@ -12,20 +13,6 @@ export class MovieFactory {
       name: movie.category.name,
       createdAt: movie.category.createdAt,
     };
-    const ageRatingSnapshot = {
-      id: movie.ageRating.id,
-      name: movie.ageRating.name,
-      createdAt: movie.ageRating.createdAt,
-    };
-    const universitySnapshot = movie.university
-      ? { id: movie.university.id, name: movie.university.name, createdAt: movie.university.createdAt }
-      : null;
-    const languageSnapshot = movie.language
-      ? { id: movie.language.id, name: movie.language.name, createdAt: movie.language.createdAt }
-      : null;
-    const targetGroupSnapshot = movie.targetGroup
-      ? { id: movie.targetGroup.id, name: movie.targetGroup.name, createdAt: movie.targetGroup.createdAt }
-      : null;
 
     const ratings: Rating[] = movie.ratings
       ? movie.ratings.map(
@@ -40,7 +27,7 @@ export class MovieFactory {
               id: r.user?.id || r.userId,
               email: r.user?.email || "",
               name: r.user?.name ?? "Unknown User",
-              role: r.user?.role || "user",
+              role: (r.user?.role as Role) || Role.USER,
             },
             movie: {
               id: movie.id,
@@ -50,7 +37,7 @@ export class MovieFactory {
               youtubeUrl: movie.youtubeUrl || "",
               trailerUrl: movie.trailerUrl || "",
               views: movie.views,
-              year: movie.year,
+              releaseDate: movie.releaseDate,
               matchRate: movie.matchRate,
               averageRating: movie.averageRating,
               aspectRatio: movie.aspectRatio,
@@ -61,14 +48,15 @@ export class MovieFactory {
               studio: movie.studio,
               createdBy: movie.createdBy,
               category: categorySnapshot,
-              ageRating: ageRatingSnapshot,
-              university: universitySnapshot,
-              language: languageSnapshot,
-              targetGroup: targetGroupSnapshot,
+              ageRating: movie.ageRating,
+              university: movie.university,
+              school: movie.school,
+              language: movie.language,
               crew: [] as MovieCrew[],
               btsVideos: [] as string[],
               createdAt: movie.createdAt,
               updatedAt: movie.updatedAt,
+              awards: movie.awards || [],
             },
           }),
         )
@@ -82,7 +70,11 @@ export class MovieFactory {
           roleId: c.roleId,
           role: c.crewRole?.name || "",
           crewRole: c.crewRole
-            ? { id: c.crewRole.id, name: c.crewRole.name, createdAt: c.crewRole.createdAt }
+            ? {
+                id: c.crewRole.id,
+                name: c.crewRole.name,
+                createdAt: c.crewRole.createdAt,
+              }
             : undefined,
           crewMember: c.crewMember
             ? {
@@ -95,7 +87,7 @@ export class MovieFactory {
                       id: c.crewMember.user.id,
                       email: c.crewMember.user.email,
                       name: c.crewMember.user.name ?? "Unknown User",
-                      role: c.crewMember.user.role || "user",
+                      role: (c.crewMember.user.role as Role) || Role.USER,
                       photoUrl: c.crewMember.user.photoUrl,
                       motto: c.crewMember.user.motto,
                       bio: c.crewMember.user.bio,
@@ -128,15 +120,15 @@ export class MovieFactory {
       trailerUrl: movie.trailerUrl || "",
       views: movie.views,
       ratings,
-      year: movie.year,
+      releaseDate: movie.releaseDate,
       matchRate: movie.matchRate,
       averageRating: movie.averageRating,
       aspectRatio: movie.aspectRatio,
-      ageRating: ageRatingSnapshot,
+      ageRating: movie.ageRating,
       duration: movie.duration,
-      university: universitySnapshot,
-      language: languageSnapshot,
-      targetGroup: targetGroupSnapshot,
+      university: movie.university,
+      school: movie.school,
+      language: movie.language,
       hasProfanity: movie.hasProfanity,
       hasDrugs: movie.hasDrugs,
       colorType: movie.colorType,
@@ -154,6 +146,7 @@ export class MovieFactory {
       btsVideos: movie.btsVideos || [],
       createdAt: movie.createdAt,
       updatedAt: movie.updatedAt,
+      awards: movie.awards || [],
     };
   }
 

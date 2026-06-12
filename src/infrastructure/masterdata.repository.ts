@@ -2,12 +2,12 @@ import { prisma } from "../lib/prisma";
 import { MasterDataRepository } from "../modules/master-data/domain/masterdata.repository";
 import {
   Category,
-  University,
-  AgeRating,
   Language,
-  TargetGroup,
   CrewRole,
+  DataGoUniversityResponse,
+  UniversityRecord,
 } from "../modules/master-data/domain/masterdata";
+import axios from "axios";
 
 export class MasterDataRepositoryImpl implements MasterDataRepository {
   async getCategories(): Promise<Category[]> {
@@ -16,28 +16,19 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
     });
   }
 
-  async getUniversities(): Promise<University[]> {
-    return prisma.university.findMany({
-      orderBy: { name: "asc" },
-    });
-  }
+  async getUniversities(): Promise<string[]> {
+    const response = await axios.get<DataGoUniversityResponse>(
+      process.env.GET_UNIVERSITY_URL!,
+      {
+        headers: {
+          "api-key": process.env.DATA_GO_TOKEN!,
+        },
+      },
+    );
 
-  async getAgeRatings(): Promise<AgeRating[]> {
-    return prisma.ageRating.findMany({
-      orderBy: { name: "asc" },
-    });
-  }
-
-  async getLanguages(): Promise<Language[]> {
-    return prisma.language.findMany({
-      orderBy: { name: "asc" },
-    });
-  }
-
-  async getTargetGroups(): Promise<TargetGroup[]> {
-    return prisma.targetGroup.findMany({
-      orderBy: { name: "asc" },
-    });
+    return response.data.result.records.map(
+      (university) => university.UNIV_NAME,
+    );
   }
 
   async getCrewRoles(): Promise<CrewRole[]> {
@@ -51,26 +42,22 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
   }
 
   async getMostActiveUniversity(): Promise<string | null> {
-    const result = await prisma.university.findFirst({
-      select: {
-        name: true,
-        _count: {
-          select: {
-            movies: true,
-          },
-        },
+    const result = await prisma.movie.groupBy({
+      by: ["university"],
+      _count: {
+        university: true,
+      },
+      where: {
+        university: { not: null },
       },
       orderBy: {
-        movies: {
-          _count: "desc",
+        _count: {
+          university: "desc",
         },
       },
+      take: 1,
     });
 
-    if (!result || result._count.movies === 0) {
-      return null;
-    }
-
-    return result.name;
+    return result[0]?.university || null;
   }
 }
