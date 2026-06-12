@@ -7,15 +7,21 @@ export const rateLimitPlugin = new Elysia().onBeforeHandle(
 
     try {
       await rateLimiter.consume(ip);
-    } catch {
-      set.status = 429;
+    } catch (error: any) {
+      if (error && typeof error === "object" && "msBeforeNext" in error) {
+        set.status = 429;
+        return {
+          data: null,
+          error: "Too Many Requests",
+          status: 429,
+          statusCode: "TOO_MANY_REQUESTS",
+        };
+      }
 
-      return {
-        data: null,
-        error: "Too Many Requests",
-        status: 429,
-        statusCode: "TOO_MANY_REQUESTS",
-      };
+      console.error(
+        "[RateLimit] Rate limiter failed (likely Redis connection issue):",
+        error,
+      );
     }
   },
 );

@@ -117,7 +117,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อโจ๊กเกอร์อาชญากรสุดอันตรายสร้างความโกลาหลให้เมืองก็อตแธม แบทแมนต้องเผชิญบททดสอบทั้งร่างกายและจิตใจครั้งใหญ่ในการปกป้องความยุติธรรม",
     thumbnail:
-      "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=EXeTwQWrcwY",
     category: "Action",
     matchRate: 98,
@@ -170,7 +170,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หลังเหตุการณ์ทำลายล้างจากธานอส เหล่าอเวนเจอร์ที่เหลือต้องรวมพลังอีกครั้งเพื่อกอบกู้จักรวาลและย้อนคืนทุกสิ่ง",
     thumbnail:
-      "https://images.unsplash.com/photo-1635805737707-575885ab0820?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     category: "Action",
     matchRate: 96,
@@ -229,7 +229,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อดีตนายพลโรมันออกเดินทางล้างแค้นจักรพรรดิผู้โหดเหี้ยมที่ฆ่าครอบครัวของเขาและส่งเขาไปเป็นทาส",
     thumbnail:
-      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYWQ4YmNjYjEtOWE1Zi00Y2U4LWI4NTAtMTU0MjkxNWQ1ZmJiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=P5ieIbInFpg",
     category: "Action",
     matchRate: 93,
@@ -283,7 +283,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หญิงสาวผู้กล้าหาญร่วมมือกับแม็กซ์เพื่อหลบหนีจากทรราชในโลกหลังหายนะอันโหดร้าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1514539079130-25950c84af65?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZDRkODJhOTgtOTc1OC00NTgzLTk4NjItNDgxZDY4YjlmNDY2XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=hEJnMQG9ev8",
     category: "Action",
     matchRate: 94,
@@ -342,7 +342,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ทีชัลลา ราชาแห่งวากานด้า ต้องก้าวขึ้นเป็นผู้นำคนใหม่และเผชิญหน้ากับศัตรูจากอดีตของอาณาจักร",
     thumbnail:
-      "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=xjDjIWPwcPU",
     category: "Action",
     matchRate: 91,
@@ -396,7 +396,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อความลับของสไปเดอร์แมนถูกเปิดเผย ปีเตอร์ ปาร์คเกอร์ต้องเผชิญหน้าศัตรูจากต่างมิติ",
     thumbnail:
-      "https://images.unsplash.com/photo-1634828221818-503587f33d02?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMmFiZGZjMmEtMTA0Ni00MzA2LTljMTYtZGI2MGJmZWYzZTQ2XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=JfVOs4VSpmA",
     category: "Action",
     matchRate: 94,
@@ -455,7 +455,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อดีตนักฆ่าฝีมือพระกาฬหวนคืนวงการเพื่อทวงแค้นกลุ่มมาเฟียรัสเซียที่ทำลายสิ่งสำคัญชิ้นสุดท้ายในชีวิต",
     thumbnail:
-      "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTU2NjA1ODgzMF5BMl5BanBnXkFtZTgwMTM2MTI4MjE@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=qEVUtrk8_B4",
     category: "Action",
     matchRate: 95,
@@ -504,7 +504,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อีธาน ฮันท์และทีมงานต้องแข่งกับเวลาเพื่อยับยั้งระเบิดนิวเคลียร์ หลังภารกิจรวบรวมพลูโตเนียมเกิดความผิดพลาด",
     thumbnail:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZmUwZTg2YmMtMmZjOS00ZDYwLWI2ZDgtZDcyY2ZmMWMwZDdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=wb49-oV0F78",
     category: "Action",
     matchRate: 97,
@@ -558,7 +558,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "มาเวอริค นักบินขับไล่ระดับตำนานกลับมาฝึกสอนนักบินรุ่นใหม่เพื่อภารกิจเสี่ยงตายขั้นสุดยอด",
     thumbnail:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMDBkZDNjMWEtOTdmMi00NmExLTg5MmMtNTFlYTJlNWY5YTdmXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=giXcoYmTfbQ",
     category: "Action",
     matchRate: 98,
@@ -617,7 +617,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นีโอหลุดกลับไปอยู่ในโลกจำลองที่คุ้นเคยอีกครั้ง และต้องเลือกระหว่างความจริงอันเจ็บปวดหรือความฝันที่สุขสบาย",
     thumbnail:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMDMyNDIzYzMtZTMyMy00NjUyLWI3Y2MtYzYzOGE1NzQ1MTBiXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=9ix7TMcY-Dw",
     category: "Action",
     matchRate: 85,
@@ -673,7 +673,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หัวขโมยผู้เชี่ยวชาญด้านการแทรกซึมความฝันได้รับภารกิจปลูกฝังความคิดในจิตใจของซีอีโอ แต่เรื่องราวในอดีตของเขาอาจทำให้ทุกอย่างล้มเหลว",
     thumbnail:
-      "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=YoHD9XEInc0",
     category: "Sci-Fi",
     matchRate: 88,
@@ -722,7 +722,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อโลกใกล้ไม่สามารถอยู่อาศัยได้อีกต่อไป ทีมนักสำรวจจึงเดินทางผ่านรูหนอนอวกาศเพื่อค้นหาความหวังในการอยู่รอดของมนุษยชาติ",
     thumbnail:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
     category: "Sci-Fi",
     matchRate: 95,
@@ -776,7 +776,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "แฮกเกอร์หนุ่มค้นพบว่าชีวิตที่เขาอาศัยอยู่เป็นเพียงภาพลวงตาที่ถูกสร้างขึ้นโดยปัญญาประดิษฐ์อันชั่วร้าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=vKQi3bBA1y8",
     category: "Sci-Fi",
     matchRate: 95,
@@ -835,7 +835,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ทายาทตระกูลขุนนางต้องเข้าไปพัวพันกับสงครามแย่งชิงทรัพยากรล้ำค่าที่สุดในจักรวาล",
     thumbnail:
-      "https://images.unsplash.com/photo-1547483238-f400e65ccd56?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMGJlMGM3NDAtOWNhMy00MWExLWI2MzEtMDQ0ZDIzZDY5ZmQ2XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=n9DwoQ7HWvI",
     category: "Sci-Fi",
     matchRate: 91,
@@ -894,7 +894,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หลังฝ่ายกบฏพ่ายแพ้ ลุค สกายวอล์คเกอร์เริ่มฝึกเป็นเจได ขณะที่ดาร์ธ เวเดอร์ตามล่าพวกเขาทั่วกาแล็กซี",
     thumbnail:
-      "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTkxNGFlNDktZmJkNC00MDdhLTg0MTEtZjZiYWI3MGE5NWIwXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=JNwNXF9Y6kY",
     category: "Sci-Fi",
     matchRate: 97,
@@ -953,7 +953,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "มนุษย์เทียมที่เป็นตำรวจสายตรวจพิเศษในแอลเอ ค้นพบความลับที่ถูกฝังไว้ซึ่งอาจเปลี่ยนระเบียบของโลกไปตลอดกาล",
     thumbnail:
-      "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=gCcx85zbxz4",
     category: "Sci-Fi",
     matchRate: 94,
@@ -1007,7 +1007,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อยานอวกาศลึกลับสิบสองลำจอดทอดสมอทั่วโลก นักภาษาศาสตร์ชื่อดังได้รับหน้าที่แกะรหัสเพื่อทำความเข้าใจจุดประสงค์ของผู้มาเยือน",
     thumbnail:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=tF112y6cAkU",
     category: "Sci-Fi",
     matchRate: 92,
@@ -1061,7 +1061,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักบินอวกาศถูกทิ้งให้อยู่เพียงลำพังบนดาวอังคารหลังพายุทรายถล่ม เขาต้องใช้ความฉลาดและความเชี่ยวชาญเพื่อประคองชีวิตให้รอดพ้นความตาย",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTc2MTQ3MDA1Nl5BMl5BanBnXkFtZTgwODA3OTI4NjE@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=ej3ioOneTy8",
     category: "Sci-Fi",
     matchRate: 96,
@@ -1115,7 +1115,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "วิศวกรทางการแพทย์หญิงและนักบินอวกาศรุ่นพี่ต้องต่อสู้ดิ้นรนเอาชีวิตรอดกลางอวกาศไร้ขอบเขต หลังสถานีอวกาศถูกเศษขยะทำลายสะบั้น",
     thumbnail:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNjE5MzYwMzYxMF5BMl5BanBnXkFtZTcwOTk4MTk0OQ@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=OiTiKOy59o4",
     category: "Sci-Fi",
     matchRate: 90,
@@ -1171,7 +1171,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "สายลับต้องใช้เทคโนโลยีควบคุมและผันเวลาเพื่อป้องกันไม่ให้สงครามโลกครั้งที่สามปะทุขึ้นกลางมวลมนุษยชาติ",
     thumbnail:
-      "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNTIzNDIxMzktMzlkMi00MmUyLWFmMjQtZDgwMjBmOGJmNTI3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=LdOM0x0XDwM",
     category: "Sci-Fi",
     matchRate: 86,
@@ -1227,7 +1227,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักสืบเรื่องเหนือธรรมชาติเข้าช่วยครอบครัวที่ถูกคุกคามจากวิญญาณร้ายในบ้านไร่",
     thumbnail:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTM3NjA1NDMyMV5BMl5BanBnXkFtZTcwMDQzNDMzOQ@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=k10ETZ41q5o",
     category: "Horror",
     matchRate: 93,
@@ -1281,7 +1281,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ครอบครัวหนึ่งต้องใช้ชีวิตอย่างเงียบที่สุดเพื่อเอาชีวิตรอดจากสิ่งมีชีวิตที่ล่าด้วยเสียง",
     thumbnail:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMjI0MDMzNTQ0M15BMl5BanBnXkFtZTgwMTM5NzM3NDM@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=WR7cc5t7tv8",
     category: "Horror",
     matchRate: 88,
@@ -1340,7 +1340,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หลังการจากไปของยาย ความลับสุดสะพรึงและมืดมนของครอบครัวก็เริ่มคืบคลานเข้ามาคุกคามชีวิตของลูกหลาน",
     thumbnail:
-      "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNTEyZGQwODctYWJjZi00NjFmLTg3YmEtMzlhNjljOGZhMWMyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=V6wWKNij_jM",
     category: "Horror",
     matchRate: 91,
@@ -1389,7 +1389,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เด็กเจ็ดคนในเมืองชนบทเล็กๆ ต้องร่วมมือกันเผชิญหน้ากับปีศาจจำแลงกายเป็นตัวตลกตัวร้ายที่สะกดรอยล่าเหยื่อ",
     thumbnail:
-      "https://images.unsplash.com/photo-1608889175123-8ee362201f81?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZGZmOTZjNzUtOTE4OS00OGM3LWJiNGEtZjk4Yzg2M2Q1YzYxXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=FnCdOQsX5kc",
     category: "Horror",
     matchRate: 94,
@@ -1443,7 +1443,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อแฟนหนุ่มผู้ร่ำรวยและชอบบงการฆ่าตัวตาย หญิงสาวเชื่อว่าเขาเพียงแต่หาวิธีล่องหนเพื่อกลับมาไล่ล่าและรังควานชีวิตเธอ",
     thumbnail:
-      "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYTM3NDJhZWUtZWM1Yy00ODk4LThjNmMtNDg3OGYzMGM2OGYzXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=dSBsNeYqh-k",
     category: "Horror",
     matchRate: 89,
@@ -1492,7 +1492,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ช่างภาพหนุ่มและแฟนสาวถูกวิญญาณปริศนาตามรังควานอย่างโหดร้าย หลังพวกเขาขับรถชนคนแล้วหนีไป",
     thumbnail:
-      "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMWJiMTM4YzQtMjg2Zi00NzhjLTkzZDctODU1OGQyNWRiMDZjXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=t5JvD90v-bM",
     category: "Horror",
     matchRate: 98,
@@ -1548,7 +1548,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หัวหน้าครอบครัวตัดสินใจย้ายบ้านไปยังหมู่บ้านจัดสรรลัดดาแลนด์ในเชียงใหม่ แต่แล้วเขาก็พบว่าที่นี่เต็มไปด้วยวิญญาณและความน่าสะพรึงกลัว",
     thumbnail:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMzBhZWZiYzctOTVjMi00ZTZiLThkODMtZTk2YWQyNGIzODdhXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=5Vz5Y-yK_U0",
     category: "Horror",
     matchRate: 95,
@@ -1599,7 +1599,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "การสืบสายเลือดร่างทรงของครอบครัวหนึ่งในภาคอีสานของไทย กลับกลายเป็นโศกนาฏกรรมเมื่อวิญญาณชั่วร้ายพยายามสิงสู้ทายาทสาว",
     thumbnail:
-      "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMzliMjVhZmYtOTdhMC00NjEwLWI4MGQtNjA0MjQxN2FmNjEwXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=P2f5wF6UepE",
     category: "Horror",
     matchRate: 96,
@@ -1650,7 +1650,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "พี่มากกลับมาจากสงครามพร้อมเพื่อนรักสี่คน โดยไม่รู้เลยว่าภรรยาสุดที่รักของเขาได้กลายเป็นวิญญาณผีตายทั้งกลมไปแล้ว",
     thumbnail:
-      "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYTk4OWUzZWQtMzE2Yi00YjZmLTg3ZDUtYzQ2Yjc4MGY5MWMzXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=5Vz5Y-yK_U0",
     category: "Horror",
     matchRate: 99,
@@ -1701,7 +1701,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ม้วนวิดีโอเทปปริศนาที่ใครได้ดูจะต้องเสียชีวิตภายใน 7 วันอย่างเป็นปริศนา นักข่าวสาวคนหนึ่งจึงพยายามไขความลับก่อนที่ตัวเธอจะหมดเวลา",
     thumbnail:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNDA2NTg2NjE4Ml5BMl5BanBnXkFtZTYwMjYxMDg5._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=yzR2GY-ew8I",
     category: "Horror",
     matchRate: 88,
@@ -1754,7 +1754,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เพื่อนสนิทสี่คนเดินทางไปปาร์ตี้สละโสดที่ลาสเวกัส แต่ตื่นขึ้นมากลับจำอะไรไม่ได้เลยและเจ้าบ่าวได้หายตัวไปอย่างลึกลับ",
     thumbnail:
-      "https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNDI2MzBhNzgtOWYyOS00NDM2LWE0OGYtOGQ0M2FjMTI2NTllXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=tcdUjFnMdes",
     category: "Comedy",
     matchRate: 94,
@@ -1808,7 +1808,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักพยากรณ์อากาศที่เห็นแก่ตัวตื่นขึ้นมาพบว่าตัวเองติดอยู่ในวังวนลูปเวลาเดิมๆ ของเมืองเล็กๆ แห่งหนึ่งซ้ำแล้วซ้ำเล่า",
     thumbnail:
-      "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BOWE3MjQ3ZDAtNDQ2MC00YjBjLTk0ZWYtNjQ0YzQ4YWE3YTEyXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=GncQtURlhN4",
     category: "Comedy",
     matchRate: 91,
@@ -1859,7 +1859,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หญิงสาวที่เติบโตมาจากแอฟริกาต้องเข้าไปเรียนโรงเรียนมัธยมในเมืองใหญ่ และต้องปะทะคารมกับกลุ่มสาวสุดฮอตประจำโรงเรียน",
     thumbnail:
-      "https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMjE1MDQ4MjI1OV5BMl5BanBnXkFtZTcwNzcwODAzMw@@._V1_QL75_UY562_CR9,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=KAOmTMCtGkI",
     category: "Comedy",
     matchRate: 88,
@@ -1908,7 +1908,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เพื่อนซี้สองคนกำลังจะจบมัธยมปลายและพยายามจัดเหล้าเข้างานปาร์ตี้ใหญ่เพื่อหาคู่เดต แต่ทุกอย่างกลับผิดแผนอย่างสุดกู่",
     thumbnail:
-      "https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNjk0MzdlZGEtNTRkOC00ZDRiLWJkYjAtMzUzYTRiNzk1YTViXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=4eaZ_ADQqes",
     category: "Comedy",
     matchRate: 90,
@@ -1962,7 +1962,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ตัวละคร NPC ในวิดีโอเกมแนว Open World ค้นพบว่าความจริงแล้วตัวเองอยู่ในเกมและเลือกที่จะเขียนบทบาทใหม่เป็นฮีโร่ผู้พิทักษ์โลกเกม",
     thumbnail:
-      "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BN2I0MGMxYjUtZTZiMS00MzMxLTkzNWYtMDUyZmUwY2ViYTljXkEyXkFqcGc@._V1_QL75_UY562_CR5,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=X2m-08cOAbc",
     category: "Comedy",
     matchRate: 93,
@@ -2021,7 +2021,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อดีตเจ้าหน้าที่กองทหารพิเศษที่ผ่านการทดลองพิเศษจนได้พลังฟื้นฟูร่างกายอย่างรวดเร็ว หันมาสวมหน้ากากชุดแดงสุดเกรียนเพื่อตามล่าคนที่ทำลายชีวิตเขา",
     thumbnail:
-      "https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNzY3ZWU5NGQtOTViNC00ZWVmLTliNjAtNzViNzlkZWQ4YzQ4XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=ONHBaC-CAc8",
     category: "Comedy",
     matchRate: 96,
@@ -2080,7 +2080,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เพื่อนซี้สองคนที่สมองทึ่มขั้นสุดยอด ออกเดินทางเพื่อนำกระเป๋าเอกสารที่ถูกวางทิ้งไว้ไปคืนให้หญิงสาวสวยผู้ร่ำรวย",
     thumbnail:
-      "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNGQxZDA1MmMtYWQ1Ni00NTJmLTljMjgtZWVmODllODVhMzgyXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=l13yPhimE3o",
     category: "Comedy",
     matchRate: 85,
@@ -2131,7 +2131,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เรื่องราวของยิม ชายหนุ่มที่พยายามติวภาษาอังกฤษแบบเร่งด่วนเพื่อตามง้อแฟนสาวชาวต่างชาติกับคุณครูสอนภาษาคนสวย",
     thumbnail:
-      "https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYWQ0YjhlNDEtNWRjZS00YzEwLTgxNDUtZmE2NzAyMmNjNjE1XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=CLHe8J_SNDc",
     category: "Comedy",
     matchRate: 95,
@@ -2184,7 +2184,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อลูกสาวคนเล็กถูกลักพาตัวไปและเบาะแสเดียวที่มีหลุดรอดน้ำมือตำรวจ พ่อผู้สิ้นหวังจึงตัดสินใจจัดการทุกอย่างด้วยมือของตัวเอง",
     thumbnail:
-      "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTg0NTIzMjQ1NV5BMl5BanBnXkFtZTcwNDc3MzM5OQ@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=bpXfcTctazU",
     category: "Thriller",
     matchRate: 94,
@@ -2233,7 +2233,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ตำรวจสืบสวนสองคนตามล่าฆาตกรต่อเนื่องโรคจิตที่ก่อคดีโหดตามบาป 7 ประการในคัมภีร์ศาสนาคริสต์",
     thumbnail:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNTU5MTFlYmItMGI4Ni00OTJkLTlmZTUtNzcyNzcxM2Y4MWI0XkEyXkFqcGdeQXVyNzg5OTk2OA@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=znmZoY5sBxs",
     category: "Thriller",
     matchRate: 96,
@@ -2282,7 +2282,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อภรรยาแสนสวยหายตัวไปอย่างลึกลับในวันครบรอบวันแต่งงาน ทุกสายตาและพยานหลักฐานกลับชี้ความผิดไปที่ตัวสามีผู้สิ้นหวัง",
     thumbnail:
-      "https://images.unsplash.com/photo-1533928298208-27ff66555d8d?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTk0MDQ3MzAzOV5BMl5BanBnXkFtZTgwNzU1NzE3MjE@._V1_QL75_UY562_CR1,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=yC03Qv4Ew0M",
     category: "Thriller",
     matchRate: 91,
@@ -2331,7 +2331,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักเขียนการ์ตูนและตำรวจสืบสวนร่วมมือกันเพื่อไล่ล่าระบุตัวตนของฆาตกรต่อเนื่องโซดิแอกผู้ออกแบบรหัสคดีปริศนาท้าทาย",
     thumbnail:
-      "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNDFkMTRkZmQtM2I0NC00NjJjLWJlMDctNTNiZWYxYzhjZDZiXkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=yNncHPl1nsw",
     category: "Thriller",
     matchRate: 90,
@@ -2390,7 +2390,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เจ้าหน้าที่บังคับคดีชาวอเมริกันเข้ามาสืบสวนการหายตัวไปปริศนาของฆาตกรหญิงในโรงพยาบาลประสาทบนเกาะลับห่างไกล",
     thumbnail:
-      "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BN2FjNWExYzEtY2YzOC00YjNlLTllMTQtNmIwM2Q1YzBhOWM1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=5iaYLCip5Qk",
     category: "Thriller",
     matchRate: 95,
@@ -2444,7 +2444,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ชายผู้กระหายความสำเร็จผันตัวเองเป็นช่างภาพข่าวอาชญากรรมอิสระในแอลเอ ดิ่งลึกสู่โลกมืดแห่งคดีฆาตกรรมและการปั้นข่าวสุดอันตราย",
     thumbnail:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYjMwMmI5MWQtOTU4OS00OTAyLTg0OTYtNmQ5YzExZTQ3ZWJhXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=X8kXYg_OBdc",
     category: "Thriller",
     matchRate: 88,
@@ -2495,7 +2495,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ผู้คุมขังนักโทษแดนประหาร ค้นพบความจริงอันน่าเหลือเชื่อของนักโทษผิวดำร่างยักษ์ผู้ได้รับพลังพิเศษในการปัดเป่าปาฏิหาริย์รักษามนุษย์",
     thumbnail:
-      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=Ki4haFrqSrw",
     category: "Drama",
     matchRate: 97,
@@ -2554,7 +2554,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ชายหนุ่มผู้เบื่อชีวิตเมืองหลวงรวมตัวกับคนขายสบู่ลึกลับเพื่อตั้งคลับต่อสู้เพื่อระบายความดิบ ทลายกฎเกณฑ์เดิมๆ ในสังคม",
     thumbnail:
-      "https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BOTgyOGQ1NDItNGU3Ny00MjU3LTg2YWEtNmEyYjBiMjI1Y2M5XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=qtRKdVHc-cE",
     category: "Drama",
     matchRate: 93,
@@ -2608,7 +2608,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "สองนักมายากลเพื่อนซี้ในลอนดอนยุคปฏิบัติอุตสาหกรรม กลายเป็นศัตรูคู่อาฆาตที่หาวิธีคิดค้นกลเพื่อเอาชนะและทำลายล้างอีกฝ่าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTM3MzQ5MjQ5OF5BMl5BanBnXkFtZTcwMTQ3NzMzMw@@._V1_QL75_UY562_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=o4gHCmTQDVI",
     category: "Drama",
     matchRate: 94,
@@ -2662,7 +2662,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เรื่องราวประวัติศาสตร์ของออสการ์ ชินด์เลอร์ นักธุรกิจชาวเยอรมันผู้ช่วยชีวิตชาวยิวมากกว่าพันคนระหว่างสงครามโลกครั้งที่สอง",
     thumbnail:
-      "https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNjM1ZDQxYWUtMzQyZS00MTE1LWJmZGYtNGUyNTdlYjM3ZmVmXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=gG22XNhtnoY",
     category: "Drama",
     matchRate: 98,
@@ -2718,7 +2718,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่ออายุครบ 21 ปี ชายหนุ่มได้รับรู้ความลับของครอบครัวว่าเขามีความสามารถในการเดินทางย้อนลูปเวลาเพื่อแก้ไขช่วงชีวิตตนเองและตามหาความรักได้",
     thumbnail:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTA1ODUzMDA3NzFeQTJeQWpwZ15BbWU3MDgxMTYxNTk@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=T7A810duHvw",
     category: "Romance",
     matchRate: 94,
@@ -2767,7 +2767,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เรื่องราวรักนิรันดร์ระหว่างหนุ่มชนชั้นแรงงานและหญิงสาวครอบครัวมั่งคั่ง ท่ามกลางความขัดแย้ง ชะตากรรมสงคราม และความทรงจำที่ค่อยๆ จืดจาง",
     thumbnail:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZjE0ZjgzMzYtMTAxYi00NGMzLThmZDktNzFlMzA2MWRmYWQ0XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=FC6biTjJyWk",
     category: "Romance",
     matchRate: 93,
@@ -2821,7 +2821,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หนุ่มอเมริกันและสาวฝรั่งเศสพบกันบนรถไฟท่องเที่ยวในยุโรป และตัดสินใจร่วมใช้เวลาหนึ่งค่ำคืนร่วมกันในเมืองเวียนนาโดยไม่มีข้อผูกมัดใดๆ",
     thumbnail:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZDZhZmI1ZTUtYWI3NC00NTMwLTk3NWMtNDc0OGNjM2I0ZjlmXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=25v7N34JJgM",
     category: "Romance",
     matchRate: 90,
@@ -2872,7 +2872,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ความรักที่ซับซ้อนท้าทายจารีตชนชั้น นำไปสู่การเผชิญหน้าระหว่างหญิงสาวอคติสูงกับสุภาพบุรุษหนุ่มขุนนางแสนหยิ่งทนงในอังกฤษโบราณ",
     thumbnail:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTA1NDQ3NTcyOTNeQTJeQWpwZ15BbWU3MDA0MzA4MzE@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=Ur_DIHs9mYc",
     category: "Romance",
     matchRate: 91,
@@ -2926,7 +2926,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อาจารย์สาวชาวจีน-อเมริกันเดินทางไปสิงคโปร์พร้อมแฟนหนุ่ม และพบว่าความจริงแฟนเธอเป็นทายาทตระกูลที่ร่ำรวยและมีชื่อเสียงที่สุดในประเทศ",
     thumbnail:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTYxNDMyOTAxN15BMl5BanBnXkFtZTgwMDg1ODYzNTM@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=ZQ-YX-5bAs0",
     category: "Romance",
     matchRate: 88,
@@ -2980,7 +2980,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "รักอบอุ่นหัวใจที่เกิดขึ้นอย่างน่าอัศจรรย์เมื่อเจ้าของร้านหนังสือหนุ่มธรรมดาๆ ในลอนดอนได้พบและสานสัมพันธ์กับดาราสาวฮอลลีวูดอันดับหนึ่งของโลก",
     thumbnail:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZjY3YWI5OTMtYTdlNy00ZTZiLWEwYjItN2M1MGVkMDM4ZDExXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=4RI0QguyXHY",
     category: "Romance",
     matchRate: 92,
@@ -3029,7 +3029,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "คู่รักเก่าที่ต่างตัดสินใจลบความทรงจำเกี่ยวกับการใช้ชีวิตคู่ร่วมกันออกจากสมอง แต่การดิ้นรนเพื่อเก็บส่วนลึกของความทรงจำในวินาทีสุดท้ายก็เริ่มขึ้น",
     thumbnail:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTY4NzcwODg3Nl5BMl5BanBnXkFtZTcwNTEwOTMyMw@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=07-3nLKyW5s",
     category: "Romance",
     matchRate: 86,
@@ -3083,7 +3083,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ในยุโรปช่วงหน้าร้อน เด็กหนุ่มผู้เชี่ยวชาญด้านดนตรีเริ่มมีใจและสายสัมพันธ์ลับๆ กับนักศึกษาวิจัยรุ่นพี่สุดสมาร์ทที่เดินทางมาร่วมงานกับครอบครัว",
     thumbnail:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNDk3NTEwNjc0MV5BMl5BanBnXkFtZTgwNzYxNTMwMzI@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=Z9AYPxH5NTM",
     category: "Romance",
     matchRate: 90,
@@ -3139,7 +3139,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เด็กหนุ่มชาวอินเดียรอดชีวิตจากภัยพิบัติเรืออัปปางกลางมหาสมุทรแปซิฟิก และต้องแชร์แพชูชีพลอยเคว้งคว้างร่วมกับเสือโคร่งเบงกอลตัวยักษ์",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNTg2OTY2ODg5OF5BMl5BanBnXkFtZTcwODM5MTYxOA@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=3mMN693-F3Y",
     category: "Adventure",
     matchRate: 94,
@@ -3193,7 +3193,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "พนักงานส่งของบริษัทจัดส่งด่วนระดับโลก รอดพ้นเครื่องบินตกและต้องไปติดเกาะร้างกลางมหาสมุทรอย่างสันโดษเพื่อเอาชีวิตรอดปีต่อปี",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BOGNjNDI5ZGQtZjRjMy00NzQyLWFiYzQtYjcwNjM3ZDYwNThhXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=27cv0Q8L_30",
     category: "Adventure",
     matchRate: 95,
@@ -3244,7 +3244,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นายพรานนำทางคณะดักสัตว์ในป่าดิบลึก ถูกหมีกริซลีย์ทำร้ายบาดเจ็บปางตายและโดนทอดทิ้งอย่างเลือดเย็น เขาจึงคลานผ่านหิมะและอุปสรรคเพื่อล้างแค้น",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYTgwNmQzZDctMjNmOS00OTExLTkwM2UtNzJmOTJhODFjOTdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,1,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=LoebZZ8K5N0",
     category: "Adventure",
     matchRate: 93,
@@ -3298,7 +3298,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "อดีตนาวิกโยธินพิการถูกส่งไปปฏิบัติภารกิจบนดาวแพนโดรา เพื่อแทรกซึมผ่านร่างกายอวตารของชาวเนวีและค้นพบมิตรภาพรักแท้",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMDEzMmQwZjctZWU2My00MWNlLWE0NjItMDJlYTRlNGJiZjcyXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=5PSNL1q3QVY",
     category: "Adventure",
     matchRate: 96,
@@ -3352,7 +3352,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักโบราณคดีชื่อดังออกเดินทางสู้ภัยข้ามซีกโลกเพื่อปกป้องหีบพันธสัญญาโบราณที่มีพลังทำลายล้างสูงให้พ้นมือเหล่าทหารนาซีชั่วร้าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BOGNhMjg2ZjgtYzk4Ni00MTViLTg1MmUtYzM2MDZiYjZlMmU3XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=XkkzKjK111I",
     category: "Adventure",
     matchRate: 91,
@@ -3408,7 +3408,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "กัปตันแจ็ค สแปร์โรว์ ผู้แสนแปลกประหลาด ร่วมมือกับช่างเหล็กหนุ่มเพื่อช่วยเหลือนางเอกสาวจากการลักพาตัวของกลุ่มโจรสลัดต้องคำสาปอมตะ",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNDhlMzEyNzItMTA5Mi00YWRhLThlNTktYTQyMTA0MDIyNDEyXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=naQr0uTrH_Y",
     category: "Adventure",
     matchRate: 95,
@@ -3464,7 +3464,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "บิลโบ แบ็กกินส์และคณะคนแคระออกเดินทางสู่หุบเขาเดียวดาย เพื่อกอบกู้บ้านเกิดและขุมทรัพย์ที่สาบสูญจากมังกรสม็อกพ่นไฟแสนดุร้าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=SDnYMbYB-nU",
     category: "Adventure",
     matchRate: 90,
@@ -3518,7 +3518,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "กลุ่มนักสำรวจและทหารหนุ่มเดินทางไปไขปริศนาสุสานโบราณอียิปต์ แต่น่าเศร้าที่ความโลภทำให้มัมมี่นักบวชปีศาจฟื้นคืนชีพขึ้นมาสร้างหายนะล้างโลก",
     thumbnail:
-      "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTY4YWE0OGMtNjU0Yi00YzIwLTk3NTktM2ZiYWQwNjM4MmMxXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=h3ptPbpZjac",
     category: "Adventure",
     matchRate: 88,
@@ -3567,7 +3567,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เรื่องราวมหากาพย์ปฏิบัติการช่วยเหลือเด็กและโค้ชทีมฟุตบอลหมูป่าอคาเดมี่ที่ติดอยู่ในถ้ำหลวง-ขุนน้ำนางนอนด้วยผู้เชี่ยวชาญกู้ภัยระดับโลก",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMGRmYzg2NTUtMjc3Yy00Njc4LTliNTktM2I1NjVkNGIzYTU2XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=Ga6RYejoS1I",
     category: "Adventure",
     matchRate: 97,
@@ -3618,7 +3618,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "สี่พี่น้องค้นพบดินแดนนาร์เนียที่ซ่อนอยู่ในตู้เสื้อผ้าโบราณ และร่วมมือกับราชสีห์อัสลานเพื่อยุติฤดูหนาวนิรันดร์ของแม่มดขาว",
     thumbnail:
-      "https://images.unsplash.com/photo-1510172951991-856a654063f9?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTc0NTUwMTU5OV5BMl5BanBnXkFtZTcwNjAwNzQzMw@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=pYcGFLgJ8Uo",
     category: "Fantasy",
     matchRate: 91,
@@ -3675,7 +3675,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หญิงสาวตกทะลุโพรงกระต่ายไปยังดินแดนใต้ภิภพสุดแปลกประหลาด และร่วมมือกับช่างทำหมวกเพื่อทวงบัลลังก์คืนให้ราชินีขาว",
     thumbnail:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYjgxMTQ3NjMtOTI1Yy00Yzg4LWJlNWQtMjFkNjVlYjU0OWIyXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=9POCgSRVJH0",
     category: "Fantasy",
     matchRate: 88,
@@ -3729,7 +3729,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ในสเปนยุคหลังสงคราม เด็กหญิงหนีโลกความจริงอันโหดร้ายโดยเดินทางเข้าไปในเขาวงกตลับและทำภารกิจที่มอบให้โดยวิญญาณฟอนโบราณ",
     thumbnail:
-      "https://images.unsplash.com/photo-1510172951991-856a654063f9?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BOTc1NTAxMWItMWFlNy00MmU2LTkwMTMtNzMwOTg5OTQ5YTFiXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=EqkBP02O6W8",
     category: "Fantasy",
     matchRate: 94,
@@ -3778,7 +3778,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เด็กหนุ่มค้นพบความจริงว่าเขาเป็นกึ่งมนุษย์กึ่งเทพบุตรของเทพโพไซดอน และถูกกล่าวหาว่าขโมยอัสนีบาตของเทพซุส",
     thumbnail:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZDE4M2ZiYzEtODJiZC00NmI1LWFlNTgtOGJlNTY3NmExYWNjXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=yYy7G8mFPyI",
     category: "Fantasy",
     matchRate: 86,
@@ -3834,7 +3834,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หญิงสาวแสนสวยกตัญญูอาสาเป็นนักโทษทดแทนพ่อในปราสาทของอสูรร้าย และได้เรียนรู้ตัวตนแท้จริงของอสูรที่งดงามภายใต้รูปลักษณ์โหดร้าย",
     thumbnail:
-      "https://images.unsplash.com/photo-1510172951991-856a654063f9?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BYTY3NDg2YzktYWFjZC00MTExLTlmZDctMGY3MWYzZTlkYTNiXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=e3Nl_TCQXuw",
     category: "Fantasy",
     matchRate: 93,
@@ -3888,7 +3888,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ศัลยแพทย์ประสาทระดับแนวหน้าที่สูญเสียมือในอุบัติเหตุ ค้นหาการรักษาจนกระทั่งได้เปิดประตูมิติสู่ศาสตร์เวทมนตร์ลี้ลับและการปกป้องดวงดาว",
     thumbnail:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNjgwNzAzNjk1Nl5BMl5BanBnXkFtZTgwMzQ2NjI1OTE@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=HSzx-zry1Yo",
     category: "Fantasy",
     matchRate: 95,
@@ -3942,7 +3942,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "นักสัตว์วิเศษเดินทางมาถึงนิวยอร์กพร้อมกระเป๋าเดินทางลึกลับที่เต็มไปด้วยสิ่งมีชีวิตวิเศษที่ค่อยๆ หลุดรอดออกมาสร้างเรื่องวุ่นวาย",
     thumbnail:
-      "https://images.unsplash.com/photo-1510172951991-856a654063f9?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMjMxOTM1OTI4MV5BMl5BanBnXkFtZTgwODE5OTYxMDI@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=Vso5o11LuGU",
     category: "Fantasy",
     matchRate: 89,
@@ -3991,7 +3991,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ชายหนุ่มให้สัญญากับสาวคนรักว่าจะนำดาวตกจากดินแดนเวทมนตร์มาให้ แต่กลับพบว่าดาวตกดวงนั้นแท้จริงคือหญิงสาวผู้มีพลังวิเศษล้ำเลิศ",
     thumbnail:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMjkyMTE1OTYwNF5BMl5BanBnXkFtZTcwMDIxODYzMw@@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=YCO16KbhXl8",
     category: "Fantasy",
     matchRate: 90,
@@ -4047,7 +4047,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "เมื่อตุ๊กตาของเล่นมีชีวิตอย่างลับๆ และต้องร่วมเผชิญภัยร่วมกับนายอำเภอวู้ดดี้และหุ่นอวกาศบัซ ไลท์เยียร์สุดเท่",
     thumbnail:
-      "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=CxwTLktovTU",
     category: "Animation",
     matchRate: 98,
@@ -4101,7 +4101,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ปลาการ์ตูนกังวลใจออกเดินทางข้ามมหาสมุทรอันกว้างใหญ่เพื่อตามหาลูกชายที่ถูกจับตัวไปอยู่ในตู้ปลาของคลินิกทำฟัน",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTc5NjExNTA5OV5BMl5BanBnXkFtZTYwMTQ0ODY2._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=2zLkasScy7A",
     category: "Animation",
     matchRate: 95,
@@ -4155,7 +4155,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หนูแสนรู้ผู้มีพรสวรรค์ในการชิมและทำอาหารอย่างประณีต ร่วมมือกับเด็กหนุ่มล้างจานเพื่อปรุงรสชาติที่สั่นสะเทือนปารีส",
     thumbnail:
-      "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMTMzODU0NTkxMF5BMl5BanBnXkFtZTcwMjQ4MzMzMw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=NgsQ8mVEa8U",
     category: "Animation",
     matchRate: 93,
@@ -4209,7 +4209,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "หุ่นยนต์บดอัดขยะบนดาวโลกที่ไร้ผู้คน ได้พบรักกับหุ่นสำรวจคนใหม่และออกเดินทางกอบกู้มนุษยชาติในอวกาศกว้างใหญ่",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BMzk0ZGMzMDYtMDJkYS00NTdhLWJlZWUtMTdhOTJkOTM3NDUwXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=8-_9n554ppc",
     category: "Animation",
     matchRate: 96,
@@ -4263,7 +4263,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ยักษ์เขียวแสนรักสงบจำใจออกทำภารกิจช่วยเหลือเจ้าหญิงฟิโอน่าผู้มีความลับปริศนา เพื่อแลกกับการทวงคืนบึงน้ำอันสงบสุขของตัวเขาเอง",
     thumbnail:
-      "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BN2FkMTRkNTUtYTI0NC00ZjI4LWI5MzUtMDFmOGY0NmU2OGY1XkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=OoRdpZ5s2V8",
     category: "Animation",
     matchRate: 88,
@@ -4322,7 +4322,7 @@ export const seedMovies: SeedMovie[] = [
     description:
       "ทันจิโร่และกลุ่มนักล่าอสูรขึ้นไปสืบสวนคดีคนหายตัวไปบนรถไฟร่วมกับเสาหลักเพลิงเรนโงคุ และเผชิญหน้าอสูรข้างแรมผู้ควบคุมความฝัน",
     thumbnail:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://m.media-amazon.com/images/M/MV5BNzEzYjhkYTctMWNmZS00MTc5LWI4OWUtZjFkNzNkYTNkMTJlXkEyXkFqcGc@._V1_SX600.jpg",
     youtubeUrl: "https://www.youtube.com/watch?v=ATJYac_dORw",
     category: "Animation",
     matchRate: 97,
