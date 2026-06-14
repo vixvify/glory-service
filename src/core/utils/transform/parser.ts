@@ -116,3 +116,87 @@ export const tCrewArrayCoerce = t
   .Decode((value) => coerceCrewArray(value))
   .Encode((value) => value);
 
+export interface MovieCrewInputItemWithRole extends MovieCrewInputItem {
+  role: string;
+}
+
+export function coerceCrewInput(value: unknown): MovieCrewInputItemWithRole[] {
+  if (value === undefined || value === null || value === "") {
+    return [];
+  }
+
+  let parsedValue = value;
+  if (typeof value === "string") {
+    const str = value.trim();
+    if ((str.startsWith("[") && str.endsWith("]")) || (str.startsWith("{") && str.endsWith("}"))) {
+      try {
+        parsedValue = JSON.parse(str);
+      } catch {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  const result: MovieCrewInputItemWithRole[] = [];
+
+  if (Array.isArray(parsedValue)) {
+    for (let item of parsedValue) {
+      if (typeof item === "string") {
+        try {
+          item = JSON.parse(item);
+        } catch {}
+      }
+      if (!item || typeof item !== "object") continue;
+      const obj = item as Record<string, unknown>;
+      const role = typeof obj.role === "string" ? obj.role.trim().toUpperCase() : "";
+      if (!role) continue;
+
+      const parsedItem = parseCrewItem(item);
+      if (parsedItem) {
+        result.push({
+          role,
+          crewMemberId: parsedItem.crewMemberId,
+          name: parsedItem.name,
+          email: parsedItem.email,
+        });
+      }
+    }
+    return result;
+  }
+
+  if (typeof parsedValue === "object" && parsedValue !== null) {
+    const record = parsedValue as Record<string, unknown>;
+    for (const [roleName, list] of Object.entries(record)) {
+      const role = roleName.trim().toUpperCase();
+      if (!role) continue;
+
+      const items = coerceCrewArray(list);
+      for (const item of items) {
+        result.push({
+          role,
+          crewMemberId: item.crewMemberId,
+          name: item.name,
+          email: item.email,
+        });
+      }
+    }
+  }
+
+  return result;
+}
+
+export const tCrewInputCoerce = t
+  .Transform(
+    t.Union([
+      t.String(),
+      t.Array(t.Unknown()),
+      t.Record(t.String(), t.Unknown()),
+      t.Null(),
+      t.Undefined(),
+    ]),
+  )
+  .Decode((value) => coerceCrewInput(value))
+  .Encode((value) => value);
+

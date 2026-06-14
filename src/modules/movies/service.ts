@@ -119,6 +119,15 @@ export class MovieService {
     }
   }
 
+  async getMovieWithAward(): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.findMovieWithAward();
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get movies with award");
+    }
+  }
+
   async createMovie(dto: CreateMovieBodyDTO, userId: string): Promise<Movie> {
     try {
       let thumbnailUrl = "";
@@ -128,8 +137,7 @@ export class MovieService {
         thumbnailUrl = dto.thumbnail;
       }
 
-      const { directors, producers, writers, cast, dops, editors, btsVideos } =
-        extractCrewInput(dto);
+      const { crew, btsVideos } = extractCrewInput(dto);
 
       let releaseDate = new Date();
       if (dto.releaseDate) {
@@ -139,7 +147,7 @@ export class MovieService {
         }
       }
 
-      const { director, producer, writer, cast: _cast, dop, editor, btsVideo, ...restDto } = dto;
+      const { crew: _crew, btsVideo, ...restDto } = dto;
 
       const input: CreateMovieInput = {
         ...restDto,
@@ -149,9 +157,6 @@ export class MovieService {
         matchRate: 100,
         hasProfanity: toBoolean(dto.hasProfanity),
         hasDrugs: toBoolean(dto.hasDrugs),
-        university: dto.university || null,
-        school: dto.school || null,
-        language: dto.language || null,
         createdBy: userId,
         btsVideos,
       };
@@ -161,12 +166,7 @@ export class MovieService {
       await associateCrewBulk(
         {
           movieId: movieRecord.id,
-          directors,
-          producers,
-          writers,
-          cast,
-          dops,
-          editors,
+          crew,
         },
         userId,
         {
@@ -209,8 +209,7 @@ export class MovieService {
         thumbnailUrl = dto.thumbnail;
       }
 
-      const { directors, producers, writers, cast, dops, editors, btsVideos } =
-        extractCrewInput(dto);
+      const { crew, btsVideos } = extractCrewInput(dto);
 
       let releaseDate = new Date();
       if (dto.releaseDate) {
@@ -220,7 +219,7 @@ export class MovieService {
         }
       }
 
-      const { director, producer, writer, cast: _cast, dop, editor, btsVideo, ...restDto } = dto;
+      const { crew: _crew, btsVideo, ...restDto } = dto;
 
       const input: UpdateMovieInput = {
         ...restDto,
@@ -238,15 +237,11 @@ export class MovieService {
 
       await this.repo.update(id, input);
 
-      await associateCrewBulk(
-        { movieId: id, directors, producers, writers, cast, dops, editors },
-        userId,
-        {
-          crewMemberRepo: this.crewMemberRepo,
-          movieCrewRepo: this.movieCrewRepo,
-          authRepo: this.authRepo,
-        },
-      );
+      await associateCrewBulk({ movieId: id, crew }, userId, {
+        crewMemberRepo: this.crewMemberRepo,
+        movieCrewRepo: this.movieCrewRepo,
+        authRepo: this.authRepo,
+      });
 
       const movie = await this.repo.findById(id);
       if (!movie) {

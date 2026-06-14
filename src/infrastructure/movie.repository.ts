@@ -119,6 +119,17 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
+  async findMovieWithAward(): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      include: movieIncludes,
+      where: {
+        awards: {
+          isEmpty: false,
+        },
+      },
+    });
+  }
+
   async create(input: CreateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.create({
       data: input,

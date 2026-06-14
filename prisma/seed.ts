@@ -42,7 +42,132 @@ async function main() {
 
   // Category, CrewRole setup only
 
-  const roles = ["DIRECTOR", "PRODUCER", "WRITER", "CAST", "DOP", "EDITOR"];
+  const roles = [
+    // 1. Production Management (ฝ่ายบริหาร)
+    "EXECUTIVE_PRODUCER",
+    "PRODUCER",
+    "LINE_PRODUCER",
+    "PRODUCTION_MANAGER",
+    "PRODUCTION_ASSISTANT",
+
+    // 2. Directing (ฝ่ายกำกับ)
+    "DIRECTOR",
+    "ASSISTANT_DIRECTOR",
+    "CONTINUITY",
+    "ACTING_COACH",
+
+    // 3. Screenplay (ฝ่ายบท)
+    "WRITER",
+    "SCRIPT_CONSULTANT",
+
+    // 4. Camera Department (ฝ่ายถ่ายภาพ)
+    "DOP",
+    "CAMERA_OPERATOR",
+    "FIRST_ASSISTANT_CAMERA",
+    "SECOND_ASSISTANT_CAMERA",
+    "DIT",
+    "VIDEO_ASSIST",
+
+    // 5. ฝ่ายแสง (Lighting / Electrical)
+    "GAFFER",
+    "BEST_BOY",
+    "ELECTRICIAN",
+
+    // 6. ฝ่ายขนย้าย/ติดตั้งอุปกรณ์ (Grip Department)
+    "KEY_GRIP",
+    "GRIP",
+
+    // 7. ฝ่ายเสียงในกองถ่าย (Production Sound)
+    "SOUND_MIXER",
+    "BOOM_OPERATOR",
+    "SOUND_ASSISTANT",
+
+    // 8. ฝ่ายศิลป์ (Art Department)
+    "PRODUCTION_DESIGNER",
+    "ART_DIRECTOR",
+    "SET_DESIGNER",
+    "PROPS_MASTER",
+    "GRAPHIC_DESIGNER",
+
+    // 9. ฝ่ายเครื่องแต่งกาย (Costume Department)
+    "COSTUME_DESIGNER",
+    "WARDROBE_SUPERVISOR",
+    "COSTUME_BUYER",
+
+    // 10. ฝ่ายแต่งหน้า/ทำผม (Hair & Makeup)
+    "MAKEUP_ARTIST",
+    "SFX_MAKEUP_ARTIST",
+    "HAIRSTYLIST",
+
+    // 11. ฝ่ายแสดง (Cast)
+    "CAST",
+    "LEAD_ACTOR",
+    "SUPPORTING_ACTOR",
+    "EXTRA",
+    "STAND_IN",
+    "BODY_DOUBLE",
+    "STUNT_DOUBLE",
+    "ANIMAL_WRANGLER",
+    "CASTING_DIRECTOR",
+    "CASTING_ASSISTANT",
+    "EXTRAS_CASTING_COORDINATOR",
+
+    // 12. ฝ่ายสถานที่ถ่ายทำ (Locations)
+    "LOCATION_MANAGER",
+    "ASSISTANT_LOCATION_MANAGER",
+    "LOCATION_SCOUT",
+    "LOCATION_COORDINATOR",
+    "LOCATION_PERMITS_COORDINATOR",
+    "LOCATION_ASSISTANT",
+    "LOCATION_PA",
+    "UNIT_MANAGER",
+    "SECURITY_COORDINATOR",
+    "SECURITY_GUARD",
+
+    // 13. ฝ่ายจัดการผลิต/สนับสนุน (Production Support)
+    "UNIT_PUBLICIST",
+    "STILL_PHOTOGRAPHER",
+    "BTS_VIDEOGRAPHER",
+    "CATERING_COORDINATOR",
+    "TRANSPORTATION_CAPTAIN",
+    "DRIVER",
+    "PICTURE_CAR_COORDINATOR",
+    "MEDIC",
+    "ANIMAL_COORDINATOR",
+    "SCRIPT_CLEARANCE_COORDINATOR",
+    "INTIMACY_COORDINATOR",
+    "SAFETY_OFFICER",
+
+    // 14. ฝ่ายเอฟเฟกต์พิเศษในกองถ่าย (On-Set Special Effects)
+    "SFX_SUPERVISOR",
+    "SFX_TECHNICIAN",
+    "PYROTECHNICIAN",
+    "MECHANICAL_FX_ARTIST",
+    "WEATHER_MACHINE_OPERATOR",
+
+    // 15. ฝ่ายหลังการผลิต (Post-Production)
+    "POST_PRODUCTION_SUPERVISOR",
+    "EDITOR",
+    "ASSISTANT_EDITOR",
+    "COLORIST",
+    "DI_SUPERVISOR",
+    "VFX_SUPERVISOR",
+    "VFX_PRODUCER",
+    "VFX_ARTIST",
+    "MOTION_GRAPHICS_DESIGNER",
+    "TITLE_DESIGNER",
+    "SOUND_DESIGNER",
+    "SUPERVISING_SOUND_EDITOR",
+    "SOUND_EDITOR",
+    "DIALOGUE_EDITOR",
+    "ADR_SUPERVISOR",
+    "FOLEY_ARTIST",
+    "FOLEY_MIXER",
+    "RERECORDING_MIXER",
+    "COMPOSER",
+    "MUSIC_SUPERVISOR",
+    "ORCHESTRATOR"
+  ];
   await prisma.crewRole.createMany({
     data: roles.map((name) => ({ name })),
   });

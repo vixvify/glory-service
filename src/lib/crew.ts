@@ -17,25 +17,23 @@ export async function associateCrewBulk(
   createdBy: string,
   deps: CrewAssociateDeps,
 ): Promise<void> {
-  const { movieId, directors, producers, writers, cast, dops, editors } = input;
+  const { movieId, crew } = input;
   const { crewMemberRepo, movieCrewRepo, authRepo } = deps;
 
   const items: Array<{ item: MovieCrewInputItem; role: string }> = [];
 
-  const addItems = (list: MovieCrewInputItem[], role: string) => {
-    for (const val of list) {
-      if (val && (val.crewMemberId || (val.name && val.name.trim()))) {
-        items.push({ item: val, role });
-      }
+  for (const val of crew) {
+    if (val && val.role && (val.crewMemberId || (val.name && val.name.trim()))) {
+      items.push({
+        item: {
+          crewMemberId: val.crewMemberId,
+          name: val.name,
+          email: val.email,
+        },
+        role: val.role.trim().toUpperCase(),
+      });
     }
-  };
-
-  addItems(directors, "DIRECTOR");
-  addItems(producers, "PRODUCER");
-  addItems(writers, "WRITER");
-  addItems(cast, "CAST");
-  addItems(dops, "DOP");
-  addItems(editors, "EDITOR");
+  }
 
   if (items.length === 0) return;
 

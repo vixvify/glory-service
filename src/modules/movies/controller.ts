@@ -78,6 +78,10 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
       params: getMovieByIdParamsSchema,
     },
   )
+  .get("/movies-with-award", async () => {
+    const movies = await movieService.getMovieWithAward();
+    return formatSuccess(movies);
+  })
   .post(
     "/",
     async ({ body, user, set }) => {
