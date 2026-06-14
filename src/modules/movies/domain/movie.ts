@@ -2,8 +2,8 @@ import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
 import {
   tArrayCoerce,
-  tCrewArrayCoerce,
-  MovieCrewInputItem,
+  tCrewInputCoerce,
+  MovieCrewInputItemWithRole,
 } from "../../../core/utils/transform/parser";
 import { User } from "../../auth/domain/auth";
 import { Prisma } from "@prisma/client";
@@ -143,12 +143,7 @@ export const createMovieBodySchema = t.Object({
     t.Literal("color_and_black_and_white"),
   ]),
   studio: t.Optional(t.String()),
-  director: t.Optional(tCrewArrayCoerce),
-  producer: t.Optional(tCrewArrayCoerce),
-  writer: t.Optional(tCrewArrayCoerce),
-  cast: t.Optional(tCrewArrayCoerce),
-  dop: t.Optional(tCrewArrayCoerce),
-  editor: t.Optional(tCrewArrayCoerce),
+  crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tArrayCoerce),
 });
@@ -181,12 +176,7 @@ export const updateMovieBodySchema = t.Object({
     t.Literal("color_and_black_and_white"),
   ]),
   studio: t.Optional(t.String()),
-  director: t.Optional(tCrewArrayCoerce),
-  producer: t.Optional(tCrewArrayCoerce),
-  writer: t.Optional(tCrewArrayCoerce),
-  cast: t.Optional(tCrewArrayCoerce),
-  dop: t.Optional(tCrewArrayCoerce),
-  editor: t.Optional(tCrewArrayCoerce),
+  crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tArrayCoerce),
 });
@@ -263,12 +253,7 @@ export interface MovieFilterInput {
 
 export interface AssociateCrewBulkInput {
   movieId: string;
-  directors: MovieCrewInputItem[];
-  producers: MovieCrewInputItem[];
-  writers: MovieCrewInputItem[];
-  cast: MovieCrewInputItem[];
-  dops: MovieCrewInputItem[];
-  editors: MovieCrewInputItem[];
+  crew: MovieCrewInputItemWithRole[];
 }
 
 export const MovieUserSelect = {
