@@ -44,8 +44,7 @@ model Movie {
   youtubeUrl  String
   trailerUrl  String?
 
-  categoryId String   @db.Uuid
-  category   Category @relation(fields: [categoryId], references: [id])
+  categories Category[]
 
   releaseDate   DateTime
   duration      Int
@@ -76,7 +75,6 @@ model Movie {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  @@index([categoryId])
   @@index([createdBy])
   @@index([title])
   @@map("movies")
@@ -150,6 +148,7 @@ model Rating {
 model Category {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @unique
+  labelTh   String   @default("")
   createdAt DateTime @default(now())
   movies    Movie[]
 
@@ -157,10 +156,13 @@ model Category {
 }
 
 model CrewRole {
-  id         String      @id @default(uuid()) @db.Uuid
-  name       String      @unique
-  createdAt  DateTime    @default(now())
-  movieCrews MovieCrew[]
+  id              String      @id @default(uuid()) @db.Uuid
+  name            String      @unique
+  labelTh         String      @default("")
+  category        String      @default("")
+  categoryLabelTh String      @default("")
+  createdAt       DateTime    @default(now())
+  movieCrews      MovieCrew[]
 
   @@map("crew_roles")
 }

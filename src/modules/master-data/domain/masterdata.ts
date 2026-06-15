@@ -1,6 +1,7 @@
 export interface Category {
   id: string;
   name: string;
+  labelTh: string;
   createdAt: Date;
 }
 
@@ -13,6 +14,9 @@ export interface Language {
 export interface CrewRole {
   id: string;
   name: string;
+  labelTh: string;
+  category: string;
+  categoryLabelTh: string;
   createdAt: Date;
 }
 

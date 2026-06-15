@@ -147,7 +147,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
 
       const input: CreateMovieInput = {
         ...restDto,
@@ -159,6 +159,9 @@ export class MovieService {
         hasDrugs: toBoolean(dto.hasDrugs),
         createdBy: userId,
         btsVideos,
+        categories: {
+          connect: (categoryIds || []).map((id) => ({ id })),
+        },
       };
 
       const movieRecord = await this.repo.create(input);
@@ -219,7 +222,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
 
       const input: UpdateMovieInput = {
         ...restDto,
@@ -233,6 +236,9 @@ export class MovieService {
         university: dto.university || null,
         school: dto.school || null,
         language: dto.language || null,
+        categories: {
+          set: (categoryIds || []).map((id) => ({ id })),
+        },
       };
 
       await this.repo.update(id, input);

@@ -41,6 +41,16 @@ export class CrewMemberFactory {
             crewMemberId: mc.crewMemberId,
             roleId: mc.roleId,
             role: mc.crewRole?.name || "",
+            crewRole: mc.crewRole
+              ? {
+                  id: mc.crewRole.id,
+                  name: mc.crewRole.name,
+                  labelTh: mc.crewRole.labelTh,
+                  category: mc.crewRole.category,
+                  categoryLabelTh: mc.crewRole.categoryLabelTh,
+                  createdAt: mc.crewRole.createdAt,
+                }
+              : undefined,
             createdAt: mc.createdAt,
             updatedAt: mc.updatedAt,
             movie: mc.movie
@@ -51,11 +61,12 @@ export class CrewMemberFactory {
                   thumbnail: mc.movie.thumbnail,
                   youtubeUrl: mc.movie.youtubeUrl,
                   trailerUrl: mc.movie.trailerUrl,
-                  category: {
-                    id: mc.movie.category.id,
-                    name: mc.movie.category.name,
-                    createdAt: mc.movie.category.createdAt,
-                  },
+                  categories: mc.movie.categories.map((c) => ({
+                    id: c.id,
+                    name: c.name,
+                    labelTh: c.labelTh,
+                    createdAt: c.createdAt,
+                  })),
                   views: mc.movie.views,
                   ratings: [],
                   releaseDate: mc.movie.releaseDate,
