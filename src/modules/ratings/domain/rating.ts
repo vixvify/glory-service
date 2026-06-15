@@ -104,7 +104,7 @@ export const RatingUserSelect = {
 export const ratingIncludes = {
   movie: {
     include: {
-      category: true,
+      categories: true,
     },
   },
   user: {

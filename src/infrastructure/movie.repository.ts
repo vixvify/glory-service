@@ -41,10 +41,12 @@ export class MovieRepositoryImpl implements MovieRepository {
         }),
       ...(search &&
         searchby === "category" && {
-          category: {
-            name: {
-              contains: search,
-              mode: "insensitive",
+          categories: {
+            some: {
+              OR: [
+                { name: { contains: search, mode: "insensitive" } },
+                { labelTh: { contains: search, mode: "insensitive" } },
+              ],
             },
           },
         }),
@@ -75,8 +77,10 @@ export class MovieRepositoryImpl implements MovieRepository {
   async findByCategory(category: string): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
-        category: {
-          name: { equals: category, mode: "insensitive" },
+        categories: {
+          some: {
+            name: { equals: category, mode: "insensitive" },
+          },
         },
       },
       include: movieIncludes,

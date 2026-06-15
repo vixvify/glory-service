@@ -46,7 +46,7 @@ export interface Movie {
   id: string;
   title: string;
   description: string;
-  category: Category;
+  categories: Category[];
   thumbnail: string;
   youtubeUrl: string;
   trailerUrl?: string | null;
@@ -80,7 +80,9 @@ export interface CreateMovieInput {
   thumbnail: string;
   youtubeUrl: string;
   trailerUrl?: string | null;
-  categoryId: string;
+  categories: {
+    connect: Array<{ id: string }>;
+  };
   releaseDate: Date;
   duration: number;
   matchRate: number;
@@ -104,7 +106,9 @@ export interface UpdateMovieInput {
   thumbnail: string;
   youtubeUrl: string;
   trailerUrl?: string | null;
-  categoryId: string;
+  categories?: {
+    set: Array<{ id: string }>;
+  };
   releaseDate: Date;
   duration: number;
   matchRate: number;
@@ -124,7 +128,7 @@ export interface UpdateMovieInput {
 export const createMovieBodySchema = t.Object({
   title: t.String(),
   description: t.String(),
-  categoryId: t.String({ format: "uuid" }),
+  categoryIds: tArrayCoerce,
   thumbnail: t.File(),
   youtubeUrl: t.String(),
   trailerUrl: t.Optional(t.String()),
@@ -157,7 +161,7 @@ export type UpdateMovieParamsDTO = Static<typeof updateMovieParamsSchema>;
 export const updateMovieBodySchema = t.Object({
   title: t.String(),
   description: t.String(),
-  categoryId: t.String({ format: "uuid" }),
+  categoryIds: tArrayCoerce,
   thumbnail: t.Union([t.File(), t.String()]),
   youtubeUrl: t.String(),
   trailerUrl: t.Optional(t.String()),
@@ -281,7 +285,7 @@ export interface CreateMovieCrewInput {
 }
 
 export const movieIncludes = {
-  category: true,
+  categories: true,
   creator: {
     select: MovieUserSelect,
   },

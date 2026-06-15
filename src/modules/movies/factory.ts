@@ -8,11 +8,12 @@ import { Role } from "../auth/domain/auth";
 
 export class MovieFactory {
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {
-    const categorySnapshot = {
-      id: movie.category.id,
-      name: movie.category.name,
-      createdAt: movie.category.createdAt,
-    };
+    const categoriesSnapshot = movie.categories.map((c) => ({
+      id: c.id,
+      name: c.name,
+      labelTh: c.labelTh,
+      createdAt: c.createdAt,
+    }));
 
     const ratings: Rating[] = movie.ratings
       ? movie.ratings.map(
@@ -47,7 +48,7 @@ export class MovieFactory {
               colorType: movie.colorType,
               studio: movie.studio,
               createdBy: movie.createdBy,
-              category: categorySnapshot,
+              categories: categoriesSnapshot,
               ageRating: movie.ageRating,
               university: movie.university,
               school: movie.school,
@@ -73,6 +74,9 @@ export class MovieFactory {
             ? {
                 id: c.crewRole.id,
                 name: c.crewRole.name,
+                labelTh: c.crewRole.labelTh,
+                category: c.crewRole.category,
+                categoryLabelTh: c.crewRole.categoryLabelTh,
                 createdAt: c.crewRole.createdAt,
               }
             : undefined,
@@ -110,11 +114,33 @@ export class MovieFactory {
         }))
       : [];
 
+    const roleOrder: Record<string, number> = {
+      DIRECTOR: 1,
+      SCREENWRITER: 2,
+      PRODUCER: 3,
+      EDITOR: 4,
+      LEAD_ACTOR: 5,
+      ASSISTANT_DIRECTOR: 6,
+      SCRIPT_SUPERVISOR: 7,
+      PRODUCTION_MANAGER: 8,
+      COLORIST: 9,
+      SUPPORTING_ACTOR: 10,
+    };
+
+    crew.sort((a, b) => {
+      const weightA = roleOrder[a.role.toUpperCase()] || 99;
+      const weightB = roleOrder[b.role.toUpperCase()] || 99;
+      if (weightA !== weightB) {
+        return weightA - weightB;
+      }
+      return (a.crewMember?.name || "").localeCompare(b.crewMember?.name || "");
+    });
+
     return {
       id: movie.id,
       title: movie.title,
       description: movie.description,
-      category: categorySnapshot,
+      categories: categoriesSnapshot,
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl || "",
       trailerUrl: movie.trailerUrl || "",

@@ -24,11 +24,12 @@ export class RatingFactory {
         thumbnail: rating.movie.thumbnail,
         youtubeUrl: rating.movie.youtubeUrl,
         trailerUrl: rating.movie.trailerUrl || "",
-        category: {
-          id: rating.movie.category.id,
-          name: rating.movie.category.name,
-          createdAt: rating.movie.category.createdAt,
-        },
+        categories: rating.movie.categories.map((c) => ({
+          id: c.id,
+          name: c.name,
+          labelTh: c.labelTh,
+          createdAt: c.createdAt,
+        })),
         releaseDate: rating.movie.releaseDate,
         duration: rating.movie.duration,
         views: rating.movie.views,

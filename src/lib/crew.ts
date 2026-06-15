@@ -23,7 +23,11 @@ export async function associateCrewBulk(
   const items: Array<{ item: MovieCrewInputItem; role: string }> = [];
 
   for (const val of crew) {
-    if (val && val.role && (val.crewMemberId || (val.name && val.name.trim()))) {
+    if (
+      val &&
+      val.role &&
+      (val.crewMemberId || (val.name && val.name.trim()))
+    ) {
       items.push({
         item: {
           crewMemberId: val.crewMemberId,
@@ -187,34 +191,16 @@ export async function associateCrewBulk(
     return { movieId, crewMemberId, roleId };
   });
 
-  const existing = await movieCrewRepo.findByMovieId(movieId);
+  await prisma.$transaction(async (tx) => {
+    await tx.movieCrew.deleteMany({
+      where: { movieId },
+    });
 
-  const existingMap = new Map<string, string>();
-  for (const ext of existing) {
-    existingMap.set(`${ext.crewMemberId}-${ext.roleId}`, ext.id);
-  }
-
-  const targetKeys = new Set<string>(
-    movieCrewsData.map((t) => `${t.crewMemberId}-${t.roleId}`),
-  );
-
-  const toDelete: string[] = [];
-  for (const ext of existing) {
-    const key = `${ext.crewMemberId}-${ext.roleId}`;
-    if (!targetKeys.has(key)) {
-      toDelete.push(ext.id);
+    if (movieCrewsData.length > 0) {
+      await tx.movieCrew.createMany({
+        data: movieCrewsData,
+        skipDuplicates: true,
+      });
     }
-  }
-
-  const toInsert = movieCrewsData.filter((target) => {
-    const key = `${target.crewMemberId}-${target.roleId}`;
-    return !existingMap.has(key);
   });
-
-  if (toDelete.length > 0) {
-    await movieCrewRepo.deleteMany(toDelete);
-  }
-  if (toInsert.length > 0) {
-    await movieCrewRepo.createMany(toInsert);
-  }
 }

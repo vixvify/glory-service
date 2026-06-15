@@ -137,7 +137,7 @@ export const crewMemberIncludes = {
       crewRole: true,
       movie: {
         include: {
-          category: true,
+          categories: true,
         },
       },
     },
