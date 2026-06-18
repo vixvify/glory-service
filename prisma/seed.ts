@@ -44,54 +44,174 @@ async function main() {
 
   const roles = [
     // 1. Production Management (ฝ่ายบริหาร)
-    { name: "PRODUCER", labelTh: "ผู้อำนวยการสร้าง", category: "production_management", categoryLabelTh: "ฝ่ายบริหาร" },
-    { name: "PRODUCTION_MANAGER", labelTh: "ผู้จัดการกองถ่าย", category: "production_management", categoryLabelTh: "ฝ่ายบริหาร" },
+    {
+      name: "PRODUCER",
+      labelTh: "ผู้อำนวยการสร้าง",
+      category: "production_management",
+      categoryLabelTh: "ฝ่ายบริหาร",
+    },
+    {
+      name: "PRODUCTION_MANAGER",
+      labelTh: "ผู้จัดการกองถ่าย",
+      category: "production_management",
+      categoryLabelTh: "ฝ่ายบริหาร",
+    },
 
     // 2. Directing (ฝ่ายกำกับ)
-    { name: "DIRECTOR", labelTh: "ผู้กำกับ", category: "directing", categoryLabelTh: "ฝ่ายกำกับ" },
-    { name: "ASSISTANT_DIRECTOR", labelTh: "ผู้ช่วยผู้กำกับ", category: "directing", categoryLabelTh: "ฝ่ายกำกับ" },
+    {
+      name: "DIRECTOR",
+      labelTh: "ผู้กำกับ",
+      category: "directing",
+      categoryLabelTh: "ฝ่ายกำกับ",
+    },
+    {
+      name: "ASSISTANT_DIRECTOR",
+      labelTh: "ผู้ช่วยผู้กำกับ",
+      category: "directing",
+      categoryLabelTh: "ฝ่ายกำกับ",
+    },
 
     // 3. Screenplay (ฝ่ายบท)
-    { name: "SCREENWRITER", labelTh: "นักเขียนบท", category: "screenplay", categoryLabelTh: "ฝ่ายบท" },
-    { name: "SCRIPT_SUPERVISOR", labelTh: "ผู้ตรวจสคริปต์และความต่อเนื่อง", category: "screenplay", categoryLabelTh: "ฝ่ายบท" },
+    {
+      name: "SCREENWRITER",
+      labelTh: "นักเขียนบท",
+      category: "screenplay",
+      categoryLabelTh: "ฝ่ายบท",
+    },
+    {
+      name: "SCRIPT_SUPERVISOR",
+      labelTh: "ผู้ตรวจสคริปต์และความต่อเนื่อง",
+      category: "screenplay",
+      categoryLabelTh: "ฝ่ายบท",
+    },
 
     // 4. Camera Department (ฝ่ายถ่ายภาพ)
-    { name: "DOP", labelTh: "ผู้กำกับภาพ", category: "camera", categoryLabelTh: "ฝ่ายถ่ายภาพ" },
-    { name: "CAMERA_OPERATOR", labelTh: "ช่างกล้อง", category: "camera", categoryLabelTh: "ฝ่ายถ่ายภาพ" },
-    { name: "ASSISTANT_CAMERA", labelTh: "ผู้ช่วยกล้อง", category: "camera", categoryLabelTh: "ฝ่ายถ่ายภาพ" },
+    {
+      name: "DOP",
+      labelTh: "ผู้กำกับภาพ",
+      category: "camera",
+      categoryLabelTh: "ฝ่ายถ่ายภาพ",
+    },
+    {
+      name: "CAMERA_OPERATOR",
+      labelTh: "ช่างกล้อง",
+      category: "camera",
+      categoryLabelTh: "ฝ่ายถ่ายภาพ",
+    },
+    {
+      name: "ASSISTANT_CAMERA",
+      labelTh: "ผู้ช่วยกล้อง",
+      category: "camera",
+      categoryLabelTh: "ฝ่ายถ่ายภาพ",
+    },
 
     // 5. ฝ่ายแสง (Lighting / Electrical)
-    { name: "GAFFER", labelTh: "หัวหน้าช่างแสง", category: "lighting", categoryLabelTh: "ฝ่ายแสง" },
-    { name: "BEST_BOY", labelTh: "ผู้ช่วยหัวหน้าช่างแสง", category: "lighting", categoryLabelTh: "ฝ่ายแสง" },
+    {
+      name: "GAFFER",
+      labelTh: "หัวหน้าช่างแสง",
+      category: "lighting",
+      categoryLabelTh: "ฝ่ายแสง",
+    },
+    {
+      name: "BEST_BOY",
+      labelTh: "ผู้ช่วยหัวหน้าช่างแสง",
+      category: "lighting",
+      categoryLabelTh: "ฝ่ายแสง",
+    },
 
     // 6. ฝ่ายขนย้าย/ติดตั้งอุปกรณ์ (Grip Department)
-    { name: "KEY_GRIP", labelTh: "หัวหน้าช่างอุปกรณ์", category: "grip", categoryLabelTh: "ฝ่ายขนย้าย/ติดตั้งอุปกรณ์" },
+    {
+      name: "KEY_GRIP",
+      labelTh: "หัวหน้าช่างอุปกรณ์",
+      category: "grip",
+      categoryLabelTh: "ฝ่ายขนย้าย/ติดตั้งอุปกรณ์",
+    },
 
     // 7. ฝ่ายเสียงในกองถ่าย (Production Sound)
-    { name: "SOUND_MIXER", labelTh: "หัวหน้าช่างเสียง", category: "sound", categoryLabelTh: "ฝ่ายเสียงในกองถ่าย" },
-    { name: "BOOM_OPERATOR", labelTh: "ผู้ถือไมค์บูม", category: "sound", categoryLabelTh: "ฝ่ายเสียงในกองถ่าย" },
+    {
+      name: "SOUND_MIXER",
+      labelTh: "หัวหน้าช่างเสียง",
+      category: "sound",
+      categoryLabelTh: "ฝ่ายเสียงในกองถ่าย",
+    },
+    {
+      name: "BOOM_OPERATOR",
+      labelTh: "ผู้ถือไมค์บูม",
+      category: "sound",
+      categoryLabelTh: "ฝ่ายเสียงในกองถ่าย",
+    },
 
     // 8. ฝ่ายศิลป์ (Art Department)
-    { name: "PRODUCTION_DESIGNER", labelTh: "ผู้ออกแบบงานสร้าง", category: "art", categoryLabelTh: "ฝ่ายศิลป์" },
-    { name: "PROPS_MASTER", labelTh: "หัวหน้าอุปกรณ์ประกอบฉาก", category: "art", categoryLabelTh: "ฝ่ายศิลป์" },
+    {
+      name: "PRODUCTION_DESIGNER",
+      labelTh: "ผู้ออกแบบงานสร้าง",
+      category: "art",
+      categoryLabelTh: "ฝ่ายศิลป์",
+    },
+    {
+      name: "PROPS_MASTER",
+      labelTh: "หัวหน้าอุปกรณ์ประกอบฉาก",
+      category: "art",
+      categoryLabelTh: "ฝ่ายศิลป์",
+    },
 
     // 9. ฝ่ายเครื่องแต่งกาย (Costume Department)
-    { name: "COSTUME_DESIGNER", labelTh: "นักออกแบบเครื่องแต่งกาย", category: "costume", categoryLabelTh: "ฝ่ายเครื่องแต่งกาย" },
+    {
+      name: "COSTUME_DESIGNER",
+      labelTh: "นักออกแบบเครื่องแต่งกาย",
+      category: "costume",
+      categoryLabelTh: "ฝ่ายเครื่องแต่งกาย",
+    },
 
     // 10. ฝ่ายแต่งหน้า/ทำผม (Hair & Makeup)
-    { name: "MAKEUP_ARTIST", labelTh: "ช่างแต่งหน้า", category: "makeup", categoryLabelTh: "ฝ่ายแต่งหน้า/ทำผม" },
-    { name: "HAIRSTYLIST", labelTh: "ช่างทำผม", category: "makeup", categoryLabelTh: "ฝ่ายแต่งหน้า/ทำผม" },
+    {
+      name: "MAKEUP_ARTIST",
+      labelTh: "ช่างแต่งหน้า",
+      category: "makeup",
+      categoryLabelTh: "ฝ่ายแต่งหน้า/ทำผม",
+    },
+    {
+      name: "HAIRSTYLIST",
+      labelTh: "ช่างทำผม",
+      category: "makeup",
+      categoryLabelTh: "ฝ่ายแต่งหน้า/ทำผม",
+    },
 
     // 11. ฝ่ายแสดง (Cast)
-    { name: "LEAD_ACTOR", labelTh: "นักแสดงนำ", category: "cast", categoryLabelTh: "ฝ่ายแสดง" },
-    { name: "SUPPORTING_ACTOR", labelTh: "นักแสดงสมทบ", category: "cast", categoryLabelTh: "ฝ่ายแสดง" },
+    {
+      name: "LEAD_ACTOR",
+      labelTh: "นักแสดงนำ",
+      category: "cast",
+      categoryLabelTh: "ฝ่ายแสดง",
+    },
+    {
+      name: "SUPPORTING_ACTOR",
+      labelTh: "นักแสดงสมทบ",
+      category: "cast",
+      categoryLabelTh: "ฝ่ายแสดง",
+    },
 
     // 12. ฝ่ายเอฟเฟกต์พิเศษ
-    { name: "VISUAL_EFFECTS_ARTIST", labelTh: "ช่างทำภาพเอฟเฟกต์พิเศษ", category: "vfx", categoryLabelTh: "ฝ่ายเอฟเฟกต์พิเศษ" },
+    {
+      name: "VISUAL_EFFECTS_ARTIST",
+      labelTh: "ช่างทำภาพเอฟเฟกต์พิเศษ",
+      category: "vfx",
+      categoryLabelTh: "ฝ่ายเอฟเฟกต์พิเศษ",
+    },
 
     // 13. ฝ่ายหลังการผลิต (Post-Production)
-    { name: "EDITOR", labelTh: "ผู้ตัดต่อ", category: "post_production", categoryLabelTh: "ฝ่ายหลังการผลิต" },
-    { name: "COLORIST", labelTh: "ผู้ปรับแต่งสี", category: "post_production", categoryLabelTh: "ฝ่ายหลังการผลิต" }
+    {
+      name: "EDITOR",
+      labelTh: "ผู้ตัดต่อ",
+      category: "post_production",
+      categoryLabelTh: "ฝ่ายหลังการผลิต",
+    },
+    {
+      name: "COLORIST",
+      labelTh: "ผู้ปรับแต่งสี",
+      category: "post_production",
+      categoryLabelTh: "ฝ่ายหลังการผลิต",
+    },
   ];
   await prisma.crewRole.createMany({
     data: roles,
@@ -231,11 +351,14 @@ async function main() {
       categoryKey = "action";
     }
     const categoryId = categoryMap.get(categoryKey);
-    if (!categoryId) throw new Error(`Category not found: ${movie.category} (key: ${categoryKey})`);
+    if (!categoryId)
+      throw new Error(
+        `Category not found: ${movie.category} (key: ${categoryKey})`,
+      );
 
     const allCategoryIds = Array.from(categoryMap.values());
-    const extraCategoryIds = allCategoryIds.filter(id => id !== categoryId);
-    const count = 1 + (idx % 2); 
+    const extraCategoryIds = allCategoryIds.filter((id) => id !== categoryId);
+    const count = 1 + (idx % 2);
     const selectedExtraIds: string[] = [];
     for (let i = 0; i < count; i++) {
       const extraId = extraCategoryIds[(idx + i) % extraCategoryIds.length];
@@ -243,7 +366,9 @@ async function main() {
         selectedExtraIds.push(extraId);
       }
     }
-    const finalCategoryConnect = [categoryId, ...selectedExtraIds].map(id => ({ id }));
+    const finalCategoryConnect = [categoryId, ...selectedExtraIds].map(
+      (id) => ({ id }),
+    );
 
     const ageRating = movie.ageRating || "PG-13";
     const language = movie.language || "ไทย";
@@ -273,7 +398,8 @@ async function main() {
     const oldCrew = movie.crew?.create;
     const btsVideos = oldCrew?.btsVideo ? [oldCrew.btsVideo] : [];
 
-    const awards = idx % 4 === 0 ? ["Best Short Film", "Best Student Director"] : [];
+    const awards =
+      idx % 4 === 0 ? ["Best Short Film", "Best Student Director"] : [];
 
     await prisma.movie.create({
       data: {
@@ -284,7 +410,7 @@ async function main() {
         youtubeUrl: movie.youtubeUrl,
         trailerUrl: movie.trailerUrl || movie.youtubeUrl,
         categories: {
-          connect: finalCategoryConnect
+          connect: finalCategoryConnect,
         },
         releaseDate: new Date(`${movie.year}-01-01T00:00:00.000Z`),
         duration: movie.duration,
@@ -314,7 +440,7 @@ async function main() {
       let roleIdx = 0;
       for (const role of dbCrewRoles) {
         const roleName = role.name.toUpperCase();
-        
+
         let assignedNames: string[] = [];
         if (roleName === "DIRECTOR") assignedNames = directors;
         else if (roleName === "PRODUCER") assignedNames = producers;
@@ -335,7 +461,10 @@ async function main() {
         } else {
           // Assign a fallback unique crew member for all other roles
           if (allCrewMembers.length > 0) {
-            const member = allCrewMembers[(idx * dbCrewRoles.length + roleIdx) % allCrewMembers.length];
+            const member =
+              allCrewMembers[
+                (idx * dbCrewRoles.length + roleIdx) % allCrewMembers.length
+              ];
             movieCrewsToInsert.push({
               movieId,
               crewMemberId: member.id,
