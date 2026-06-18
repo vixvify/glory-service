@@ -28,4 +28,12 @@ export class MasterDataService {
       handleServiceError(error, "Failed to get crew roles");
     }
   }
+
+  async getMostActiveUniversity(): Promise<string | null> {
+    try {
+      return await this.repo.getMostActiveUniversity();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get most active university");
+    }
+  }
 }
