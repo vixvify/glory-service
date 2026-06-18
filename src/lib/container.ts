@@ -12,7 +12,6 @@ import { CrewMemberService } from "../modules/crew-members/service";
 import { RatingService } from "../modules/ratings/service";
 import { FavoriteService } from "../modules/favorites/service";
 import { MasterDataService } from "../modules/master-data/service";
-import { AdminService } from "../modules/admin/service";
 
 export const authRepo = new AuthRepositoryImpl();
 export const movieRepo = new MovieRepositoryImpl();
@@ -28,4 +27,3 @@ export const crewMemberService = new CrewMemberService(crewMemberRepo, authRepo)
 export const ratingService = new RatingService(ratingRepo);
 export const favoriteService = new FavoriteService(favoriteRepo, movieRepo);
 export const masterDataService = new MasterDataService(masterDataRepo);
-export const adminService = new AdminService(movieRepo, masterDataRepo, crewMemberRepo);

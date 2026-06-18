@@ -16,4 +16,8 @@ export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
   .get("/crew-roles", async () => {
     const crewRoles = await masterDataService.getCrewRoles();
     return formatSuccess(crewRoles);
+  })
+  .get("/active-university", async () => {
+    const university = await masterDataService.getMostActiveUniversity();
+    return formatSuccess(university);
   });
