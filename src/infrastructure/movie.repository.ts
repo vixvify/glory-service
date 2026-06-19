@@ -134,6 +134,18 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
 
+  async findMovieWithBts(): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      include: movieIncludes,
+      where: {
+        btsVideos: {
+          isEmpty: false,
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
   async create(input: CreateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.create({
       data: input,

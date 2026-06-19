@@ -13,6 +13,7 @@ export interface MovieRepository {
   findContributed(userId: string): Promise<PrismaMovieWithRelations[]>;
   findById(id: string): Promise<PrismaMovieWithRelations | null>;
   findMovieWithAward(): Promise<PrismaMovieWithRelations[]>;
+  findMovieWithBts(): Promise<PrismaMovieWithRelations[]>;
   create(input: CreateMovieInput): Promise<PrismaMovie>;
   update(id: string, input: UpdateMovieInput): Promise<PrismaMovie>;
   delete(id: string): Promise<PrismaMovieWithRelations>;

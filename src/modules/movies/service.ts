@@ -128,6 +128,15 @@ export class MovieService {
     }
   }
 
+  async getMovieWithBts(): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.findMovieWithBts();
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get movies with bts");
+    }
+  }
+
   async createMovie(dto: CreateMovieBodyDTO, userId: string): Promise<Movie> {
     try {
       let thumbnailUrl = "";
