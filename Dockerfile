@@ -1,4 +1,4 @@
-FROM oven/bun:1-alpine
+FROM oven/bun:1-slim
 
 WORKDIR /app
 ENV PORT=8000

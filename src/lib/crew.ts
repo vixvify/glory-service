@@ -5,6 +5,8 @@ import { AuthRepository } from "../modules/auth/domain/auth.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
 import { MovieCrewInputItem } from "../core/utils/transform/parser";
 import { prisma } from "./prisma";
+import { invalidateCache } from "../core/utils/cache/invalidate-cache";
+import { CacheKeys } from "../core/utils/cache/cache-key";
 
 export interface CrewAssociateDeps {
   crewMemberRepo: CrewMemberRepository;
@@ -203,4 +205,9 @@ export async function associateCrewBulk(
       });
     }
   });
+
+  await invalidateCache([
+    CacheKeys.crewListDefault(),
+    CacheKeys.crewListWildcard(),
+  ]);
 }
