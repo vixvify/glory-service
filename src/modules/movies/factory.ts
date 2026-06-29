@@ -5,7 +5,7 @@ import {
 } from "./domain/movie";
 import { Rating } from "../ratings/domain/rating";
 import { Role } from "../auth/domain/auth";
-
+import { ROLE_ORDER } from "../../core/constants/crew";
 export class MovieFactory {
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {
     const categoriesSnapshot = movie.categories.map((c) => ({
@@ -113,23 +113,9 @@ export class MovieFactory {
           updatedAt: c.updatedAt,
         }))
       : [];
-
-    const roleOrder: Record<string, number> = {
-      DIRECTOR: 1,
-      SCREENWRITER: 2,
-      PRODUCER: 3,
-      EDITOR: 4,
-      LEAD_ACTOR: 5,
-      ASSISTANT_DIRECTOR: 6,
-      SCRIPT_SUPERVISOR: 7,
-      PRODUCTION_MANAGER: 8,
-      COLORIST: 9,
-      SUPPORTING_ACTOR: 10,
-    };
-
     crew.sort((a, b) => {
-      const weightA = roleOrder[a.role.toUpperCase()] || 99;
-      const weightB = roleOrder[b.role.toUpperCase()] || 99;
+      const weightA = ROLE_ORDER[a.role.toUpperCase()] || 99;
+      const weightB = ROLE_ORDER[b.role.toUpperCase()] || 99;
       if (weightA !== weightB) {
         return weightA - weightB;
       }
