@@ -200,3 +200,67 @@ export const tCrewInputCoerce = t
   .Decode((value) => coerceCrewInput(value))
   .Encode((value) => value);
 
+export interface Award {
+  name: string;
+  awardList: string[];
+}
+
+function parseAwardItem(item: unknown): Award | null {
+  if (!item) return null;
+  if (typeof item === "string") {
+    try {
+      const parsed = JSON.parse(item);
+      return parseAwardItem(parsed);
+    } catch {
+      return null;
+    }
+  }
+  if (typeof item === "object") {
+    const obj = item as Record<string, unknown>;
+    return {
+      name: typeof obj.name === "string" ? obj.name : "",
+      awardList: Array.isArray(obj.awardList)
+        ? obj.awardList.map(String).filter(Boolean)
+        : [],
+    };
+  }
+  return null;
+}
+
+export function coerceAwardArray(value: unknown): Award[] {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value.map(parseAwardItem).filter((a): a is Award => a !== null);
+  }
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed.map(parseAwardItem).filter((a): a is Award => a !== null);
+      } else if (typeof parsed === "object" && parsed !== null) {
+        const item = parseAwardItem(parsed);
+        return item ? [item] : [];
+      }
+    } catch {
+      return [];
+    }
+  }
+  if (typeof value === "object" && value !== null) {
+    const item = parseAwardItem(value);
+    return item ? [item] : [];
+  }
+  return [];
+}
+
+export const tAwardArrayCoerce = t
+  .Transform(
+    t.Union([
+      t.String(),
+      t.Array(t.Unknown()),
+      t.Record(t.String(), t.Unknown()),
+      t.Null(),
+      t.Undefined(),
+    ]),
+  )
+  .Decode((value) => coerceAwardArray(value))
+  .Encode((value) => value);

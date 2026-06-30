@@ -164,13 +164,17 @@ export class MovieService {
         releaseDate,
         duration: Number(dto.duration),
         matchRate: 100,
-        hasProfanity: toBoolean(dto.hasProfanity),
-        hasDrugs: toBoolean(dto.hasDrugs),
+        contentWarnings: dto.contentWarnings || [],
+        otherContentWarning: dto.otherContentWarning || null,
+        tags: dto.tags || [],
+        subtitle: dto.subtitle || null,
+        trailerUrls: dto.trailerUrls || [],
         createdBy: userId,
         btsVideos,
         categories: {
           connect: (categoryIds || []).map((id) => ({ id })),
         },
+        awards: dto.awards || [],
       };
 
       const movieRecord = await this.repo.create(input);
@@ -240,14 +244,18 @@ export class MovieService {
         duration: Number(dto.duration),
         matchRate: existing.matchRate,
         btsVideos,
-        hasProfanity: toBoolean(dto.hasProfanity),
-        hasDrugs: toBoolean(dto.hasDrugs),
+        contentWarnings: dto.contentWarnings || [],
+        otherContentWarning: dto.otherContentWarning || null,
+        tags: dto.tags || [],
+        subtitle: dto.subtitle || null,
+        trailerUrls: dto.trailerUrls || [],
         university: dto.university || null,
         school: dto.school || null,
         language: dto.language || null,
         categories: {
           set: (categoryIds || []).map((id) => ({ id })),
         },
+        awards: dto.awards || [],
       };
 
       await this.repo.update(id, input);

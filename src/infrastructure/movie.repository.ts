@@ -127,8 +127,10 @@ export class MovieRepositoryImpl implements MovieRepository {
     return prisma.movie.findMany({
       include: movieIncludes,
       where: {
-        awards: {
-          isEmpty: false,
+        NOT: {
+          awards: {
+            equals: [],
+          },
         },
       },
     });
@@ -148,14 +150,14 @@ export class MovieRepositoryImpl implements MovieRepository {
 
   async create(input: CreateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.create({
-      data: input,
+      data: input as unknown as Prisma.MovieCreateInput,
     });
   }
 
   async update(id: string, input: UpdateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.update({
       where: { id },
-      data: input,
+      data: input as unknown as Prisma.MovieUpdateInput,
     });
   }
 

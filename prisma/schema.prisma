@@ -42,7 +42,7 @@ model Movie {
   description String  @db.Text
   thumbnail   String
   youtubeUrl  String
-  trailerUrl  String?
+  trailerUrls String[] @default([])
 
   categories Category[]
 
@@ -58,12 +58,15 @@ model Movie {
   university String?
   school     String?
   language   String?
+  subtitle   String?
 
-  hasProfanity Boolean  @default(false)
-  hasDrugs     Boolean  @default(false)
+  contentWarnings     String[] @default([])
+  otherContentWarning String?
+  
   colorType    String
   studio       String?
-  awards       String[] @default([])
+  awards       Json     @default("[]")
+  tags         String[] @default([])
 
   createdBy String @db.Uuid
   creator   User   @relation(fields: [createdBy], references: [id], onDelete: Cascade)
