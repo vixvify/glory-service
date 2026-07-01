@@ -26,4 +26,19 @@ export class MovieCrewRepositoryImpl implements MovieCrewRepository {
       },
     });
   }
+
+  async replaceMovieCrew(movieId: string, inputs: CreateMovieCrewInput[]): Promise<void> {
+    await prisma.$transaction(async (tx) => {
+      await tx.movieCrew.deleteMany({
+        where: { movieId },
+      });
+
+      if (inputs.length > 0) {
+        await tx.movieCrew.createMany({
+          data: inputs,
+          skipDuplicates: true,
+        });
+      }
+    });
+  }
 }

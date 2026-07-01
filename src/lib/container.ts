@@ -22,7 +22,7 @@ export const favoriteRepo = new FavoriteRepositoryImpl();
 export const masterDataRepo = new MasterDataRepositoryImpl();
 
 export const authService = new AuthService(authRepo, crewMemberRepo);
-export const movieService = new MovieService(movieRepo, crewMemberRepo, movieCrewRepo, authRepo);
+export const movieService = new MovieService(movieRepo, crewMemberRepo, movieCrewRepo, authRepo, masterDataRepo);
 export const crewMemberService = new CrewMemberService(crewMemberRepo, authRepo);
 export const ratingService = new RatingService(ratingRepo);
 export const favoriteService = new FavoriteService(favoriteRepo, movieRepo);
