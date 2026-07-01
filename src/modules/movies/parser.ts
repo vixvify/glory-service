@@ -90,11 +90,22 @@ export function coerceCrewInput(value: unknown): MovieCrewInputItemWithRole[] {
     if ((str.startsWith("[") && str.endsWith("]")) || (str.startsWith("{") && str.endsWith("}"))) {
       try {
         parsedValue = JSON.parse(str);
+        if (parsedValue && typeof parsedValue === "object" && !Array.isArray(parsedValue)) {
+          if ("role" in parsedValue) {
+            parsedValue = [parsedValue];
+          }
+        }
       } catch {
         return [];
       }
     } else {
       return [];
+    }
+  }
+
+  if (typeof parsedValue === "object" && parsedValue !== null && !Array.isArray(parsedValue)) {
+    if ("role" in parsedValue) {
+      parsedValue = [parsedValue];
     }
   }
 
