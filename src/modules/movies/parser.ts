@@ -160,7 +160,7 @@ export const tCrewInputCoerce = t
   .Encode((value) => value);
 
 export interface Award {
-  name: string;
+  projectName: string;
   awardList: string[];
 }
 
@@ -177,7 +177,7 @@ function parseAwardItem(item: unknown): Award | null {
   if (typeof item === "object") {
     const obj = item as Record<string, unknown>;
     return {
-      name: typeof obj.name === "string" ? obj.name : "",
+      projectName: typeof obj.projectName === "string" ? obj.projectName : typeof obj.name === "string" ? obj.name : "",
       awardList: Array.isArray(obj.awardList)
         ? obj.awardList.map(String).filter(Boolean)
         : [],
