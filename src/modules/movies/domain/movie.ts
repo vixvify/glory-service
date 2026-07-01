@@ -1,12 +1,12 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
+import { tArrayCoerce } from "../../../core/utils/transform/parser";
 import {
-  tArrayCoerce,
   tCrewInputCoerce,
   MovieCrewInputItemWithRole,
   Award,
   tAwardArrayCoerce,
-} from "../../../core/utils/transform/parser";
+} from "../parser";
 import { User } from "../../auth/domain/auth";
 import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";

@@ -3,7 +3,7 @@ import { CrewMemberRepository } from "../modules/crew-members/domain/crew-member
 import { MovieCrewRepository } from "../modules/movies/domain/movie-crew.repository";
 import { AuthRepository } from "../modules/auth/domain/auth.repository";
 import { AssociateCrewBulkInput } from "../modules/movies/domain/movie";
-import { MovieCrewInputItem } from "../core/utils/transform/parser";
+import { MovieCrewInputItem } from "../modules/movies/parser";
 import { prisma } from "./prisma";
 
 export interface CrewAssociateDeps {
