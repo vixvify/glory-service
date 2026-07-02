@@ -162,6 +162,7 @@ model CrewRole {
   id              String      @id @default(uuid()) @db.Uuid
   name            String      @unique
   labelTh         String      @default("")
+  labelEn         String      @default("")
   category        String      @default("")
   categoryLabelTh String      @default("")
   createdAt       DateTime    @default(now())

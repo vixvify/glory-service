@@ -77,6 +77,7 @@ export class MovieFactory {
                 id: c.crewRole.id,
                 name: c.crewRole.name,
                 labelTh: c.crewRole.labelTh,
+                labelEn: c.crewRole.labelEn,
                 category: c.crewRole.category,
                 categoryLabelTh: c.crewRole.categoryLabelTh,
                 createdAt: c.crewRole.createdAt,

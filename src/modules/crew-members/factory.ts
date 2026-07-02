@@ -46,6 +46,7 @@ export class CrewMemberFactory {
                   id: mc.crewRole.id,
                   name: mc.crewRole.name,
                   labelTh: mc.crewRole.labelTh,
+                  labelEn: mc.crewRole.labelEn,
                   category: mc.crewRole.category,
                   categoryLabelTh: mc.crewRole.categoryLabelTh,
                   createdAt: mc.crewRole.createdAt,
