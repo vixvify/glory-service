@@ -1,5 +1,6 @@
 import { MasterDataRepository } from "./domain/masterdata.repository";
 import { Category, Language, CrewRole } from "./domain/masterdata";
+import { ROLE_ORDER } from "../../core/constants/crew";
 import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class MasterDataService {
@@ -23,7 +24,18 @@ export class MasterDataService {
 
   async getCrewRoles(): Promise<CrewRole[]> {
     try {
-      return await this.repo.getCrewRoles();
+      const roles = await this.repo.getCrewRoles();
+      
+      roles.sort((a, b) => {
+        const weightA = ROLE_ORDER[a.name.toUpperCase()] || 99;
+        const weightB = ROLE_ORDER[b.name.toUpperCase()] || 99;
+        if (weightA !== weightB) {
+          return weightA - weightB;
+        }
+        return (a.labelTh || a.name).localeCompare(b.labelTh || b.name);
+      });
+
+      return roles;
     } catch (error: unknown) {
       handleServiceError(error, "Failed to get crew roles");
     }

@@ -46,6 +46,7 @@ export class CrewMemberFactory {
                   id: mc.crewRole.id,
                   name: mc.crewRole.name,
                   labelTh: mc.crewRole.labelTh,
+                  labelEn: mc.crewRole.labelEn,
                   category: mc.crewRole.category,
                   categoryLabelTh: mc.crewRole.categoryLabelTh,
                   createdAt: mc.crewRole.createdAt,
@@ -60,7 +61,7 @@ export class CrewMemberFactory {
                   description: mc.movie.description,
                   thumbnail: mc.movie.thumbnail,
                   youtubeUrl: mc.movie.youtubeUrl,
-                  trailerUrl: mc.movie.trailerUrl,
+                  trailerUrls: mc.movie.trailerUrls || [],
                   categories: mc.movie.categories.map((c) => ({
                     id: c.id,
                     name: c.name,
@@ -78,8 +79,10 @@ export class CrewMemberFactory {
                   university: mc.movie.university,
                   school: mc.movie.school,
                   language: mc.movie.language,
-                  hasProfanity: mc.movie.hasProfanity,
-                  hasDrugs: mc.movie.hasDrugs,
+                  subtitle: mc.movie.subtitle,
+                  contentWarnings: mc.movie.contentWarnings || [],
+                  otherContentWarning: mc.movie.otherContentWarning,
+                  tags: mc.movie.tags || [],
                   colorType: mc.movie.colorType,
                   studio: mc.movie.studio,
                   createdBy: mc.movie.createdBy,
@@ -87,7 +90,7 @@ export class CrewMemberFactory {
                   btsVideos: [],
                   createdAt: mc.movie.createdAt,
                   updatedAt: mc.movie.updatedAt,
-                  awards: mc.movie.awards || [],
+                  awards: (mc.movie.awards as any) || [],
                 }
               : undefined,
           }))
