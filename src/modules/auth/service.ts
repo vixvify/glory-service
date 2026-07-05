@@ -171,6 +171,20 @@ export class AuthService {
         }
       }
 
+      let coverUrl: string | null | undefined = undefined;
+
+      if (dto.coverPhoto instanceof File) {
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+        if (!allowedTypes.includes(dto.coverPhoto.type)) {
+          throw new Error("Invalid cover file type. Only jpg, png, webp, and gif are allowed.");
+        }
+        coverUrl = await uploadToR2(dto.coverPhoto, "users_cover");
+
+        if (existing.coverUrl) {
+          await deleteFromR2(existing.coverUrl);
+        }
+      }
+
       let birthday: Date | undefined | null = undefined;
       if (dto.birthday) {
         const parsed = new Date(dto.birthday);
@@ -180,6 +194,7 @@ export class AuthService {
       const input: UpdateProfileInput = {
         ...(dto.name !== undefined && { name: dto.name }),
         ...(photoUrl !== undefined && { photoUrl }),
+        ...(coverUrl !== undefined && { coverUrl }),
         ...(dto.motto !== undefined && { motto: dto.motto }),
         ...(dto.bio !== undefined && { bio: dto.bio }),
         ...(dto.ig !== undefined && { ig: dto.ig }),

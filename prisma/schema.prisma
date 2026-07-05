@@ -17,6 +17,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   photoUrl  String?
+  coverUrl  String?
   motto     String?
   bio       String?
   ig        String?

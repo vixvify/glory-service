@@ -12,6 +12,7 @@ export interface User {
   email: string;
   role: Role | "admin" | "user";
   photoUrl?: string | null;
+  coverUrl?: string | null;
   motto?: string | null;
   bio?: string | null;
   ig?: string | null;
@@ -67,6 +68,7 @@ export type LoginUserBodyDTO = Static<typeof loginUserBodySchema>;
 export interface UpdateProfileInput {
   name?: string;
   photoUrl?: string | null;
+  coverUrl?: string | null;
   motto?: string | null;
   bio?: string | null;
   ig?: string | null;
@@ -81,6 +83,7 @@ export interface UpdateProfileInput {
 export const updateProfileBodySchema = t.Object({
   name: t.Optional(t.String({ minLength: 2 })),
   photo: t.Optional(t.File()),
+  coverPhoto: t.Optional(t.File()),
   motto: t.Optional(t.String()),
   bio: t.Optional(t.String()),
   ig: t.Optional(t.String()),
@@ -101,6 +104,7 @@ export const AuthUserSelect = {
   role: true,
   createdAt: true,
   photoUrl: true,
+  coverUrl: true,
   motto: true,
   bio: true,
   ig: true,
