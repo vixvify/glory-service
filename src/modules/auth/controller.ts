@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { authMiddleware } from "../../middleware/auth";
 import { authService } from "../../lib/container";
 import { formatSuccess } from "../../core/interceptor";
-import { registerUserBodySchema, loginUserBodySchema } from "./domain/auth";
+import { registerUserBodySchema, loginUserBodySchema, updateProfileBodySchema } from "./domain/auth";
 import { config } from "../../core/config";
 
 export const authRouter = new Elysia({ prefix: "/auth" })
@@ -49,6 +49,17 @@ export const authRouter = new Elysia({ prefix: "/auth" })
       return formatSuccess(fullUser);
     },
     {
+      requireAuth: true,
+    },
+  )
+  .patch(
+    "/profile",
+    async ({ body, user }) => {
+      const updated = await authService.updateProfile(user!.id, body);
+      return formatSuccess(updated);
+    },
+    {
+      body: updateProfileBodySchema,
       requireAuth: true,
     },
   );

@@ -4,17 +4,19 @@ import {
   signJWT,
   verifyJWT,
 } from "../../core/utils//auth/security";
-import { ConflictError, UnauthorizedError } from "../../core/error";
+import { ConflictError, NotFoundError, UnauthorizedError } from "../../core/error";
 import {
   User,
   RegisterUserBodyDTO,
   LoginUserBodyDTO,
   CreateUserInput,
+  UpdateProfileBodyDTO,
+  UpdateProfileInput,
 } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { AuthFactory } from "./factory";
-import { uploadToR2 } from "../../lib/r2";
+import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class AuthService {
@@ -138,6 +140,61 @@ export class AuthService {
       };
     } catch {
       return null;
+    }
+  }
+
+  async updateProfile(
+    userId: string,
+    dto: UpdateProfileBodyDTO,
+  ): Promise<Omit<User, "id" | "role">> {
+    try {
+      const existing = await this.repo.findById(userId);
+      if (!existing) {
+        throw new NotFoundError("User not found");
+      }
+
+      let photoUrl: string | null | undefined = undefined;
+
+      if (dto.photo instanceof File) {
+        // Validate file type explicitly before uploading
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+        if (!allowedTypes.includes(dto.photo.type)) {
+          throw new Error("Invalid file type. Only jpg, png, webp, and gif are allowed.");
+        }
+
+        // Upload new photo to R2
+        photoUrl = await uploadToR2(dto.photo, "users");
+
+        // Delete old photo from R2 after successful upload
+        if (existing.photoUrl) {
+          await deleteFromR2(existing.photoUrl);
+        }
+      }
+
+      let birthday: Date | undefined | null = undefined;
+      if (dto.birthday) {
+        const parsed = new Date(dto.birthday);
+        birthday = isNaN(parsed.getTime()) ? undefined : parsed;
+      }
+
+      const input: UpdateProfileInput = {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(photoUrl !== undefined && { photoUrl }),
+        ...(dto.motto !== undefined && { motto: dto.motto }),
+        ...(dto.bio !== undefined && { bio: dto.bio }),
+        ...(dto.ig !== undefined && { ig: dto.ig }),
+        ...(dto.facebook !== undefined && { facebook: dto.facebook }),
+        ...(dto.youtube !== undefined && { youtube: dto.youtube }),
+        ...(dto.tiktok !== undefined && { tiktok: dto.tiktok }),
+        ...(dto.positions !== undefined && { positions: dto.positions }),
+        ...(birthday !== undefined && { birthday }),
+        ...(dto.awards !== undefined && { awards: dto.awards }),
+      };
+
+      const updated = await this.repo.update(userId, input);
+      return AuthFactory.toDomainUser(updated);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to update profile");
     }
   }
 }
