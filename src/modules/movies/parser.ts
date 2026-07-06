@@ -234,3 +234,8 @@ export const tAwardArrayCoerce = t
   )
   .Decode((value) => coerceAwardArray(value))
   .Encode((value) => value);
+
+export interface AwardInput {
+  projectName: string;
+  awardName: string;
+}

@@ -90,7 +90,7 @@ export class CrewMemberFactory {
                   btsVideos: [],
                   createdAt: mc.movie.createdAt,
                   updatedAt: mc.movie.updatedAt,
-                  awards: (mc.movie.awards as any) || [],
+                  awards: [],
                 }
               : undefined,
           }))

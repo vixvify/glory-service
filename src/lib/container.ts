@@ -6,6 +6,7 @@ import { FavoriteRepositoryImpl } from "../infrastructure/favorite.repository";
 import { MasterDataRepositoryImpl } from "../infrastructure/masterdata.repository";
 import { MovieCrewRepositoryImpl } from "../infrastructure/movie-crew.repository";
 
+
 import { AuthService } from "../modules/auth/service";
 import { MovieService } from "../modules/movies/service";
 import { CrewMemberService } from "../modules/crew-members/service";
@@ -20,6 +21,7 @@ export const movieCrewRepo = new MovieCrewRepositoryImpl();
 export const ratingRepo = new RatingRepositoryImpl();
 export const favoriteRepo = new FavoriteRepositoryImpl();
 export const masterDataRepo = new MasterDataRepositoryImpl();
+
 
 export const authService = new AuthService(authRepo, crewMemberRepo);
 export const movieService = new MovieService(movieRepo, crewMemberRepo, movieCrewRepo, authRepo, masterDataRepo);

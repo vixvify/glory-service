@@ -127,10 +127,8 @@ export class MovieRepositoryImpl implements MovieRepository {
     return prisma.movie.findMany({
       include: movieIncludes,
       where: {
-        NOT: {
-          awards: {
-            equals: [],
-          },
+        awards: {
+          some: {},
         },
       },
     });

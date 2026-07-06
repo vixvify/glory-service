@@ -7,6 +7,12 @@ import { Rating } from "../ratings/domain/rating";
 import { Role } from "../auth/domain/auth";
 import { ROLE_ORDER } from "../../core/constants/crew";
 export class MovieFactory {
+  static toAwardPersistence(awards?: { projectName: string; awardList?: string[] }[]): { projectName: string; awardName: string }[] {
+    return (awards ?? []).flatMap((p) =>
+      (p.awardList ?? []).map((name) => ({ projectName: p.projectName, awardName: name }))
+    );
+  }
+
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {
     const categoriesSnapshot = movie.categories.map((c) => ({
       id: c.id,
@@ -59,7 +65,18 @@ export class MovieFactory {
               btsVideos: [] as string[],
               createdAt: movie.createdAt,
               updatedAt: movie.updatedAt,
-              awards: (movie.awards as unknown as DtoMovie["awards"]) || [],
+              awards: (movie.awards ?? []).reduce<{ projectName: string; awardList: string[] }[]>(
+                (acc, item) => {
+                  const project = acc.find((p) => p.projectName === item.projectName);
+                  if (project) {
+                    project.awardList.push(item.awardName);
+                  } else {
+                    acc.push({ projectName: item.projectName, awardList: [item.awardName] });
+                  }
+                  return acc;
+                },
+                []
+              ),
             },
           }),
         )
@@ -163,7 +180,18 @@ export class MovieFactory {
       btsVideos: movie.btsVideos || [],
       createdAt: movie.createdAt,
       updatedAt: movie.updatedAt,
-      awards: (movie.awards as unknown as DtoMovie["awards"]) || [],
+      awards: (movie.awards ?? []).reduce<{ projectName: string; awardList: string[] }[]>(
+        (acc, item) => {
+          const project = acc.find((p) => p.projectName === item.projectName);
+          if (project) {
+            project.awardList.push(item.awardName);
+          } else {
+            acc.push({ projectName: item.projectName, awardList: [item.awardName] });
+          }
+          return acc;
+        },
+        []
+      ),
     };
   }
 
