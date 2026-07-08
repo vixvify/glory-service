@@ -404,7 +404,12 @@ async function main() {
     const oldCrew = movie.crew?.create;
     const btsVideos = oldCrew?.btsVideo ? [oldCrew.btsVideo] : [];
 
-    const awards = idx % 4 === 0 ? ["Best Short Film", "Best Student Director"] : [];
+    const awards = idx % 4 === 0 ? {
+      create: [
+        { projectName: "ThaiFlix Awards", awardName: "Best Short Film" },
+        { projectName: "ThaiFlix Awards", awardName: "Best Student Director" }
+      ]
+    } : undefined;
 
     await prisma.movie.create({
       data: {
@@ -434,7 +439,7 @@ async function main() {
         studio,
         createdBy: defaultUserId,
         btsVideos,
-        awards,
+        ...(awards ? { awards } : {}),
       },
     });
 

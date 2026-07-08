@@ -65,7 +65,7 @@ model Movie {
   
   colorType    String
   studio       String?
-  awards       Json     @default("[]")
+  awards       MovieAward[]
   tags         String[] @default([])
 
   createdBy String @db.Uuid
@@ -169,4 +169,18 @@ model CrewRole {
   movieCrews      MovieCrew[]
 
   @@map("crew_roles")
+}
+
+model MovieAward {
+  id          String   @id @default(uuid()) @db.Uuid
+  movieId     String   @db.Uuid
+  projectName String
+  awardName   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@index([movieId])
+  @@map("movie_awards")
 }

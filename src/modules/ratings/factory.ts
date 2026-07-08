@@ -51,7 +51,7 @@ export class RatingFactory {
         btsVideos: [],
         createdAt: rating.movie.createdAt,
         updatedAt: rating.movie.updatedAt,
-        awards: (rating.movie.awards as any) || [],
+        awards: [],
       },
     };
   }

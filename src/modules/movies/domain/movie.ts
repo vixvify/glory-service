@@ -103,7 +103,9 @@ export interface CreateMovieInput {
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
-  awards?: Award[];
+  awards?: {
+    create: { projectName: string; awardName: string }[];
+  };
 }
 
 export interface UpdateMovieInput {
@@ -130,7 +132,10 @@ export interface UpdateMovieInput {
   colorType: string;
   studio?: string | null;
   btsVideos?: string[];
-  awards?: Award[];
+  awards?: {
+    deleteMany: {};
+    create: { projectName: string; awardName: string }[];
+  };
 }
 
 export const createMovieBodySchema = t.Object({
@@ -320,6 +325,7 @@ export const movieIncludes = {
       },
     },
   },
+  awards: true,
 } satisfies Prisma.MovieInclude;
 
 export type PrismaMovieWithRelations = Prisma.MovieGetPayload<{

@@ -11,6 +11,7 @@ import {
 import { MovieRepository } from "./domain/movie.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { MovieCrewRepository } from "./domain/movie-crew.repository";
+
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
@@ -159,7 +160,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
 
       const input: CreateMovieInput = {
         ...restDto,
@@ -177,7 +178,9 @@ export class MovieService {
         categories: {
           connect: (categoryIds || []).map((id) => ({ id })),
         },
-        awards: dto.awards || [],
+        awards: {
+          create: MovieFactory.toAwardPersistence(_awards),
+        }
       };
 
       const movieRecord = await this.repo.create(input);
@@ -233,7 +236,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
 
       const input: UpdateMovieInput = {
         ...restDto,
@@ -253,7 +256,10 @@ export class MovieService {
         categories: {
           set: (categoryIds || []).map((id) => ({ id })),
         },
-        awards: dto.awards || [],
+        awards: {
+          deleteMany: {},
+          create: MovieFactory.toAwardPersistence(_awards),
+        }
       };
 
       await this.repo.update(id, input);
