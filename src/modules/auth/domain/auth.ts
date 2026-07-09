@@ -18,6 +18,9 @@ export interface User {
   facebook?: string | null;
   youtube?: string | null;
   tiktok?: string | null;
+  promptPay?: string | null;
+  trueMoney?: string | null;
+  easyDonate?: string | null;
   positions?: string[];
   birthday?: Date | null;
   awards?: string[];
@@ -34,6 +37,9 @@ export interface CreateUserInput {
   facebook?: string;
   youtube?: string;
   tiktok?: string;
+  promptPay?: string;
+  trueMoney?: string;
+  easyDonate?: string;
   positions?: string[];
   birthday?: Date;
   awards?: string[];
@@ -50,6 +56,9 @@ export const registerUserBodySchema = t.Object({
   facebook: t.Optional(t.String()),
   youtube: t.Optional(t.String()),
   tiktok: t.Optional(t.String()),
+  promptPay: t.Optional(t.String()),
+  trueMoney: t.Optional(t.String()),
+  easyDonate: t.Optional(t.String()),
   positions: t.Optional(tArrayCoerce),
   birthday: t.Optional(t.String()),
   awards: t.Optional(tArrayCoerce),
@@ -77,7 +86,27 @@ export const AuthUserSelect = {
   facebook: true,
   youtube: true,
   tiktok: true,
+  promptPay: true,
+  trueMoney: true,
+  easyDonate: true,
   positions: true,
   birthday: true,
   awards: true,
 } as const;
+
+export const updateProfileSchema = t.Object({
+  name: t.Optional(t.String({ minLength: 2 })),
+  motto: t.Optional(t.String()),
+  bio: t.Optional(t.String()),
+  ig: t.Optional(t.String()),
+  facebook: t.Optional(t.String()),
+  youtube: t.Optional(t.String()),
+  tiktok: t.Optional(t.String()),
+  promptPay: t.Optional(t.String()),
+  trueMoney: t.Optional(t.String()),
+  easyDonate: t.Optional(t.String()),
+  birthday: t.Optional(t.String()),
+  positions: t.Optional(tArrayCoerce),
+});
+
+export type UpdateProfileDTO = Static<typeof updateProfileSchema>;

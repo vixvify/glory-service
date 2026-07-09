@@ -23,6 +23,9 @@ model User {
   facebook  String?
   youtube   String?
   tiktok    String?
+  promptPay String?
+  trueMoney String?
+  easyDonate String?
   positions String[]  @default([])
   birthday  DateTime?
   awards    String[]  @default([])
