@@ -4,12 +4,13 @@ import {
   signJWT,
   verifyJWT,
 } from "../../core/utils//auth/security";
-import { ConflictError, UnauthorizedError } from "../../core/error";
+import { ConflictError, UnauthorizedError, NotFoundError } from "../../core/error";
 import {
   User,
   RegisterUserBodyDTO,
   LoginUserBodyDTO,
   CreateUserInput,
+  UpdateProfileDTO,
 } from "./domain/auth";
 import { AuthRepository } from "./domain/auth.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
@@ -138,6 +139,35 @@ export class AuthService {
       };
     } catch {
       return null;
+    }
+  }
+
+  async updateProfile(
+    userId: string,
+    dto: UpdateProfileDTO,
+  ): Promise<Omit<User, "id" | "role">> {
+    try {
+      const user = await this.repo.findById(userId);
+      if (!user) throw new NotFoundError("User not found");
+
+      const updated = await this.repo.updateById(userId, {
+        name: dto.name,
+        motto: dto.motto,
+        bio: dto.bio,
+        ig: dto.ig,
+        facebook: dto.facebook,
+        youtube: dto.youtube,
+        tiktok: dto.tiktok,
+        promptPay: dto.promptPay,
+        trueMoney: dto.trueMoney,
+        easyDonate: dto.easyDonate,
+        birthday: dto.birthday ? new Date(dto.birthday) : undefined,
+        positions: dto.positions,
+      });
+
+      return AuthFactory.toDomainUser(updated);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to update profile");
     }
   }
 }

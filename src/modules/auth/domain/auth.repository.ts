@@ -1,4 +1,4 @@
-import { User as PrismaUser } from "@prisma/client";
+import { User as PrismaUser, Prisma } from "@prisma/client";
 import { CreateUserInput } from "./auth";
 
 export interface AuthRepository {
@@ -6,4 +6,5 @@ export interface AuthRepository {
   findByEmailWithPassword(email: string): Promise<PrismaUser | null>;
   findById(id: string): Promise<PrismaUser | null>;
   create(input: CreateUserInput): Promise<PrismaUser>;
+  updateById(id: string, data: Prisma.UserUpdateInput): Promise<PrismaUser>;
 }
