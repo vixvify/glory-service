@@ -13,6 +13,9 @@ import { AuthRepository } from "../auth/domain/auth.repository";
 import { isDefaultQuery } from "../../core/utils/db/query";
 import { CrewMemberFactory } from "./factory";
 import { handleServiceError } from "../../core/utils/error/handle-error";
+import { getCachedOrFetch } from "../../core/utils/cache/cache";
+import { CacheKeys } from "../../core/utils/cache/cache-key";
+import { invalidateCache } from "../../core/utils/cache/invalidate-cache";
 
 export class CrewMemberService {
   constructor(
@@ -23,7 +26,10 @@ export class CrewMemberService {
   async getCrewMembers(dto?: GetCrewMembersQueryDTO): Promise<CrewMember[]> {
     try {
       if (isDefaultQuery(dto)) {
-        const results = await this.repo.find();
+        const results = await getCachedOrFetch(
+          CacheKeys.crewListDefault(),
+          () => this.repo.find()
+        );
         return CrewMemberFactory.toDomainList(results);
       }
 
@@ -41,7 +47,10 @@ export class CrewMemberService {
         sortby: sortby || undefined,
       };
 
-      const results = await this.repo.find(input);
+      const results = await getCachedOrFetch(
+        CacheKeys.crewList(input),
+        () => this.repo.find(input)
+      );
       return CrewMemberFactory.toDomainList(results);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to get crew members");
@@ -59,10 +68,16 @@ export class CrewMemberService {
 
   async getCrewMemberById(id: string): Promise<CrewMember> {
     try {
-      const crewMember = await this.repo.findById(id);
-      if (!crewMember) {
-        throw new NotFoundError(`Crew member with id ${id} not found`);
-      }
+      const crewMember = await getCachedOrFetch(
+        CacheKeys.crewDetail(id),
+        async () => {
+          const member = await this.repo.findById(id);
+          if (!member) {
+            throw new NotFoundError(`Crew member with id ${id} not found`);
+          }
+          return member;
+        }
+      );
       return CrewMemberFactory.toDomain(crewMember);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to get crew member");
@@ -101,6 +116,12 @@ export class CrewMemberService {
       };
 
       const created = await this.repo.create(input);
+
+      await invalidateCache([
+        CacheKeys.crewListDefault(),
+        CacheKeys.crewListWildcard(),
+      ]);
+
       return CrewMemberFactory.toDomain(created);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to create crew member");
@@ -148,6 +169,13 @@ export class CrewMemberService {
       };
 
       const updated = await this.repo.update(id, input);
+
+      await invalidateCache([
+        CacheKeys.crewListDefault(),
+        CacheKeys.crewListWildcard(),
+        CacheKeys.crewDetail(id),
+      ]);
+
       return CrewMemberFactory.toDomain(updated);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to update crew member");
@@ -161,6 +189,13 @@ export class CrewMemberService {
         throw new NotFoundError(`Crew member with id ${id} not found`);
       }
       const deleted = await this.repo.delete(id);
+
+      await invalidateCache([
+        CacheKeys.crewListDefault(),
+        CacheKeys.crewListWildcard(),
+        CacheKeys.crewDetail(id),
+      ]);
+
       return CrewMemberFactory.toDomain(deleted);
     } catch (error: unknown) {
       handleServiceError(error, "Failed to delete crew member");
