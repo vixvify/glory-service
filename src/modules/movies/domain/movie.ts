@@ -15,7 +15,7 @@ import { Category, CrewRole } from "../../master-data/domain/masterdata";
 export enum ColorType {
   COLOR = "color",
   BLACK_AND_WHITE = "black_and_white",
-  COLOR_AND_BLACK_AND_WHITE = "color_and_black_and_white",
+  COLOR_AND_BLACK_AND_WHITE = "color_and_bw",
 }
 
 export enum AgeRating {
@@ -159,7 +159,7 @@ export const createMovieBodySchema = t.Object({
   colorType: t.Union([
     t.Literal("color"),
     t.Literal("black_and_white"),
-    t.Literal("color_and_black_and_white"),
+    t.Literal("color_and_bw"),
   ]),
   studio: t.Optional(t.String()),
   crew: t.Optional(tCrewInputCoerce),
@@ -194,7 +194,7 @@ export const updateMovieBodySchema = t.Object({
   colorType: t.Union([
     t.Literal("color"),
     t.Literal("black_and_white"),
-    t.Literal("color_and_black_and_white"),
+    t.Literal("color_and_bw"),
   ]),
   studio: t.Optional(t.String()),
   crew: t.Optional(tCrewInputCoerce),
