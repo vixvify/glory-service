@@ -35,6 +35,7 @@ model User {
   crewProfile        CrewMember?
   createdMovies      Movie[]
   createdCrewMembers CrewMember[] @relation("CreatedCrewMembers")
+  watchSessions      WatchSession[]
 
   @@map("users")
 }
@@ -80,6 +81,7 @@ model Movie {
   btsVideos String[]    @default([])
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  watchSessions WatchSession[]
 
   @@index([createdBy])
   @@index([title])
@@ -186,4 +188,32 @@ model MovieAward {
 
   @@index([movieId])
   @@map("movie_awards")
+}
+
+model WatchSession {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @db.Uuid
+  movieId        String   @db.Uuid
+  source         String   // "main_movie" | "trailer" | "bts"
+
+  startSecond    Float
+  endSecond      Float
+  watchedSeconds Float
+  duration       Float
+  percentWatched Float
+  completionType String   // "completed" | "paused" | "abandoned"
+
+  pauseCount     Int      @default(0)
+  replayCount    Int      @default(0)
+  seekEvents     Json     @default("[]")
+
+  createdAt      DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([movieId])
+  @@index([userId, movieId, source])
+  @@map("watch_sessions")
 }
