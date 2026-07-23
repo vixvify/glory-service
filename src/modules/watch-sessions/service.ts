@@ -46,7 +46,7 @@ export class WatchSessionService {
       // ── Deduplication: same (userId, movieId, source, day) ───────────────
       if (existingSession) {
         return this.repo.update(existingSession.id, {
-          endSecond: Math.max(existingSession.endSecond, dto.endSecond),
+          endSecond: dto.endSecond,
           watchedSeconds: Math.min(Math.max(existingSession.watchedSeconds, dto.watchedSeconds), MAX_WATCHED_SECONDS),
           percentWatched: Math.min(Math.max(existingSession.percentWatched, dto.percentWatched), MAX_PERCENT_WATCHED),
           completionType: this.resolveCompletionType(existingSession.completionType, dto.completionType),
@@ -83,8 +83,7 @@ export class WatchSessionService {
     oldType: CompletionType,
     newType: CompletionType,
   ): CompletionType {
-    if (oldType === "completed" || newType === "completed") return "completed";
-    if (oldType === "paused" || newType === "paused") return "paused";
+    if (oldType === "completed") return "completed";
     return newType;
   }
 }

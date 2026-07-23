@@ -5,8 +5,8 @@ import { t, Static } from "elysia";
 export type CompletionType = "completed" | "paused" | "abandoned";
 
 export interface SeekEvent {
-  time: number;
-  direction: "forward" | "backward";
+  seekFrom: number;
+  seekTo: number;
 }
 
 export interface WatchSession {
@@ -29,8 +29,8 @@ export interface WatchSession {
 // ─── Validation Schemas ───────────────────────────────────────────────────────
 
 export const seekEventSchema = t.Object({
-  time: t.Number({ minimum: 0 }),
-  direction: t.Union([t.Literal("forward"), t.Literal("backward")]),
+  seekFrom: t.Number({ minimum: 0 }),
+  seekTo: t.Number({ minimum: 0 }),
 });
 
 export const createWatchSessionBodySchema = t.Object({

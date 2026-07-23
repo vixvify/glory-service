@@ -205,15 +205,29 @@ model WatchSession {
 
   pauseCount     Int      @default(0)
   replayCount    Int      @default(0)
-  seekEvents     Json     @default("[]")
 
   createdAt      DateTime @default(now())
 
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie      Movie       @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  seekEvents SeekEvent[]
 
   @@index([userId])
   @@index([movieId])
   @@index([userId, movieId, source])
   @@map("watch_sessions")
+}
+
+model SeekEvent {
+  id             String       @id @default(uuid()) @db.Uuid
+  watchSessionId String       @db.Uuid
+  seekFrom       Float
+  seekTo         Float
+  createdAt      DateTime     @default(now())
+
+  watchSession   WatchSession @relation(fields: [watchSessionId], references: [id], onDelete: Cascade)
+
+  @@index([watchSessionId])
+  @@index([watchSessionId, seekFrom])
+  @@map("seek_events")
 }

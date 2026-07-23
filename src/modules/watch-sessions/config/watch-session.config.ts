@@ -11,4 +11,4 @@ export const MAX_WATCHED_SECONDS = 86_400;
 export const MAX_PERCENT_WATCHED = 100;
 
 /** Maximum number of seek events stored per session per day */
-export const MAX_SEEK_EVENTS = 100;
+export const MAX_SEEK_EVENTS = 20;
