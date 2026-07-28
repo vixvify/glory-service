@@ -2,7 +2,7 @@ import {
   CreateMovieBodyDTO,
   UpdateMovieBodyDTO,
 } from "../../../modules/movies/domain/movie";
-import { MovieCrewInputItemWithRole } from "../transform/parser";
+import { MovieCrewInputItemWithRole } from "../../../modules/movies/parser";
 
 export function extractCrewInput(dto: CreateMovieBodyDTO | UpdateMovieBodyDTO) {
   const crew: MovieCrewInputItemWithRole[] = [];

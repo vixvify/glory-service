@@ -23,7 +23,7 @@ export class RatingFactory {
         description: rating.movie.description,
         thumbnail: rating.movie.thumbnail,
         youtubeUrl: rating.movie.youtubeUrl,
-        trailerUrl: rating.movie.trailerUrl || "",
+        trailerUrls: rating.movie.trailerUrls || [],
         categories: rating.movie.categories.map((c) => ({
           id: c.id,
           name: c.name,
@@ -40,8 +40,10 @@ export class RatingFactory {
         university: rating.movie.university,
         school: rating.movie.school,
         language: rating.movie.language,
-        hasProfanity: rating.movie.hasProfanity,
-        hasDrugs: rating.movie.hasDrugs,
+        subtitle: rating.movie.subtitle,
+        contentWarnings: rating.movie.contentWarnings || [],
+        otherContentWarning: rating.movie.otherContentWarning,
+        tags: rating.movie.tags || [],
         colorType: rating.movie.colorType,
         studio: rating.movie.studio,
         createdBy: rating.movie.createdBy,
@@ -49,7 +51,7 @@ export class RatingFactory {
         btsVideos: [],
         createdAt: rating.movie.createdAt,
         updatedAt: rating.movie.updatedAt,
-        awards: rating.movie.awards || [],
+        awards: [],
       },
     };
   }

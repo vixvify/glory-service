@@ -1,10 +1,12 @@
 import { t, Static } from "elysia";
 import { Rating } from "../../ratings/domain/rating";
+import { tArrayCoerce } from "../../../core/utils/transform/parser";
 import {
-  tArrayCoerce,
   tCrewInputCoerce,
   MovieCrewInputItemWithRole,
-} from "../../../core/utils/transform/parser";
+  Award,
+  tAwardArrayCoerce,
+} from "../parser";
 import { User } from "../../auth/domain/auth";
 import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
@@ -49,7 +51,7 @@ export interface Movie {
   categories: Category[];
   thumbnail: string;
   youtubeUrl: string;
-  trailerUrl?: string | null;
+  trailerUrls?: string[];
   views: number;
   ratings: Rating[];
   releaseDate: Date;
@@ -61,8 +63,10 @@ export interface Movie {
   university?: string | null;
   school?: string | null;
   language?: string | null;
-  hasProfanity: boolean;
-  hasDrugs: boolean;
+  subtitle?: string | null;
+  contentWarnings: string[];
+  otherContentWarning?: string | null;
+  tags?: string[];
   colorType: string;
   studio?: string | null;
   createdBy: string;
@@ -71,7 +75,7 @@ export interface Movie {
   btsVideos: string[];
   createdAt: Date;
   updatedAt: Date;
-  awards: string[];
+  awards: Award[];
 }
 
 export interface CreateMovieInput {
@@ -79,7 +83,7 @@ export interface CreateMovieInput {
   description: string;
   thumbnail: string;
   youtubeUrl: string;
-  trailerUrl?: string | null;
+  trailerUrls?: string[];
   categories: {
     connect: Array<{ id: string }>;
   };
@@ -91,13 +95,17 @@ export interface CreateMovieInput {
   university?: string | null;
   school?: string | null;
   language?: string | null;
-  hasProfanity?: boolean;
-  hasDrugs?: boolean;
+  subtitle?: string | null;
+  contentWarnings?: string[];
+  otherContentWarning?: string | null;
+  tags?: string[];
   colorType: string;
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
-  awards?: string[];
+  awards?: {
+    create: { projectName: string; awardName: string }[];
+  };
 }
 
 export interface UpdateMovieInput {
@@ -105,7 +113,7 @@ export interface UpdateMovieInput {
   description: string;
   thumbnail: string;
   youtubeUrl: string;
-  trailerUrl?: string | null;
+  trailerUrls?: string[];
   categories?: {
     set: Array<{ id: string }>;
   };
@@ -117,12 +125,17 @@ export interface UpdateMovieInput {
   university?: string | null;
   school?: string | null;
   language?: string | null;
-  hasProfanity?: boolean;
-  hasDrugs?: boolean;
+  subtitle?: string | null;
+  contentWarnings?: string[];
+  otherContentWarning?: string | null;
+  tags?: string[];
   colorType: string;
   studio?: string | null;
   btsVideos?: string[];
-  awards?: string[];
+  awards?: {
+    deleteMany: {};
+    create: { projectName: string; awardName: string }[];
+  };
 }
 
 export const createMovieBodySchema = t.Object({
@@ -131,7 +144,7 @@ export const createMovieBodySchema = t.Object({
   categoryIds: tArrayCoerce,
   thumbnail: t.File(),
   youtubeUrl: t.String(),
-  trailerUrl: t.Optional(t.String()),
+  trailerUrls: t.Optional(tArrayCoerce),
   releaseDate: t.String(),
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
@@ -139,8 +152,10 @@ export const createMovieBodySchema = t.Object({
   university: t.Optional(t.String()),
   school: t.Optional(t.String()),
   language: t.Optional(t.String()),
-  hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
-  hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
+  subtitle: t.Optional(t.String()),
+  contentWarnings: t.Optional(tArrayCoerce),
+  otherContentWarning: t.Optional(t.String()),
+  tags: t.Optional(tArrayCoerce),
   colorType: t.Union([
     t.Literal("color"),
     t.Literal("black_and_white"),
@@ -149,7 +164,7 @@ export const createMovieBodySchema = t.Object({
   studio: t.Optional(t.String()),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
-  awards: t.Optional(tArrayCoerce),
+  awards: t.Optional(tAwardArrayCoerce),
 });
 export type CreateMovieBodyDTO = Static<typeof createMovieBodySchema>;
 
@@ -164,7 +179,7 @@ export const updateMovieBodySchema = t.Object({
   categoryIds: tArrayCoerce,
   thumbnail: t.Union([t.File(), t.String()]),
   youtubeUrl: t.String(),
-  trailerUrl: t.Optional(t.String()),
+  trailerUrls: t.Optional(tArrayCoerce),
   releaseDate: t.String(),
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
@@ -172,8 +187,10 @@ export const updateMovieBodySchema = t.Object({
   university: t.Optional(t.String()),
   school: t.Optional(t.String()),
   language: t.Optional(t.String()),
-  hasProfanity: t.Optional(t.Union([t.Boolean(), t.String()])),
-  hasDrugs: t.Optional(t.Union([t.Boolean(), t.String()])),
+  subtitle: t.Optional(t.String()),
+  contentWarnings: t.Optional(tArrayCoerce),
+  otherContentWarning: t.Optional(t.String()),
+  tags: t.Optional(tArrayCoerce),
   colorType: t.Union([
     t.Literal("color"),
     t.Literal("black_and_white"),
@@ -182,7 +199,7 @@ export const updateMovieBodySchema = t.Object({
   studio: t.Optional(t.String()),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
-  awards: t.Optional(tArrayCoerce),
+  awards: t.Optional(tAwardArrayCoerce),
 });
 export type UpdateMovieBodyDTO = Static<typeof updateMovieBodySchema>;
 
@@ -308,6 +325,7 @@ export const movieIncludes = {
       },
     },
   },
+  awards: true,
 } satisfies Prisma.MovieInclude;
 
 export type PrismaMovieWithRelations = Prisma.MovieGetPayload<{

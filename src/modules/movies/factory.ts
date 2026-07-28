@@ -5,8 +5,14 @@ import {
 } from "./domain/movie";
 import { Rating } from "../ratings/domain/rating";
 import { Role } from "../auth/domain/auth";
-
+import { ROLE_ORDER } from "../../core/constants/crew";
 export class MovieFactory {
+  static toAwardPersistence(awards?: { projectName: string; awardList?: string[] }[]): { projectName: string; awardName: string }[] {
+    return (awards ?? []).flatMap((p) =>
+      (p.awardList ?? []).map((name) => ({ projectName: p.projectName, awardName: name }))
+    );
+  }
+
   static toDomain(movie: PrismaMovieWithRelations): DtoMovie {
     const categoriesSnapshot = movie.categories.map((c) => ({
       id: c.id,
@@ -36,15 +42,16 @@ export class MovieFactory {
               description: movie.description,
               thumbnail: movie.thumbnail,
               youtubeUrl: movie.youtubeUrl || "",
-              trailerUrl: movie.trailerUrl || "",
+              trailerUrls: movie.trailerUrls || [],
               views: movie.views,
               releaseDate: movie.releaseDate,
               matchRate: movie.matchRate,
               averageRating: movie.averageRating,
               aspectRatio: movie.aspectRatio,
               duration: movie.duration,
-              hasProfanity: movie.hasProfanity,
-              hasDrugs: movie.hasDrugs,
+              contentWarnings: movie.contentWarnings || [],
+              otherContentWarning: movie.otherContentWarning,
+              tags: movie.tags || [],
               colorType: movie.colorType,
               studio: movie.studio,
               createdBy: movie.createdBy,
@@ -53,11 +60,23 @@ export class MovieFactory {
               university: movie.university,
               school: movie.school,
               language: movie.language,
+              subtitle: movie.subtitle,
               crew: [] as MovieCrew[],
               btsVideos: [] as string[],
               createdAt: movie.createdAt,
               updatedAt: movie.updatedAt,
-              awards: movie.awards || [],
+              awards: (movie.awards ?? []).reduce<{ projectName: string; awardList: string[] }[]>(
+                (acc, item) => {
+                  const project = acc.find((p) => p.projectName === item.projectName);
+                  if (project) {
+                    project.awardList.push(item.awardName);
+                  } else {
+                    acc.push({ projectName: item.projectName, awardList: [item.awardName] });
+                  }
+                  return acc;
+                },
+                []
+              ),
             },
           }),
         )
@@ -75,6 +94,7 @@ export class MovieFactory {
                 id: c.crewRole.id,
                 name: c.crewRole.name,
                 labelTh: c.crewRole.labelTh,
+                labelEn: c.crewRole.labelEn,
                 category: c.crewRole.category,
                 categoryLabelTh: c.crewRole.categoryLabelTh,
                 createdAt: c.crewRole.createdAt,
@@ -113,23 +133,9 @@ export class MovieFactory {
           updatedAt: c.updatedAt,
         }))
       : [];
-
-    const roleOrder: Record<string, number> = {
-      DIRECTOR: 1,
-      SCREENWRITER: 2,
-      PRODUCER: 3,
-      EDITOR: 4,
-      LEAD_ACTOR: 5,
-      ASSISTANT_DIRECTOR: 6,
-      SCRIPT_SUPERVISOR: 7,
-      PRODUCTION_MANAGER: 8,
-      COLORIST: 9,
-      SUPPORTING_ACTOR: 10,
-    };
-
     crew.sort((a, b) => {
-      const weightA = roleOrder[a.role.toUpperCase()] || 99;
-      const weightB = roleOrder[b.role.toUpperCase()] || 99;
+      const weightA = ROLE_ORDER[a.role.toUpperCase()] || 99;
+      const weightB = ROLE_ORDER[b.role.toUpperCase()] || 99;
       if (weightA !== weightB) {
         return weightA - weightB;
       }
@@ -143,7 +149,7 @@ export class MovieFactory {
       categories: categoriesSnapshot,
       thumbnail: movie.thumbnail,
       youtubeUrl: movie.youtubeUrl || "",
-      trailerUrl: movie.trailerUrl || "",
+      trailerUrls: movie.trailerUrls || [],
       views: movie.views,
       ratings,
       releaseDate: movie.releaseDate,
@@ -155,8 +161,10 @@ export class MovieFactory {
       university: movie.university,
       school: movie.school,
       language: movie.language,
-      hasProfanity: movie.hasProfanity,
-      hasDrugs: movie.hasDrugs,
+      subtitle: movie.subtitle,
+      contentWarnings: movie.contentWarnings || [],
+      otherContentWarning: movie.otherContentWarning,
+      tags: movie.tags || [],
       colorType: movie.colorType,
       studio: movie.studio,
       createdBy: movie.createdBy,
@@ -172,7 +180,18 @@ export class MovieFactory {
       btsVideos: movie.btsVideos || [],
       createdAt: movie.createdAt,
       updatedAt: movie.updatedAt,
-      awards: movie.awards || [],
+      awards: (movie.awards ?? []).reduce<{ projectName: string; awardList: string[] }[]>(
+        (acc, item) => {
+          const project = acc.find((p) => p.projectName === item.projectName);
+          if (project) {
+            project.awardList.push(item.awardName);
+          } else {
+            acc.push({ projectName: item.projectName, awardList: [item.awardName] });
+          }
+          return acc;
+        },
+        []
+      ),
     };
   }
 

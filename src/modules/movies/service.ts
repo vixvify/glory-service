@@ -11,13 +11,16 @@ import {
 import { MovieRepository } from "./domain/movie.repository";
 import { CrewMemberRepository } from "../crew-members/domain/crew-member.repository";
 import { MovieCrewRepository } from "./domain/movie-crew.repository";
+
 import { AuthRepository } from "../auth/domain/auth.repository";
 import { MovieFactory } from "./factory";
 import { uploadToR2, deleteFromR2 } from "../../lib/r2";
 import { isDefaultQuery } from "../../core/utils/db/query";
-import { associateCrewBulk } from "../../lib/crew";
 import { getCachedOrFetch } from "../../core/utils/cache/cache";
 import { CacheKeys } from "../../core/utils/cache/cache-key";
+import { MasterDataRepository } from "../master-data/domain/masterdata.repository";
+import { AssociateCrewBulkInput } from "./domain/movie";
+import { MovieCrewInputItem } from "./parser";
 import { invalidateCache } from "../../core/utils/cache/invalidate-cache";
 import { toBoolean } from "../../core/utils/transform/coerce";
 import { extractCrewInput } from "../../core/utils/movie/movie-crew";
@@ -29,6 +32,7 @@ export class MovieService {
     private crewMemberRepo: CrewMemberRepository,
     private movieCrewRepo: MovieCrewRepository,
     private authRepo: AuthRepository,
+    private masterDataRepo: MasterDataRepository,
   ) {}
 
   async getMovies(dto?: GetMoviesQueryDTO): Promise<Movie[]> {
@@ -156,7 +160,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
 
       const input: CreateMovieInput = {
         ...restDto,
@@ -164,28 +168,29 @@ export class MovieService {
         releaseDate,
         duration: Number(dto.duration),
         matchRate: 100,
-        hasProfanity: toBoolean(dto.hasProfanity),
-        hasDrugs: toBoolean(dto.hasDrugs),
+        contentWarnings: dto.contentWarnings || [],
+        otherContentWarning: dto.otherContentWarning || null,
+        tags: dto.tags || [],
+        subtitle: dto.subtitle || null,
+        trailerUrls: dto.trailerUrls || [],
         createdBy: userId,
         btsVideos,
         categories: {
           connect: (categoryIds || []).map((id) => ({ id })),
         },
+        awards: {
+          create: MovieFactory.toAwardPersistence(_awards),
+        }
       };
 
       const movieRecord = await this.repo.create(input);
 
-      await associateCrewBulk(
+      await this.associateCrewBulk(
         {
           movieId: movieRecord.id,
           crew,
         },
         userId,
-        {
-          crewMemberRepo: this.crewMemberRepo,
-          movieCrewRepo: this.movieCrewRepo,
-          authRepo: this.authRepo,
-        },
       );
 
       const movie = await this.repo.findById(movieRecord.id);
@@ -231,7 +236,7 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, ...restDto } = dto;
+      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
 
       const input: UpdateMovieInput = {
         ...restDto,
@@ -240,23 +245,29 @@ export class MovieService {
         duration: Number(dto.duration),
         matchRate: existing.matchRate,
         btsVideos,
-        hasProfanity: toBoolean(dto.hasProfanity),
-        hasDrugs: toBoolean(dto.hasDrugs),
+        contentWarnings: dto.contentWarnings || [],
+        otherContentWarning: dto.otherContentWarning || null,
+        tags: dto.tags || [],
+        subtitle: dto.subtitle || null,
+        trailerUrls: dto.trailerUrls || [],
         university: dto.university || null,
         school: dto.school || null,
         language: dto.language || null,
         categories: {
           set: (categoryIds || []).map((id) => ({ id })),
         },
+        awards: {
+          deleteMany: {},
+          create: MovieFactory.toAwardPersistence(_awards),
+        }
       };
 
       await this.repo.update(id, input);
 
-      await associateCrewBulk({ movieId: id, crew }, userId, {
-        crewMemberRepo: this.crewMemberRepo,
-        movieCrewRepo: this.movieCrewRepo,
-        authRepo: this.authRepo,
-      });
+      await this.associateCrewBulk(
+        { movieId: id, crew },
+        userId,
+      );
 
       const movie = await this.repo.findById(id);
       if (!movie) {
@@ -291,5 +302,185 @@ export class MovieService {
     } catch (error: unknown) {
       handleServiceError(error, "Failed to delete movie");
     }
+  }
+
+  private async associateCrewBulk(
+    input: AssociateCrewBulkInput,
+    createdBy: string,
+  ): Promise<void> {
+    const { movieId, crew } = input;
+
+    const items: Array<{ item: MovieCrewInputItem; role: string }> = [];
+
+    for (const val of crew) {
+      if (
+        val &&
+        val.role &&
+        (val.crewMemberId || (val.name && val.name.trim()))
+      ) {
+        items.push({
+          item: {
+            crewMemberId: val.crewMemberId,
+            name: val.name,
+            email: val.email,
+          },
+          role: val.role.trim().toUpperCase(),
+        });
+      }
+    }
+
+    if (items.length === 0) return;
+
+    const crewIdMap = new Map<string, string>();
+
+    const explicitIds = Array.from(
+      new Set(
+        items.map((x) => x.item.crewMemberId).filter((id): id is string => !!id),
+      ),
+    );
+
+    if (explicitIds.length > 0) {
+      const existingMembers = await this.crewMemberRepo.findManyByIds(explicitIds);
+
+      if (existingMembers.length !== explicitIds.length) {
+        const foundUuids = new Set(existingMembers.map((m) => m.id));
+        const missing = explicitIds.find((id) => !foundUuids.has(id));
+        throw new NotFoundError(`Crew member with ID ${missing} not found`);
+      }
+
+      for (const m of existingMembers) {
+        crewIdMap.set(m.id, m.id);
+      }
+    }
+
+    const itemsToResolve = items.filter((i) => !i.item.crewMemberId);
+
+    if (itemsToResolve.length > 0) {
+      const uniqueEmails = [
+        ...new Set(
+          itemsToResolve
+            .map((i) => i.item.email?.trim().toLowerCase())
+            .filter((e): e is string => !!e),
+        ),
+      ];
+      const uniqueNames = [
+        ...new Set(
+          itemsToResolve
+            .map((i) => i.item.name?.trim())
+            .filter((n): n is string => !!n),
+        ),
+      ];
+
+      const [byEmailBatch, byNameBatch] = await Promise.all([
+        uniqueEmails.length > 0
+          ? this.crewMemberRepo.findManyByEmails(uniqueEmails)
+          : [],
+        uniqueNames.length > 0 ? this.crewMemberRepo.findManyByNames(uniqueNames) : [],
+      ]);
+
+      const emailMap = new Map(
+        byEmailBatch.map((m) => [m.email?.toLowerCase() ?? "", m]),
+      );
+      const nameMap = new Map(byNameBatch.map((m) => [m.name, m]));
+
+      const emailsNeedingUserLink = byEmailBatch
+        .filter((m) => !m.email || !m.userId)
+        .map((m) => m.email?.toLowerCase() ?? "")
+        .filter(Boolean);
+
+      const allEmailsForUserLookup = [
+        ...new Set([...uniqueEmails, ...emailsNeedingUserLink]),
+      ];
+      const usersByEmail = new Map<string, string>();
+      if (allEmailsForUserLookup.length > 0) {
+        await Promise.all(
+          allEmailsForUserLookup.map(async (email) => {
+            const user = await this.authRepo.findByEmail(email);
+            if (user) usersByEmail.set(email, user.id);
+          }),
+        );
+      }
+
+      for (const { item } of itemsToResolve) {
+        const email = item.email?.trim().toLowerCase() || "";
+        const name = item.name?.trim() || "";
+
+        if (!name) continue;
+
+        let memberId = "";
+
+        if (email) {
+          const byEmail = emailMap.get(email);
+          if (byEmail) {
+            memberId = byEmail.id;
+            if (!byEmail.email && email) {
+              const userId = usersByEmail.get(email) ?? null;
+              await this.crewMemberRepo.update(byEmail.id, {
+                name: byEmail.name,
+                email,
+                userId,
+              });
+            }
+          }
+        }
+
+        if (!memberId) {
+          const byName = nameMap.get(name);
+          if (byName) {
+            memberId = byName.id;
+            if (!byName.email && email) {
+              const userId = usersByEmail.get(email) ?? null;
+              await this.crewMemberRepo.update(byName.id, {
+                name: byName.name,
+                email,
+                userId,
+              });
+            }
+          }
+        }
+
+        if (!memberId) {
+          const userId = email ? (usersByEmail.get(email) ?? null) : null;
+          const created = await this.crewMemberRepo.create({
+            name,
+            email: email || null,
+            userId,
+            createdBy,
+          });
+          memberId = created.id;
+        }
+
+        const itemKey = email ? `email:${email}` : `name:${name}`;
+        crewIdMap.set(itemKey, memberId);
+      }
+    }
+
+    const dbCrewRoles = await this.masterDataRepo.getCrewRoles();
+    const crewRoleMap = new Map(
+      dbCrewRoles.map((cr) => [cr.name.toUpperCase(), cr.id]),
+    );
+
+    const movieCrewsData = items.map((item) => {
+      let itemKey = "";
+      if (item.item.crewMemberId) {
+        itemKey = item.item.crewMemberId;
+      } else {
+        const email = item.item.email?.trim().toLowerCase() || "";
+        const name = item.item.name?.trim() || "";
+        itemKey = email ? `email:${email}` : `name:${name}`;
+      }
+
+      const crewMemberId = crewIdMap.get(itemKey);
+      if (!crewMemberId) {
+        throw new Error(`Failed to map crew member for key: ${itemKey}`);
+      }
+      const roleId = crewRoleMap.get(item.role.toUpperCase());
+      if (!roleId) {
+        throw new Error(`Role ID not found for role: ${item.role}`);
+      }
+      return { movieId, crewMemberId, roleId };
+    });
+
+    await this.movieCrewRepo.replaceMovieCrew(movieId, movieCrewsData);
   }
 }

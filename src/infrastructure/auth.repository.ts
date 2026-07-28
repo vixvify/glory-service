@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma";
 import { CreateUserInput } from "../modules/auth/domain/auth";
 import { AuthRepository } from "../modules/auth/domain/auth.repository";
-import { User as PrismaUser } from "@prisma/client";
+import { User as PrismaUser, Prisma } from "@prisma/client";
 import { AuthUserSelect } from "../modules/auth/domain/auth";
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -34,6 +34,13 @@ export class AuthRepositoryImpl implements AuthRepository {
         password: passwordHash,
         role: "user",
       },
+    });
+  }
+
+  async updateById(id: string, data: Prisma.UserUpdateInput): Promise<PrismaUser> {
+    return prisma.user.update({
+      where: { id },
+      data,
     });
   }
 }

@@ -128,7 +128,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       include: movieIncludes,
       where: {
         awards: {
-          isEmpty: false,
+          some: {},
         },
       },
     });
@@ -148,14 +148,14 @@ export class MovieRepositoryImpl implements MovieRepository {
 
   async create(input: CreateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.create({
-      data: input,
+      data: input as unknown as Prisma.MovieCreateInput,
     });
   }
 
   async update(id: string, input: UpdateMovieInput): Promise<PrismaMovie> {
     return prisma.movie.update({
       where: { id },
-      data: input,
+      data: input as unknown as Prisma.MovieUpdateInput,
     });
   }
 
