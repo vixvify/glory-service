@@ -150,6 +150,16 @@ export class AuthService {
       const user = await this.repo.findById(userId);
       if (!user) throw new NotFoundError("User not found");
 
+      let photoUrl: string | undefined = undefined;
+      if (dto.photo) {
+        photoUrl = await uploadToR2(dto.photo, "users");
+      }
+
+      let coverUrl: string | undefined = undefined;
+      if (dto.coverPhoto) {
+        coverUrl = await uploadToR2(dto.coverPhoto, "users");
+      }
+
       const updated = await this.repo.updateById(userId, {
         name: dto.name,
         motto: dto.motto,
@@ -163,6 +173,8 @@ export class AuthService {
         easyDonate: dto.easyDonate,
         birthday: dto.birthday ? new Date(dto.birthday) : undefined,
         positions: dto.positions,
+        ...(photoUrl && { photoUrl }),
+        ...(coverUrl && { coverUrl }),
       });
 
       return AuthFactory.toDomainUser(updated);

@@ -53,7 +53,7 @@ export const authRouter = new Elysia({ prefix: "/auth" })
     },
   )
   .patch(
-    "/me",
+    "/profile",
     async ({ user, body }) => {
       const updatedUser = await authService.updateProfile(user!.id, body);
       return formatSuccess(updatedUser);
