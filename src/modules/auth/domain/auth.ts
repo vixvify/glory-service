@@ -12,6 +12,7 @@ export interface User {
   email: string;
   role: Role | "admin" | "user";
   photoUrl?: string | null;
+  coverUrl?: string | null;
   motto?: string | null;
   bio?: string | null;
   ig?: string | null;
@@ -80,6 +81,7 @@ export const AuthUserSelect = {
   role: true,
   createdAt: true,
   photoUrl: true,
+  coverUrl: true,
   motto: true,
   bio: true,
   ig: true,
@@ -107,6 +109,8 @@ export const updateProfileSchema = t.Object({
   easyDonate: t.Optional(t.String()),
   birthday: t.Optional(t.String()),
   positions: t.Optional(tArrayCoerce),
+  photo: t.Optional(t.File()),
+  coverPhoto: t.Optional(t.File()),
 });
 
 export type UpdateProfileDTO = Static<typeof updateProfileSchema>;
