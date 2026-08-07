@@ -160,7 +160,17 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
+      const {
+        crew: _crew,
+        btsVideo,
+        categoryIds,
+        contentWarningIds,
+        tags,
+        awards: _awards,
+        ...restDto
+      } = dto;
+
+      const tagIds = await this.masterDataRepo.upsertTags(tags || []);
 
       const input: CreateMovieInput = {
         ...restDto,
@@ -168,19 +178,24 @@ export class MovieService {
         releaseDate,
         duration: Number(dto.duration),
         matchRate: 100,
-        contentWarnings: dto.contentWarnings || [],
         otherContentWarning: dto.otherContentWarning || null,
-        tags: dto.tags || [],
-        subtitle: dto.subtitle || null,
         trailerUrls: dto.trailerUrls || [],
         createdBy: userId,
         btsVideos,
         categories: {
           connect: (categoryIds || []).map((id) => ({ id })),
         },
+        contentWarnings: contentWarningIds
+          ? {
+              connect: contentWarningIds.map((id) => ({ id })),
+            }
+          : undefined,
+        tags: {
+          connect: tagIds.map((id) => ({ id })),
+        },
         awards: {
           create: MovieFactory.toAwardPersistence(_awards),
-        }
+        },
       };
 
       const movieRecord = await this.repo.create(input);
@@ -236,7 +251,23 @@ export class MovieService {
         }
       }
 
-      const { crew: _crew, btsVideo, categoryIds, awards: _awards, ...restDto } = dto;
+      const {
+        crew: _crew,
+        btsVideo,
+        categoryIds,
+        contentWarningIds,
+        tags,
+        awards: _awards,
+        ...restDto
+      } = dto;
+
+      let tagConnect: { set: Array<{ id: string }> } | undefined;
+      if (tags !== undefined) {
+        const tagIds = await this.masterDataRepo.upsertTags(tags);
+        tagConnect = {
+          set: tagIds.map((id) => ({ id })),
+        };
+      }
 
       const input: UpdateMovieInput = {
         ...restDto,
@@ -245,29 +276,27 @@ export class MovieService {
         duration: Number(dto.duration),
         matchRate: existing.matchRate,
         btsVideos,
-        contentWarnings: dto.contentWarnings || [],
         otherContentWarning: dto.otherContentWarning || null,
-        tags: dto.tags || [],
-        subtitle: dto.subtitle || null,
         trailerUrls: dto.trailerUrls || [],
-        university: dto.university || null,
-        school: dto.school || null,
-        language: dto.language || null,
         categories: {
           set: (categoryIds || []).map((id) => ({ id })),
         },
+        contentWarnings:
+          contentWarningIds !== undefined
+            ? {
+                set: (contentWarningIds || []).map((id) => ({ id })),
+              }
+            : undefined,
+        tags: tagConnect,
         awards: {
           deleteMany: {},
           create: MovieFactory.toAwardPersistence(_awards),
-        }
+        },
       };
 
       await this.repo.update(id, input);
 
-      await this.associateCrewBulk(
-        { movieId: id, crew },
-        userId,
-      );
+      await this.associateCrewBulk({ movieId: id, crew }, userId);
 
       const movie = await this.repo.findById(id);
       if (!movie) {
@@ -335,12 +364,15 @@ export class MovieService {
 
     const explicitIds = Array.from(
       new Set(
-        items.map((x) => x.item.crewMemberId).filter((id): id is string => !!id),
+        items
+          .map((x) => x.item.crewMemberId)
+          .filter((id): id is string => !!id),
       ),
     );
 
     if (explicitIds.length > 0) {
-      const existingMembers = await this.crewMemberRepo.findManyByIds(explicitIds);
+      const existingMembers =
+        await this.crewMemberRepo.findManyByIds(explicitIds);
 
       if (existingMembers.length !== explicitIds.length) {
         const foundUuids = new Set(existingMembers.map((m) => m.id));
@@ -375,7 +407,9 @@ export class MovieService {
         uniqueEmails.length > 0
           ? this.crewMemberRepo.findManyByEmails(uniqueEmails)
           : [],
-        uniqueNames.length > 0 ? this.crewMemberRepo.findManyByNames(uniqueNames) : [],
+        uniqueNames.length > 0
+          ? this.crewMemberRepo.findManyByNames(uniqueNames)
+          : [],
       ]);
 
       const emailMap = new Map(

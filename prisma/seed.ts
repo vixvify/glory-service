@@ -18,6 +18,14 @@ async function main() {
   await prisma.crewMember.deleteMany();
   await prisma.crewRole.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.ageRating.deleteMany();
+  await prisma.university.deleteMany();
+  await prisma.school.deleteMany();
+  await prisma.language.deleteMany();
+  await prisma.subtitle.deleteMany();
+  await prisma.contentWarning.deleteMany();
+  await prisma.colorType.deleteMany();
+  await prisma.tag.deleteMany();
 
   console.log("Syncing default user...");
   let defaultUser = await prisma.user.findFirst({
@@ -241,6 +249,53 @@ async function main() {
     dbCrewRoles.map((cr) => [cr.name.toLowerCase(), cr.id]),
   );
 
+  console.log("Seeding relation tables...");
+
+  const ageRatingsList = ["G", "PG", "PG-13", "NC-17", "R"];
+  await prisma.ageRating.createMany({
+    data: ageRatingsList.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbAgeRatings = await prisma.ageRating.findMany();
+  const ageRatingMap = new Map(dbAgeRatings.map((r) => [r.name.toUpperCase(), r.id]));
+
+  await prisma.university.createMany({
+    data: universities.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbUniversities = await prisma.university.findMany();
+  const universityMap = new Map(dbUniversities.map((u) => [u.name.toUpperCase(), u.id]));
+
+  await prisma.school.createMany({
+    data: schools.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbSchools = await prisma.school.findMany();
+  const schoolMap = new Map(dbSchools.map((s) => [s.name.toUpperCase(), s.id]));
+
+  await prisma.language.createMany({
+    data: languages.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbLanguages = await prisma.language.findMany();
+  const languageMap = new Map(dbLanguages.map((l) => [l.name.toUpperCase(), l.id]));
+
+  const colorTypesList = ["color", "black_and_white", "color_and_bw"];
+  await prisma.colorType.createMany({
+    data: colorTypesList.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbColorTypes = await prisma.colorType.findMany();
+  const colorTypeMap = new Map(dbColorTypes.map((c) => [c.name.toLowerCase(), c.id]));
+
+  const contentWarningsList = ["PROFANITY", "DRUGS"];
+  await prisma.contentWarning.createMany({
+    data: contentWarningsList.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+  const dbContentWarnings = await prisma.contentWarning.findMany();
+  const contentWarningMap = new Map(dbContentWarnings.map((cw) => [cw.name.toUpperCase(), cw.id]));
+
   console.log("Gathering unique crew members...");
   const uniqueCrew = new Set<string>();
 
@@ -411,6 +466,23 @@ async function main() {
       ]
     } : undefined;
 
+    const ageRatingId = ageRatingMap.get(ageRating.toUpperCase());
+    if (!ageRatingId) throw new Error(`Age rating not found in map: ${ageRating}`);
+
+    const languageId = languageMap.get(language.toUpperCase());
+    if (!languageId) throw new Error(`Language not found in map: ${language}`);
+
+    const colorTypeId = colorTypeMap.get(colorType.toLowerCase());
+    if (!colorTypeId) throw new Error(`Color type not found in map: ${colorType}`);
+
+    const universityId = university ? universityMap.get(university.toUpperCase()) : null;
+    const schoolId = school ? schoolMap.get(school.toUpperCase()) : null;
+
+    const contentWarningConnect = [
+      ...(hasProfanity ? [{ id: contentWarningMap.get("PROFANITY")! }] : []),
+      ...(hasDrugs ? [{ id: contentWarningMap.get("DRUGS")! }] : []),
+    ];
+
     await prisma.movie.create({
       data: {
         id: movieId,
@@ -427,17 +499,18 @@ async function main() {
         views: movie.views || 0,
         matchRate: movie.matchRate || 100,
         aspectRatio: idx < 40 && idx >= 30 ? "portrait" : "landscape",
-        ageRating,
-        university,
-        language,
-        school,
-        contentWarnings: [
-          ...(hasProfanity ? ['PROFANITY'] : []),
-          ...(hasDrugs ? ['DRUGS'] : [])
-        ],
-        colorType,
+        ageRating: { connect: { id: ageRatingId } },
+        colorType: { connect: { id: colorTypeId } },
+        university: universityId ? { connect: { id: universityId } } : undefined,
+        school: schoolId ? { connect: { id: schoolId } } : undefined,
+        language: languageId ? { connect: { id: languageId } } : undefined,
+        contentWarnings: {
+          connect: contentWarningConnect
+        },
         studio,
-        createdBy: defaultUserId,
+        creator: {
+          connect: { id: defaultUserId },
+        },
         btsVideos,
         ...(awards ? { awards } : {}),
       },

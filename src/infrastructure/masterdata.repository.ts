@@ -31,6 +31,13 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
     );
   }
 
+  async getSchools(): Promise<string[]> {
+    const dbSchools = await prisma.school.findMany({
+      orderBy: { name: "asc" },
+    });
+    return dbSchools.map((s) => s.name);
+  }
+
   async getCrewRoles(): Promise<CrewRole[]> {
     return prisma.crewRole.findMany({
       orderBy: { name: "asc" },
@@ -43,21 +50,48 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getMostActiveUniversity(): Promise<string | null> {
     const result = await prisma.movie.groupBy({
-      by: ["university"],
+      by: ["universityId"],
       _count: {
-        university: true,
+        universityId: true,
       },
       where: {
-        university: { not: null },
+        universityId: { not: null },
       },
       orderBy: {
         _count: {
-          university: "desc",
+          universityId: "desc",
         },
       },
       take: 1,
     });
 
-    return result[0]?.university || null;
+    const activeId = result[0]?.universityId;
+    if (!activeId) return null;
+
+    const university = await prisma.university.findUnique({
+      where: { id: activeId },
+      select: { name: true },
+    });
+
+    return university?.name || null;
+  }
+
+  async upsertTags(names: string[]): Promise<string[]> {
+    if (!names || names.length === 0) return [];
+    const uniqueNames = Array.from(
+      new Set(names.map((n) => n.trim()).filter(Boolean)),
+    );
+
+    const tagRecords = await Promise.all(
+      uniqueNames.map((name) =>
+        prisma.tag.upsert({
+          where: { name },
+          update: {},
+          create: { name },
+          select: { id: true },
+        }),
+      ),
+    );
+    return tagRecords.map((t) => t.id);
   }
 }
