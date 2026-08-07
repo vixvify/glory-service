@@ -6,6 +6,7 @@ import {
   CrewRole,
   DataGoUniversityResponse,
   UniversityRecord,
+  MasterDataItem,
 } from "../modules/master-data/domain/masterdata";
 import axios from "axios";
 
@@ -16,26 +17,46 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
     });
   }
 
-  async getUniversities(): Promise<string[]> {
-    const response = await axios.get<DataGoUniversityResponse>(
-      process.env.GET_UNIVERSITY_URL!,
-      {
-        headers: {
-          "api-key": process.env.DATA_GO_TOKEN!,
-        },
-      },
-    );
-
-    return response.data.result.records.map(
-      (university) => university.UNIV_NAME,
-    );
-  }
-
-  async getSchools(): Promise<string[]> {
-    const dbSchools = await prisma.school.findMany({
+  async getUniversities(): Promise<MasterDataItem[]> {
+    return prisma.university.findMany({
       orderBy: { name: "asc" },
     });
-    return dbSchools.map((s) => s.name);
+  }
+
+  async getSchools(): Promise<MasterDataItem[]> {
+    return prisma.school.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getLanguages(): Promise<MasterDataItem[]> {
+    return prisma.language.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getSubtitles(): Promise<MasterDataItem[]> {
+    return prisma.subtitle.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getColorTypes(): Promise<MasterDataItem[]> {
+    return prisma.colorType.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getContentWarnings(): Promise<MasterDataItem[]> {
+    return prisma.contentWarning.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getAgeRatings(): Promise<MasterDataItem[]> {
+    return prisma.ageRating.findMany({
+      orderBy: { name: "asc" },
+    });
   }
 
   async getCrewRoles(): Promise<CrewRole[]> {

@@ -1,5 +1,5 @@
 import { MasterDataRepository } from "./domain/masterdata.repository";
-import { Category, Language, CrewRole } from "./domain/masterdata";
+import { Category, CrewRole, MasterDataItem } from "./domain/masterdata";
 import { ROLE_ORDER } from "../../core/constants/crew";
 import { handleServiceError } from "../../core/utils/error/handle-error";
 
@@ -14,7 +14,7 @@ export class MasterDataService {
     }
   }
 
-  async getUniversities(): Promise<string[]> {
+  async getUniversities(): Promise<MasterDataItem[]> {
     try {
       return await this.repo.getUniversities();
     } catch (error: unknown) {
@@ -22,7 +22,7 @@ export class MasterDataService {
     }
   }
 
-  async getSchools(): Promise<string[]> {
+  async getSchools(): Promise<MasterDataItem[]> {
     try {
       return await this.repo.getSchools();
     } catch (error: unknown) {
@@ -30,13 +30,53 @@ export class MasterDataService {
     }
   }
 
+  async getLanguages(): Promise<MasterDataItem[]> {
+    try {
+      return await this.repo.getLanguages();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get languages");
+    }
+  }
+
+  async getSubtitles(): Promise<MasterDataItem[]> {
+    try {
+      return await this.repo.getSubtitles();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get subtitles");
+    }
+  }
+
+  async getColorTypes(): Promise<MasterDataItem[]> {
+    try {
+      return await this.repo.getColorTypes();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get color types");
+    }
+  }
+
+  async getContentWarnings(): Promise<MasterDataItem[]> {
+    try {
+      return await this.repo.getContentWarnings();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get content warnings");
+    }
+  }
+
+  async getAgeRatings(): Promise<MasterDataItem[]> {
+    try {
+      return await this.repo.getAgeRatings();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get age ratings");
+    }
+  }
+
   async getCrewRoles(): Promise<CrewRole[]> {
     try {
       const roles = await this.repo.getCrewRoles();
-      
+
       roles.sort((a, b) => {
-        const weightA = ROLE_ORDER[a.name.toUpperCase()] || 99;
-        const weightB = ROLE_ORDER[b.name.toUpperCase()] || 99;
+        const weightA = ROLE_ORDER[a.name.toUpperCase()];
+        const weightB = ROLE_ORDER[b.name.toUpperCase()];
         if (weightA !== weightB) {
           return weightA - weightB;
         }
