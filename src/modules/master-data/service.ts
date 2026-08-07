@@ -22,6 +22,14 @@ export class MasterDataService {
     }
   }
 
+  async getSchools(): Promise<string[]> {
+    try {
+      return await this.repo.getSchools();
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get schools");
+    }
+  }
+
   async getCrewRoles(): Promise<CrewRole[]> {
     try {
       const roles = await this.repo.getCrewRoles();

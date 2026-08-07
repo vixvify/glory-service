@@ -13,6 +13,10 @@ export const masterDataRouter = new Elysia({ prefix: "/masterdata" })
     const universities = await masterDataService.getUniversities();
     return formatSuccess(universities);
   })
+  .get("/schools", async () => {
+    const schools = await masterDataService.getSchools();
+    return formatSuccess(schools);
+  })
   .get("/crew-roles", async () => {
     const crewRoles = await masterDataService.getCrewRoles();
     return formatSuccess(crewRoles);
