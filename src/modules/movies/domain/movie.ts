@@ -12,19 +12,6 @@ import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import { Category, CrewRole } from "../../master-data/domain/masterdata";
 
-export enum ColorType {
-  COLOR = "color",
-  BLACK_AND_WHITE = "black_and_white",
-  COLOR_AND_BLACK_AND_WHITE = "color_and_bw",
-}
-
-export enum AgeRating {
-  G = "G",
-  PG = "PG",
-  PG_13 = "PG-13",
-  NC_17 = "NC-17",
-  R = "R",
-}
 
 export interface MovieCrew {
   id: string;
