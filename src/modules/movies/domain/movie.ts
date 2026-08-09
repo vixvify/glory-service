@@ -12,6 +12,17 @@ import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import { Category, CrewRole } from "../../master-data/domain/masterdata";
 
+const nullableUuidSchema = t.Transform(
+  t.Union([t.String({ format: "uuid" }), t.Literal("null"), t.Null()]),
+)
+  .Decode((value) => (value === "null" ? null : value))
+  .Encode((value) => value);
+
+const nullableStringSchema = t.Transform(
+  t.Union([t.String(), t.Literal("null"), t.Null()]),
+)
+  .Decode((value) => (value === "null" ? null : value))
+  .Encode((value) => value);
 
 export interface MovieCrew {
   id: string;
@@ -144,15 +155,15 @@ export const createMovieBodySchema = t.Object({
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
   ageRatingId: t.String({ format: "uuid" }),
-  universityId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
-  schoolId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  universityId: t.Optional(nullableUuidSchema),
+  schoolId: t.Optional(nullableUuidSchema),
   languageId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
   subtitleId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
   contentWarningIds: t.Optional(tArrayCoerce),
   otherContentWarning: t.Optional(t.String()),
   tags: t.Optional(tArrayCoerce),
   colorTypeId: t.String({ format: "uuid" }),
-  studio: t.Optional(t.String()),
+  studio: t.Optional(nullableStringSchema),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tAwardArrayCoerce),
@@ -175,15 +186,15 @@ export const updateMovieBodySchema = t.Object({
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
   ageRatingId: t.Optional(t.String({ format: "uuid" })),
-  universityId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
-  schoolId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  universityId: t.Optional(nullableUuidSchema),
+  schoolId: t.Optional(nullableUuidSchema),
   languageId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
   subtitleId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
   contentWarningIds: t.Optional(tArrayCoerce),
   otherContentWarning: t.Optional(t.String()),
   tags: t.Optional(tArrayCoerce),
   colorTypeId: t.Optional(t.String({ format: "uuid" })),
-  studio: t.Optional(t.String()),
+  studio: t.Optional(nullableStringSchema),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tAwardArrayCoerce),
