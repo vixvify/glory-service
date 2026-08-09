@@ -220,6 +220,20 @@ export type GetMoviesByUniversityParamsDTO = Static<
   typeof getMoviesByUniversityParamsSchema
 >;
 
+export const getMoviesBySchoolParamsSchema = t.Object({
+  school: t.String(),
+});
+export type GetMoviesBySchoolParamsDTO = Static<
+  typeof getMoviesBySchoolParamsSchema
+>;
+
+export const getMoviesByStudioParamsSchema = t.Object({
+  studio: t.String(),
+});
+export type GetMoviesByStudioParamsDTO = Static<
+  typeof getMoviesByStudioParamsSchema
+>;
+
 export const deleteMovieParamsSchema = t.Object({
   id: t.String({ format: "uuid" }),
 });

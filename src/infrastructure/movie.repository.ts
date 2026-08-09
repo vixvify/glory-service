@@ -35,7 +35,8 @@ export class MovieRepositoryImpl implements MovieRepository {
         searchby !== "category" &&
         searchby !== "aspectRatio" &&
         searchby !== "university" &&
-        searchby !== "school" && {
+        searchby !== "school" &&
+        searchby !== "studio" && {
           [searchby || "title"]: {
             contains: search,
             mode: "insensitive",
@@ -56,24 +57,31 @@ export class MovieRepositoryImpl implements MovieRepository {
         searchby === "releaseDate" && {
           releaseDate: new Date(search),
         }),
-      ...(search &&
-        searchby === "university" && {
+      ...(searchby === "university" && {
+        universityId: { not: null },
+        ...(search && {
           university: {
-            name: {
-              contains: search,
-              mode: "insensitive",
-            },
+            name: { contains: search, mode: "insensitive" },
           },
         }),
-      ...(search &&
-        searchby === "school" && {
+      }),
+      ...(searchby === "school" && {
+        schoolId: { not: null },
+        ...(search && {
           school: {
-            name: {
-              contains: search,
-              mode: "insensitive",
-            },
+            name: { contains: search, mode: "insensitive" },
           },
         }),
+      }),
+      ...(searchby === "studio" && {
+        studio: {
+          not: null,
+          ...(search && {
+            contains: search,
+            mode: "insensitive",
+          }),
+        },
+      }),
       ...(aspectRatio && { aspectRatio: aspectRatio }),
       ...(createdBy && { createdBy }),
     };
@@ -110,6 +118,28 @@ export class MovieRepositoryImpl implements MovieRepository {
         university: {
           name: { equals: university, mode: "insensitive" },
         },
+      },
+      include: movieIncludes,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async findBySchool(school: string): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      where: {
+        school: {
+          name: { equals: school, mode: "insensitive" },
+        },
+      },
+      include: movieIncludes,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async findByStudio(studio: string): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      where: {
+        studio: { equals: studio, mode: "insensitive" },
       },
       include: movieIncludes,
       orderBy: { createdAt: "desc" },

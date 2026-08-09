@@ -105,6 +105,24 @@ export class MovieService {
     }
   }
 
+  async getMoviesBySchool(school: string): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.findBySchool(school);
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get movies by school");
+    }
+  }
+
+  async getMoviesByStudio(studio: string): Promise<Movie[]> {
+    try {
+      const movies = await this.repo.findByStudio(studio);
+      return MovieFactory.toDomainList(movies);
+    } catch (error: unknown) {
+      handleServiceError(error, "Failed to get movies by studio");
+    }
+  }
+
   async getMovieById(id: string): Promise<Movie> {
     try {
       const rawMovie = await getCachedOrFetch(
