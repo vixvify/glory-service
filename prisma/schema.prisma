@@ -17,6 +17,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   photoUrl  String?
+  coverUrl  String?
   motto     String?
   bio       String?
   ig        String?
@@ -57,20 +58,26 @@ model Movie {
   averageRating Float    @default(0)
   aspectRatio   String   @default("landscape")
 
-  ageRating String
+  ageRatingId String    @db.Uuid
+  ageRating   AgeRating @relation(fields: [ageRatingId], references: [id])
 
-  university String?
-  school     String?
-  language   String?
-  subtitle   String?
+  universityId String?     @db.Uuid
+  university   University? @relation(fields: [universityId], references: [id])
+  schoolId     String?     @db.Uuid
+  school       School?     @relation(fields: [schoolId], references: [id])
+  languageId   String?     @db.Uuid
+  language     Language?   @relation(fields: [languageId], references: [id])
+  subtitleId   String?     @db.Uuid
+  subtitle     Subtitle?   @relation(fields: [subtitleId], references: [id])
 
-  contentWarnings     String[] @default([])
+  contentWarnings     ContentWarning[]
   otherContentWarning String?
   
-  colorType    String
-  studio       String?
-  awards       MovieAward[]
-  tags         String[] @default([])
+  colorTypeId String    @db.Uuid
+  colorType   ColorType @relation(fields: [colorTypeId], references: [id])
+  studio      String?
+  awards      MovieAward[]
+  tags        Tag[]
 
   createdBy String @db.Uuid
   creator   User   @relation(fields: [createdBy], references: [id], onDelete: Cascade)
@@ -230,4 +237,76 @@ model SeekEvent {
   @@index([watchSessionId])
   @@index([watchSessionId, seekFrom])
   @@map("seek_events")
+}
+
+model AgeRating {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("age_ratings")
+}
+
+model University {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("universities")
+}
+
+model School {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("schools")
+}
+
+model Language {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("languages")
+}
+
+model Subtitle {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("subtitles")
+}
+
+model ContentWarning {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("content_warnings")
+}
+
+model ColorType {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("color_types")
+}
+
+model Tag {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  movies    Movie[]
+
+  @@map("tags")
 }

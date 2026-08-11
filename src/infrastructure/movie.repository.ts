@@ -33,7 +33,10 @@ export class MovieRepositoryImpl implements MovieRepository {
       ...(search &&
         searchby !== "releaseDate" &&
         searchby !== "category" &&
-        searchby !== "aspectRatio" && {
+        searchby !== "aspectRatio" &&
+        searchby !== "university" &&
+        searchby !== "school" &&
+        searchby !== "studio" && {
           [searchby || "title"]: {
             contains: search,
             mode: "insensitive",
@@ -54,12 +57,31 @@ export class MovieRepositoryImpl implements MovieRepository {
         searchby === "releaseDate" && {
           releaseDate: new Date(search),
         }),
-      ...(search &&
-        searchby === "university" && {
+      ...(searchby === "university" && {
+        universityId: { not: null },
+        ...(search && {
           university: {
-            equals: search,
+            name: { contains: search, mode: "insensitive" },
           },
         }),
+      }),
+      ...(searchby === "school" && {
+        schoolId: { not: null },
+        ...(search && {
+          school: {
+            name: { contains: search, mode: "insensitive" },
+          },
+        }),
+      }),
+      ...(searchby === "studio" && {
+        studio: {
+          not: null,
+          ...(search && {
+            contains: search,
+            mode: "insensitive",
+          }),
+        },
+      }),
       ...(aspectRatio && { aspectRatio: aspectRatio }),
       ...(createdBy && { createdBy }),
     };
@@ -93,7 +115,31 @@ export class MovieRepositoryImpl implements MovieRepository {
   ): Promise<PrismaMovieWithRelations[]> {
     return prisma.movie.findMany({
       where: {
-        university: { equals: university, mode: "insensitive" },
+        university: {
+          name: { equals: university, mode: "insensitive" },
+        },
+      },
+      include: movieIncludes,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async findBySchool(school: string): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      where: {
+        school: {
+          name: { equals: school, mode: "insensitive" },
+        },
+      },
+      include: movieIncludes,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  async findByStudio(studio: string): Promise<PrismaMovieWithRelations[]> {
+    return prisma.movie.findMany({
+      where: {
+        studio: { equals: studio, mode: "insensitive" },
       },
       include: movieIncludes,
       orderBy: { createdAt: "desc" },
@@ -147,15 +193,75 @@ export class MovieRepositoryImpl implements MovieRepository {
   }
 
   async create(input: CreateMovieInput): Promise<PrismaMovie> {
+    const {
+      createdBy,
+      ageRatingId,
+      colorTypeId,
+      universityId,
+      schoolId,
+      languageId,
+      subtitleId,
+      categories,
+      contentWarnings,
+      tags,
+      ...rest
+    } = input;
+
     return prisma.movie.create({
-      data: input as unknown as Prisma.MovieCreateInput,
+      data: {
+        ...rest,
+        creator: { connect: { id: createdBy } },
+        ageRating: { connect: { id: ageRatingId } },
+        colorType: { connect: { id: colorTypeId } },
+        categories,
+        contentWarnings,
+        tags,
+        ...(universityId && { university: { connect: { id: universityId } } }),
+        ...(schoolId && { school: { connect: { id: schoolId } } }),
+        ...(languageId && { language: { connect: { id: languageId } } }),
+        ...(subtitleId && { subtitle: { connect: { id: subtitleId } } }),
+      } as Prisma.MovieCreateInput,
     });
   }
 
   async update(id: string, input: UpdateMovieInput): Promise<PrismaMovie> {
+    const {
+      ageRatingId,
+      colorTypeId,
+      universityId,
+      schoolId,
+      languageId,
+      subtitleId,
+      categories,
+      contentWarnings,
+      tags,
+      ...rest
+    } = input;
+
     return prisma.movie.update({
       where: { id },
-      data: input as unknown as Prisma.MovieUpdateInput,
+      data: {
+        ...rest,
+        categories,
+        contentWarnings,
+        tags,
+        ...(ageRatingId && { ageRating: { connect: { id: ageRatingId } } }),
+        ...(colorTypeId && { colorType: { connect: { id: colorTypeId } } }),
+        ...(universityId !== undefined && {
+          university: universityId
+            ? { connect: { id: universityId } }
+            : { disconnect: true },
+        }),
+        ...(schoolId !== undefined && {
+          school: schoolId ? { connect: { id: schoolId } } : { disconnect: true },
+        }),
+        ...(languageId !== undefined && {
+          language: languageId ? { connect: { id: languageId } } : { disconnect: true },
+        }),
+        ...(subtitleId !== undefined && {
+          subtitle: subtitleId ? { connect: { id: subtitleId } } : { disconnect: true },
+        }),
+      } as Prisma.MovieUpdateInput,
     });
   }
 

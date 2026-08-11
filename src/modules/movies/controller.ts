@@ -9,6 +9,8 @@ import {
   getMovieByIdParamsSchema,
   getMoviesByCategoryParamsSchema,
   getMoviesByUniversityParamsSchema,
+  getMoviesBySchoolParamsSchema,
+  getMoviesByStudioParamsSchema,
   deleteMovieParamsSchema,
   getMoviesQuerySchema,
 } from "./domain/movie";
@@ -45,6 +47,28 @@ export const movieRouter = new Elysia({ prefix: "/movie" })
     },
     {
       params: getMoviesByUniversityParamsSchema,
+    },
+  )
+  .get(
+    "/school/:school",
+    async ({ params }) => {
+      const { school } = params;
+      const movies = await movieService.getMoviesBySchool(school);
+      return formatSuccess(movies);
+    },
+    {
+      params: getMoviesBySchoolParamsSchema,
+    },
+  )
+  .get(
+    "/studio/:studio",
+    async ({ params }) => {
+      const { studio } = params;
+      const movies = await movieService.getMoviesByStudio(studio);
+      return formatSuccess(movies);
+    },
+    {
+      params: getMoviesByStudioParamsSchema,
     },
   )
   .get(

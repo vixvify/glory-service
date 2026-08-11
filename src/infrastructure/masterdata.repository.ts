@@ -6,6 +6,7 @@ import {
   CrewRole,
   DataGoUniversityResponse,
   UniversityRecord,
+  MasterDataItem,
 } from "../modules/master-data/domain/masterdata";
 import axios from "axios";
 
@@ -16,19 +17,46 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
     });
   }
 
-  async getUniversities(): Promise<string[]> {
-    const response = await axios.get<DataGoUniversityResponse>(
-      process.env.GET_UNIVERSITY_URL!,
-      {
-        headers: {
-          "api-key": process.env.DATA_GO_TOKEN!,
-        },
-      },
-    );
+  async getUniversities(): Promise<MasterDataItem[]> {
+    return prisma.university.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
 
-    return response.data.result.records.map(
-      (university) => university.UNIV_NAME,
-    );
+  async getSchools(): Promise<MasterDataItem[]> {
+    return prisma.school.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getLanguages(): Promise<MasterDataItem[]> {
+    return prisma.language.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getSubtitles(): Promise<MasterDataItem[]> {
+    return prisma.subtitle.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getColorTypes(): Promise<MasterDataItem[]> {
+    return prisma.colorType.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getContentWarnings(): Promise<MasterDataItem[]> {
+    return prisma.contentWarning.findMany({
+      orderBy: { name: "asc" },
+    });
+  }
+
+  async getAgeRatings(): Promise<MasterDataItem[]> {
+    return prisma.ageRating.findMany({
+      orderBy: { name: "asc" },
+    });
   }
 
   async getCrewRoles(): Promise<CrewRole[]> {
@@ -43,21 +71,48 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getMostActiveUniversity(): Promise<string | null> {
     const result = await prisma.movie.groupBy({
-      by: ["university"],
+      by: ["universityId"],
       _count: {
-        university: true,
+        universityId: true,
       },
       where: {
-        university: { not: null },
+        universityId: { not: null },
       },
       orderBy: {
         _count: {
-          university: "desc",
+          universityId: "desc",
         },
       },
       take: 1,
     });
 
-    return result[0]?.university || null;
+    const activeId = result[0]?.universityId;
+    if (!activeId) return null;
+
+    const university = await prisma.university.findUnique({
+      where: { id: activeId },
+      select: { name: true },
+    });
+
+    return university?.name || null;
+  }
+
+  async upsertTags(names: string[]): Promise<string[]> {
+    if (!names || names.length === 0) return [];
+    const uniqueNames = Array.from(
+      new Set(names.map((n) => n.trim()).filter(Boolean)),
+    );
+
+    const tagRecords = await Promise.all(
+      uniqueNames.map((name) =>
+        prisma.tag.upsert({
+          where: { name },
+          update: {},
+          create: { name },
+          select: { id: true },
+        }),
+      ),
+    );
+    return tagRecords.map((t) => t.id);
   }
 }

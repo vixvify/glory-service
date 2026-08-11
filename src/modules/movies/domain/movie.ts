@@ -12,19 +12,17 @@ import { Prisma } from "@prisma/client";
 import type { CrewMember } from "../../crew-members/domain/crew-member";
 import { Category, CrewRole } from "../../master-data/domain/masterdata";
 
-export enum ColorType {
-  COLOR = "color",
-  BLACK_AND_WHITE = "black_and_white",
-  COLOR_AND_BLACK_AND_WHITE = "color_and_bw",
-}
+const nullableUuidSchema = t.Transform(
+  t.Union([t.String({ format: "uuid" }), t.Literal("null"), t.Null()]),
+)
+  .Decode((value) => (value === "null" ? null : value))
+  .Encode((value) => value);
 
-export enum AgeRating {
-  G = "G",
-  PG = "PG",
-  PG_13 = "PG-13",
-  NC_17 = "NC-17",
-  R = "R",
-}
+const nullableStringSchema = t.Transform(
+  t.Union([t.String(), t.Literal("null"), t.Null()]),
+)
+  .Decode((value) => (value === "null" ? null : value))
+  .Encode((value) => value);
 
 export interface MovieCrew {
   id: string;
@@ -91,15 +89,19 @@ export interface CreateMovieInput {
   duration: number;
   matchRate: number;
   aspectRatio: string;
-  ageRating: string;
-  university?: string | null;
-  school?: string | null;
-  language?: string | null;
-  subtitle?: string | null;
-  contentWarnings?: string[];
+  ageRatingId: string;
+  universityId?: string | null;
+  schoolId?: string | null;
+  languageId?: string | null;
+  subtitleId?: string | null;
+  contentWarnings?: {
+    connect: Array<{ id: string }>;
+  };
   otherContentWarning?: string | null;
-  tags?: string[];
-  colorType: string;
+  tags?: {
+    connect: Array<{ id: string }>;
+  };
+  colorTypeId: string;
   studio?: string | null;
   createdBy: string;
   btsVideos?: string[];
@@ -121,15 +123,19 @@ export interface UpdateMovieInput {
   duration: number;
   matchRate: number;
   aspectRatio: string;
-  ageRating: string;
-  university?: string | null;
-  school?: string | null;
-  language?: string | null;
-  subtitle?: string | null;
-  contentWarnings?: string[];
+  ageRatingId?: string;
+  universityId?: string | null;
+  schoolId?: string | null;
+  languageId?: string | null;
+  subtitleId?: string | null;
+  contentWarnings?: {
+    set: Array<{ id: string }>;
+  };
   otherContentWarning?: string | null;
-  tags?: string[];
-  colorType: string;
+  tags?: {
+    set: Array<{ id: string }>;
+  };
+  colorTypeId?: string;
   studio?: string | null;
   btsVideos?: string[];
   awards?: {
@@ -148,20 +154,16 @@ export const createMovieBodySchema = t.Object({
   releaseDate: t.String(),
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
-  ageRating: t.String(),
-  university: t.Optional(t.String()),
-  school: t.Optional(t.String()),
-  language: t.Optional(t.String()),
-  subtitle: t.Optional(t.String()),
-  contentWarnings: t.Optional(tArrayCoerce),
+  ageRatingId: t.String({ format: "uuid" }),
+  universityId: t.Optional(nullableUuidSchema),
+  schoolId: t.Optional(nullableUuidSchema),
+  languageId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  subtitleId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  contentWarningIds: t.Optional(tArrayCoerce),
   otherContentWarning: t.Optional(t.String()),
   tags: t.Optional(tArrayCoerce),
-  colorType: t.Union([
-    t.Literal("color"),
-    t.Literal("black_and_white"),
-    t.Literal("color_and_bw"),
-  ]),
-  studio: t.Optional(t.String()),
+  colorTypeId: t.String({ format: "uuid" }),
+  studio: t.Optional(nullableStringSchema),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tAwardArrayCoerce),
@@ -183,20 +185,16 @@ export const updateMovieBodySchema = t.Object({
   releaseDate: t.String(),
   duration: t.Numeric(),
   aspectRatio: t.Union([t.Literal("landscape"), t.Literal("portrait")]),
-  ageRating: t.String(),
-  university: t.Optional(t.String()),
-  school: t.Optional(t.String()),
-  language: t.Optional(t.String()),
-  subtitle: t.Optional(t.String()),
-  contentWarnings: t.Optional(tArrayCoerce),
+  ageRatingId: t.Optional(t.String({ format: "uuid" })),
+  universityId: t.Optional(nullableUuidSchema),
+  schoolId: t.Optional(nullableUuidSchema),
+  languageId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  subtitleId: t.Optional(t.Union([t.String({ format: "uuid" }), t.Null()])),
+  contentWarningIds: t.Optional(tArrayCoerce),
   otherContentWarning: t.Optional(t.String()),
   tags: t.Optional(tArrayCoerce),
-  colorType: t.Union([
-    t.Literal("color"),
-    t.Literal("black_and_white"),
-    t.Literal("color_and_bw"),
-  ]),
-  studio: t.Optional(t.String()),
+  colorTypeId: t.Optional(t.String({ format: "uuid" })),
+  studio: t.Optional(nullableStringSchema),
   crew: t.Optional(tCrewInputCoerce),
   btsVideo: t.Optional(tArrayCoerce),
   awards: t.Optional(tAwardArrayCoerce),
@@ -220,6 +218,20 @@ export const getMoviesByUniversityParamsSchema = t.Object({
 });
 export type GetMoviesByUniversityParamsDTO = Static<
   typeof getMoviesByUniversityParamsSchema
+>;
+
+export const getMoviesBySchoolParamsSchema = t.Object({
+  school: t.String(),
+});
+export type GetMoviesBySchoolParamsDTO = Static<
+  typeof getMoviesBySchoolParamsSchema
+>;
+
+export const getMoviesByStudioParamsSchema = t.Object({
+  studio: t.String(),
+});
+export type GetMoviesByStudioParamsDTO = Static<
+  typeof getMoviesByStudioParamsSchema
 >;
 
 export const deleteMovieParamsSchema = t.Object({
@@ -326,6 +338,14 @@ export const movieIncludes = {
     },
   },
   awards: true,
+  ageRating: true,
+  university: true,
+  school: true,
+  language: true,
+  subtitle: true,
+  contentWarnings: true,
+  colorType: true,
+  tags: true,
 } satisfies Prisma.MovieInclude;
 
 export type PrismaMovieWithRelations = Prisma.MovieGetPayload<{
