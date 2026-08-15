@@ -1,4 +1,8 @@
-import { Category, CrewRole, MasterDataItem } from "./masterdata";
+import {
+  Category,
+  CrewRole,
+  MasterDataItem,
+} from "./masterdata";
 
 export interface MasterDataRepository {
   getCategories(): Promise<Category[]>;
