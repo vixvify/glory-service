@@ -1,5 +1,4 @@
 import {
-  AffiliationMasterDataItem,
   Category,
   CrewRole,
   MasterDataItem,
@@ -7,8 +6,8 @@ import {
 
 export interface MasterDataRepository {
   getCategories(): Promise<Category[]>;
-  getUniversities(): Promise<AffiliationMasterDataItem[]>;
-  getSchools(): Promise<AffiliationMasterDataItem[]>;
+  getUniversities(): Promise<MasterDataItem[]>;
+  getSchools(): Promise<MasterDataItem[]>;
   getLanguages(): Promise<MasterDataItem[]>;
   getSubtitles(): Promise<MasterDataItem[]>;
   getColorTypes(): Promise<MasterDataItem[]>;
