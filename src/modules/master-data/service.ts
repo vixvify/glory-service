@@ -1,5 +1,10 @@
 import { MasterDataRepository } from "./domain/masterdata.repository";
-import { Category, CrewRole, MasterDataItem } from "./domain/masterdata";
+import {
+  AffiliationMasterDataItem,
+  Category,
+  CrewRole,
+  MasterDataItem,
+} from "./domain/masterdata";
 import { ROLE_ORDER } from "../../core/constants/crew";
 import { handleServiceError } from "../../core/utils/error/handle-error";
 
@@ -14,7 +19,7 @@ export class MasterDataService {
     }
   }
 
-  async getUniversities(): Promise<MasterDataItem[]> {
+  async getUniversities(): Promise<AffiliationMasterDataItem[]> {
     try {
       return await this.repo.getUniversities();
     } catch (error: unknown) {
@@ -22,7 +27,7 @@ export class MasterDataService {
     }
   }
 
-  async getSchools(): Promise<MasterDataItem[]> {
+  async getSchools(): Promise<AffiliationMasterDataItem[]> {
     try {
       return await this.repo.getSchools();
     } catch (error: unknown) {

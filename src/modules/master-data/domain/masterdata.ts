@@ -3,6 +3,10 @@ export interface MasterDataItem {
   name: string;
 }
 
+export interface AffiliationMasterDataItem extends MasterDataItem {
+  movieCount: number;
+}
+
 export interface Category {
   id: string;
   name: string;

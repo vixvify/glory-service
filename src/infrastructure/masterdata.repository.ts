@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma";
 import { MasterDataRepository } from "../modules/master-data/domain/masterdata.repository";
 import {
+  AffiliationMasterDataItem,
   Category,
   Language,
   CrewRole,
@@ -17,16 +18,64 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
     });
   }
 
-  async getUniversities(): Promise<MasterDataItem[]> {
-    return prisma.university.findMany({
-      orderBy: { name: "asc" },
+  async getUniversities(): Promise<AffiliationMasterDataItem[]> {
+    const universities = await prisma.university.findMany({
+      select: {
+        id: true,
+        name: true,
+        _count: {
+          select: {
+            movies: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          movies: {
+            _count: "desc",
+          },
+        },
+        {
+          name: "asc",
+        },
+      ],
     });
+
+    return universities.map((university) => ({
+      id: university.id,
+      name: university.name,
+      movieCount: university._count.movies,
+    }));
   }
 
-  async getSchools(): Promise<MasterDataItem[]> {
-    return prisma.school.findMany({
-      orderBy: { name: "asc" },
+  async getSchools(): Promise<AffiliationMasterDataItem[]> {
+    const schools = await prisma.school.findMany({
+      select: {
+        id: true,
+        name: true,
+        _count: {
+          select: {
+            movies: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          movies: {
+            _count: "desc",
+          },
+        },
+        {
+          name: "asc",
+        },
+      ],
     });
+
+    return schools.map((school) => ({
+      id: school.id,
+      name: school.name,
+      movieCount: school._count.movies,
+    }));
   }
 
   async getLanguages(): Promise<MasterDataItem[]> {
