@@ -1,10 +1,15 @@
 import { MasterDataRepository } from "./domain/masterdata.repository";
-import { Category, CrewRole, MasterDataItem } from "./domain/masterdata";
+import {
+
+  Category,
+  CrewRole,
+  MasterDataItem,
+} from "./domain/masterdata";
 import { ROLE_ORDER } from "../../core/constants/crew";
 import { handleServiceError } from "../../core/utils/error/handle-error";
 
 export class MasterDataService {
-  constructor(private repo: MasterDataRepository) {}
+  constructor(private repo: MasterDataRepository) { }
 
   async getCategories(): Promise<Category[]> {
     try {

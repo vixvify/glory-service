@@ -19,13 +19,31 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getUniversities(): Promise<MasterDataItem[]> {
     return prisma.university.findMany({
-      orderBy: { name: "asc" },
+      orderBy: [
+        {
+          movies: {
+            _count: "desc",
+          },
+        },
+        {
+          name: "asc",
+        },
+      ],
     });
   }
 
   async getSchools(): Promise<MasterDataItem[]> {
     return prisma.school.findMany({
-      orderBy: { name: "asc" },
+      orderBy: [
+        {
+          movies: {
+            _count: "desc",
+          },
+        },
+        {
+          name: "asc",
+        },
+      ],
     });
   }
 
