@@ -20,15 +20,7 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getUniversities(): Promise<AffiliationMasterDataItem[]> {
     const universities = await prisma.university.findMany({
-      select: {
-        id: true,
-        name: true,
-        _count: {
-          select: {
-            movies: true,
-          },
-        },
-      },
+      include: { _count: true },
       orderBy: [
         {
           movies: {
@@ -50,15 +42,7 @@ export class MasterDataRepositoryImpl implements MasterDataRepository {
 
   async getSchools(): Promise<AffiliationMasterDataItem[]> {
     const schools = await prisma.school.findMany({
-      select: {
-        id: true,
-        name: true,
-        _count: {
-          select: {
-            movies: true,
-          },
-        },
-      },
+      include: { _count: true },
       orderBy: [
         {
           movies: {
